@@ -37,10 +37,28 @@ switch mission.phase
 
         jl_min = deg2rad([-166 -101 -166 -176 -166 -1 -166])';
         jl_max = deg2rad([166 101 166 -4 -166 115 166])';
+        pandaArms.ArmL.xdot.jointLimits = zeros(7,1);
+        pandaArms.ArmR.xdot.jointLimits = zeros(7,1);
+        delta_perc = 0.1;
 
         %% Jl left
-        pandaArms.ArmL.xdot.jointLimits = 0.2 * (jl_min + jl_max) / 2 - pandaArms.ArmL.q;
-        pandaArms.ArmR.xdot.jointLimits = 0.2 * (jl_min + jl_max) / 2 - pandaArms.ArmR.q;
+        index = 1;
+        for jl = [jl_min; jl_max]
+            if pandaArms.ArmL.q(index) > jl(2) - delta_perc * (jl(2) - jl(1))
+                pandaArms.ArmL.xdot.jointLimits(index,1) = 0.2 * (pandaArms.ArmL.q(index) - (jl(2) - delta_perc * (jl(2) - jl(1))));
+            end
+            if pandaArms.ArmL.q(index) < jl(1) + delta_perc * (jl(2) - jl(1))
+                pandaArms.ArmL.xdot.jointLimits(index,1) = 0.2 * ((jl(1) + delta_perc * (jl(2) - jl(1))) - pandaArms.ArmL.q(index));
+            end
+
+            if pandaArms.ArmR.q(index) > jl(2) - delta_perc * (jl(2) - jl(1))
+                pandaArms.ArmR.xdot.jointLimits(index,1) = 0.2 * (pandaArms.ArmR.q(index) - (jl(2) - delta_perc * (jl(2) - jl(1))));
+            end
+            if pandaArms.ArmR.q(index) < jl(1) + delta_perc * (jl(2) - jl(1))
+                pandaArms.ArmR.xdot.jointLimits(index,1) = 0.2 * ((jl(1) + delta_perc * (jl(2) - jl(1))) - pandaArms.ArmR.q(index));
+            end
+            index = index + 1;
+        end
     % case 2
     %     % Perform the rigid grasp of the object and move it
 
