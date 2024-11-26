@@ -38,7 +38,8 @@ plt = InitDataPlot(maxloops);
 pandaArms = InitRobot(model,wTb_left,wTb_right);
 % Init object and tools frames
 obj_length = 0.12;
-w_obj_pos = [0.5 0 0.59]';
+% w_obj_pos = [0.5 0 0.59]';
+w_obj_pos = [0.5 0 0.0]';
 w_obj_ori = rotation(0,0,0);
 pandaArms.ArmL.wTo = [w_obj_ori w_obj_pos; 0 0 0 1]; %TODO
 pandaArms.ArmR.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];
@@ -138,8 +139,11 @@ for t = 0:dt:Tf
     % Bimanual system TPIK
     % ...
     % Task: Tool Move-To
-    % [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.minimumAltitude, [zeros(1, 7) pandaArms.ArmL.J.minimumAltitude], Qp, ydotbar, pandaArms.ArmL.xdot.minimumAltitude, 0.0001,   0.01, 10);
-    % [Qp, ydotbar] = iCAT_task(pandaArms.ArmR.A.minimumAltitude, [pandaArms.ArmR.J.minimumAltitude zeros(1,7)], Qp, ydotbar, pandaArms.ArmR.xdot.minimumAltitude, 0.0001,   0.01, 10);
+    % ydotbar = activation * ydotbar * reference;
+    ydotbar
+    pause
+    [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.minimumAltitude, [pandaArms.ArmL.J.minimumAltitude zeros(1, 7)], Qp, ydotbar, pandaArms.ArmL.xdot.minimumAltitude, 0.0001,   0.01, 10);
+    [Qp, ydotbar] = iCAT_task(pandaArms.ArmR.A.minimumAltitude, [zeros(1,7) pandaArms.ArmR.J.minimumAltitude], Qp, ydotbar, pandaArms.ArmR.xdot.minimumAltitude, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.pose, [pandaArms.ArmL.J.pose zeros(6,7)], Qp, ydotbar, pandaArms.ArmL.xdot.pose, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmR.A.pose, [zeros(6,7) pandaArms.ArmR.J.pose], Qp, ydotbar, pandaArms.ArmR.xdot.pose, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(eye(14), eye(14), Qp, ydotbar, zeros(14,1), 0.0001,   0.01, 10);    % this task should be the last one

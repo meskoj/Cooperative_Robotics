@@ -2,11 +2,11 @@ function [pandaArms] = ComputeJacobians(pandaArms,mission)
 % compute the relevant Jacobians here
 % joint limits
 % tool-frame position control (to do)
-% initial arm posture ( [0.0167305, -0.762614, -0.0207622, -2.34352, 
-% -0.0305686, 1.53975, 0.753872] ) 
+% initial arm posture ( [0.0167305, -0.762614, -0.0207622, -2.34352,
+% -0.0305686, 1.53975, 0.753872] )
 %
 % remember: the control vector is:
-% [q_dot] 
+% [q_dot]
 % [qdot_1, qdot_2, ..., qdot_7]
 %
 % therefore all task jacobians should be of dimensions
@@ -29,15 +29,22 @@ pandaArms.ArmR.bJe = pandaArms.ArmR.bJe(:, 1:7);
 
 % Top three rows are angular velocities, bottom three linear velocities
 eSt_left = [eye(3) zeros(3);
-       skew(pandaArms.ArmL.eTt(1:3,4))', eye(3)];
+    skew(pandaArms.ArmL.eTt(1:3,4))', eye(3)];
 eSt_right = [eye(3) zeros(3);
-       skew(pandaArms.ArmR.eTt(1:3,4))', eye(3)];
+    skew(pandaArms.ArmR.eTt(1:3,4))', eye(3)];
+
+wRb = pandaArms.ArmR.wTb(1:3,1:3);
+wRb_j = [wRb zeros(3);
+    zeros(3) wRb];
+
+% eSt_left = eye(6);
+% eSt_right = eye(6);
 
 pandaArms.ArmL.wJt  = eSt_left * pandaArms.ArmL.bJe;
-pandaArms.ArmR.wJt  = eSt_right * pandaArms.ArmR.bJe;
+pandaArms.ArmR.wJt  = eSt_right * wRb_j * pandaArms.ArmR.bJe;
 
-pandaArms.ArmL.J.minimumAltitude = pandaArms.ArmL.wJt(3, :);
-pandaArms.ArmR.J.minimumAltitude = pandaArms.ArmR.wJt(3, :);
+pandaArms.ArmL.J.minimumAltitude = pandaArms.ArmL.wJt(6, :);
+pandaArms.ArmR.J.minimumAltitude = pandaArms.ArmR.wJt(6, :);
 
 pandaArms.ArmL.J.pose = pandaArms.ArmL.wJt;
 pandaArms.ArmR.J.pose = pandaArms.ArmR.wJt;
@@ -46,7 +53,7 @@ if (mission.phase == 2)
     % pandaArms.ArmL.wJo = ...; TODO
     % pandaArms.ArmR.wJo = ...;
 
-% Common Jacobians
-% pandaArms.Jjl = ...; TODO
+    % Common Jacobians
+    % pandaArms.Jjl = ...; TODO
 
 end

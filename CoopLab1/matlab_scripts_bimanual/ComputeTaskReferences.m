@@ -30,8 +30,6 @@ switch mission.phase
         % Tool position and orientation task reference
         [ang, lin] = CartError(pandaArms.ArmR.wTg, pandaArms.ArmR.wTt);
 
-        lin = pandaArms.ArmR.wTb(1:3, 1:3)' * lin;
-
         pandaArms.ArmR.xdot.pose = 0.2 * [ang; lin];
             % limit the requested velocities...
         pandaArms.ArmR.xdot.pose(1:3) = Saturate(pandaArms.ArmR.xdot.pose(1:3), 1);
