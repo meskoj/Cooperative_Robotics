@@ -29,9 +29,9 @@ pandaArms.ArmR.bJe = pandaArms.ArmR.bJe(:, 1:7);
 
 % Top three rows are angular velocities, bottom three linear velocities
 eSt_left = [eye(3) zeros(3);
-    skew(pandaArms.ArmL.eTt(1:3,4))', eye(3)];
+    skew(pandaArms.ArmL.wTb(1:3,1:3) * pandaArms.ArmL.bTe(1:3,1:3) * pandaArms.ArmL.eTt(1:3,4))', eye(3)]; % Rotation tool world
 eSt_right = [eye(3) zeros(3);
-    skew(pandaArms.ArmR.eTt(1:3,4))', eye(3)];
+    skew(pandaArms.ArmR.wTb(1:3,1:3) * pandaArms.ArmR.bTe(1:3,1:3) * pandaArms.ArmR.eTt(1:3,4))', eye(3)];
 
 wRb = pandaArms.ArmR.wTb(1:3,1:3);
 wRb_j = [wRb zeros(3);

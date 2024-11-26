@@ -34,6 +34,13 @@ switch mission.phase
             % limit the requested velocities...
         pandaArms.ArmR.xdot.pose(1:3) = Saturate(pandaArms.ArmR.xdot.pose(1:3), 1);
         pandaArms.ArmR.xdot.pose(4:6) = Saturate(pandaArms.ArmR.xdot.pose(4:6), 1);
+
+        jl_min = deg2rad([-166 -101 -166 -176 -166 -1 -166])';
+        jl_max = deg2rad([166 101 166 -4 -166 115 166])';
+
+        %% Jl left
+        pandaArms.ArmL.xdot.jointLimits = 0.2 * (jl_min + jl_max) / 2 - pandaArms.ArmL.q;
+        pandaArms.ArmR.xdot.jointLimits = 0.2 * (jl_min + jl_max) / 2 - pandaArms.ArmR.q;
     % case 2
     %     % Perform the rigid grasp of the object and move it
 

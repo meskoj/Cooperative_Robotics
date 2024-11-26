@@ -27,5 +27,23 @@ pandaArms.ArmR.A.pose = eye(6);
 % Safety Task (inequality)
 % delta is 10% of max error
 % pandaArms.A.jl = ...; TODO
+jl_min = deg2rad([-166 -101 -166 -176 -166 -1 -166]);
+jl_max = deg2rad([166 101 166 -4 -166 115 166]);
 
+index = 1;
+for jl = [jl_min; jl_max]
+    pandaArms.ArmL.A.jointLimits(index,index) = DecreasingBellShapedFunction(jl(1), jl(1) + 0.1 * (jl(2) - jl(1)), 0, 1, pandaArms.ArmL.q(index));
+    if pandaArms.ArmL.A.jointLimits(index,index) == 0 % This in order to not have overwriting of the values
+        pandaArms.ArmL.A.jointLimits(index,index) = IncreasingBellShapedFunction(jl(2), jl(2) - 0.1 * (jl(2) - jl(1)), 0, 1, pandaArms.ArmL.q(index));
+    end
+    index = index + 1;
+end
+
+index = 1;
+for jl = [jl_min; jl_max]
+    pandaArms.ArmR.A.jointLimits(index,index) = DecreasingBellShapedFunction(jl(1), jl(1) + 0.1 * (jl(2) - jl(1)), 0, 1, pandaArms.ArmR.q(index));
+    if pandaArms.ArmR.A.jointLimits(index,index) == 0 % This in order to not have overwriting of the values
+        pandaArms.ArmR.A.jointLimits(index,index) = IncreasingBellShapedFunction(jl(2), jl(2) - 0.1 * (jl(2) - jl(1)), 0, 1, pandaArms.ArmR.q(index));
+    end
+    index = index + 1;
 end
