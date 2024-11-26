@@ -5,9 +5,19 @@ switch mission.phase
     case 1  % Reach the grasping point
         % Move-To
         % pandaArms.A.tool = ...;
+        pandaArms.ArmL.A.pose = eye(6);
+        pandaArms.ArmR.A.pose = eye(6);
+
+        pandaArms.ArmL.A.bimanualGrasp = zeros(6);
+        pandaArms.ArmR.A.bimanualGrasp = zeros(6);
     case 2 % Move the object holding it firmly
         % Rigid Grasp Constraint
 
+        pandaArms.ArmL.A.pose = zeros(6);
+        pandaArms.ArmR.A.pose = zeros(6);
+
+        pandaArms.ArmL.A.bimanualGrasp = eye(6);
+        pandaArms.ArmR.A.bimanualGrasp = eye(6);
         % Move-To
 
     case 3 % STOP any motion
@@ -17,9 +27,6 @@ end
 % Minimum Altitude Task ( > 0.15m, 0.05m delta )
 pandaArms.ArmL.A.minimumAltitude = DecreasingBellShapedFunction(0.15, 0.2, 0, 1, pandaArms.ArmL.wTt(3,4));
 pandaArms.ArmR.A.minimumAltitude = DecreasingBellShapedFunction(0.15, 0.2, 0, 1, pandaArms.ArmR.wTt(3,4));
-
-pandaArms.ArmL.A.pose = eye(6);
-pandaArms.ArmR.A.pose = eye(6);
 
 % Joint Limits Task
 % Activation function: two combined sigmoids, which are at their maximum

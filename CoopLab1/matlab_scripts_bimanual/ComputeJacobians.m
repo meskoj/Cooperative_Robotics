@@ -49,6 +49,10 @@ pandaArms.ArmR.J.minimumAltitude = pandaArms.ArmR.wJt(6, :);
 pandaArms.ArmL.J.pose = pandaArms.ArmL.wJt;
 pandaArms.ArmR.J.pose = pandaArms.ArmR.wJt;
 
+
+tSg_right = [eye(3) zeros(3);
+    skew(pandaArms.ArmR.wTb(1:3,1:3) * pandaArms.ArmR.bTe(1:3,1:3) * pandaArms.ArmR.eTt(1:3,1:3) * pandaArms.ArmR.tTg(1:3,4))', eye(3)];
+pandaArms.ArmL.J.bimanualGrasp = pandaArms.ArmL.wJt;
 if (mission.phase == 2)
     % pandaArms.ArmL.wJo = ...; TODO
     % pandaArms.ArmR.wJo = ...;

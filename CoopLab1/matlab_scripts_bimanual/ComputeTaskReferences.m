@@ -13,7 +13,7 @@ pandaArms.ArmR.xdot.minimumAltitude = 0.2 * (0.2 - pandaArms.ArmR.wTt(3,4));
 %pandaArms.ArmR.xdot.jl = ...;
 
 switch mission.phase
-    case 1
+    case {1, 2}
         % LEFT ARM
         % -----------------------------------------------------------------
         % Tool position and orientation task reference
@@ -59,6 +59,9 @@ switch mission.phase
             end
             index = index + 1;
         end
+
+        pandaArms.ArmL.xdot.bimanualGrasp = zeros(7,1);
+        pandaArms.ArmR.xdot.bimanualGrasp = zeros(7,1);
     % case 2
     %     % Perform the rigid grasp of the object and move it
 
