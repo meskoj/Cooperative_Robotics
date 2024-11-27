@@ -35,7 +35,7 @@ pandaArms.ArmR.A.minimumAltitude = DecreasingBellShapedFunction(0.15, 0.2, 0, 1,
 % delta is 10% of max error
 % pandaArms.A.jl = ...; TODO
 jl_min = deg2rad([-166 -101 -166 -176 -166 -1 -166]);
-jl_max = deg2rad([166 101 166 -4 -166 115 166]);
+jl_max = deg2rad([166 101 166 -4 166 215 166]);
 delta_perc = 0.1;
 
 index = 1;

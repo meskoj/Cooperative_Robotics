@@ -49,13 +49,18 @@ pandaArms.ArmR.J.minimumAltitude = pandaArms.ArmR.wJt(6, :);
 pandaArms.ArmL.J.pose = pandaArms.ArmL.wJt;
 pandaArms.ArmR.J.pose = pandaArms.ArmR.wJt;
 
-
+r_tg_l = pandaArms.ArmL.wTo(1:3,4) - pandaArms.ArmL.wTt(1:3,4);
+r_tg_r = pandaArms.ArmR.wTo(1:3,4) - pandaArms.ArmR.wTt(1:3,4);
+tSg_left = [eye(3) zeros(3);
+    skew(pandaArms.ArmL.wTb(1:3,1:3) * pandaArms.ArmL.bTe(1:3,1:3) * pandaArms.ArmL.eTt(1:3,1:3) * r_tg_l)', eye(3)];
 tSg_right = [eye(3) zeros(3);
-    skew(pandaArms.ArmR.wTb(1:3,1:3) * pandaArms.ArmR.bTe(1:3,1:3) * pandaArms.ArmR.eTt(1:3,1:3) * pandaArms.ArmR.tTg(1:3,4))', eye(3)];
-pandaArms.ArmL.J.bimanualGrasp = pandaArms.ArmL.wJt;
+    skew(pandaArms.ArmR.wTb(1:3,1:3) * pandaArms.ArmR.bTe(1:3,1:3) * pandaArms.ArmR.eTt(1:3,1:3) * r_tg_l)', eye(3)];
+pandaArms.ArmL.J.bimanualGrasp = tSg_left * pandaArms.ArmL.wJt;
+pandaArms.ArmR.J.bimanualGrasp = tSg_right * pandaArms.ArmR.wJt;
+
 if (mission.phase == 2)
-    % pandaArms.ArmL.wJo = ...; TODO
-    % pandaArms.ArmR.wJo = ...;
+    pandaArms.ArmL.wJo = pandaArms.ArmL.J.bimanualGrasp;
+    pandaArms.ArmR.wJo = pandaArms.ArmR.J.bimanualGrasp;
 
     % Common Jacobians
     % pandaArms.Jjl = ...; TODO

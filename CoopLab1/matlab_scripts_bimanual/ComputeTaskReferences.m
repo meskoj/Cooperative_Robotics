@@ -35,8 +35,8 @@ switch mission.phase
         pandaArms.ArmR.xdot.pose(1:3) = Saturate(pandaArms.ArmR.xdot.pose(1:3), 1);
         pandaArms.ArmR.xdot.pose(4:6) = Saturate(pandaArms.ArmR.xdot.pose(4:6), 1);
 
-        jl_min = deg2rad([-166 -101 -166 -176 -166 -1 -166])';
-        jl_max = deg2rad([166 101 166 -4 -166 115 166])';
+        jl_min = deg2rad([-166 -101 -166 -176 -166 -1 -166]);
+        jl_max = deg2rad([166 101 166 -4 166 215 166]);
         pandaArms.ArmL.xdot.jointLimits = zeros(7,1);
         pandaArms.ArmR.xdot.jointLimits = zeros(7,1);
         delta_perc = 0.1;
@@ -60,8 +60,8 @@ switch mission.phase
             index = index + 1;
         end
 
-        pandaArms.ArmL.xdot.bimanualGrasp = zeros(7,1);
-        pandaArms.ArmR.xdot.bimanualGrasp = zeros(7,1);
+        pandaArms.ArmL.xdot.bimanualGrasp = zeros(6,1);
+        pandaArms.ArmR.xdot.bimanualGrasp = zeros(6,1);
     % case 2
     %     % Perform the rigid grasp of the object and move it
 

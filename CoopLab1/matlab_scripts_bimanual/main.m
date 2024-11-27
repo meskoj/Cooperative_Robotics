@@ -139,14 +139,16 @@ for t = 0:dt:Tf
     % Bimanual system TPIK
     % ...
     % Task: Tool Move-To
-    % ydotbar = activation * ydotbar * reference;
+
+    %% REMEMBER THAT XDOT IS VERTICAL
     jointLimitsActivationFunction = [pandaArms.ArmL.A.jointLimits, zeros(7); zeros(7), pandaArms.ArmR.A.jointLimits];
     [Qp, ydotbar] = iCAT_task(jointLimitsActivationFunction, eye(14), Qp, ydotbar, [pandaArms.ArmL.xdot.jointLimits; pandaArms.ArmR.xdot.jointLimits], 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.minimumAltitude, [pandaArms.ArmL.J.minimumAltitude zeros(1, 7)], Qp, ydotbar, pandaArms.ArmL.xdot.minimumAltitude, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmR.A.minimumAltitude, [zeros(1,7) pandaArms.ArmR.J.minimumAltitude], Qp, ydotbar, pandaArms.ArmR.xdot.minimumAltitude, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.pose, [pandaArms.ArmL.J.pose zeros(6,7)], Qp, ydotbar, pandaArms.ArmL.xdot.pose, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmR.A.pose, [zeros(6,7) pandaArms.ArmR.J.pose], Qp, ydotbar, pandaArms.ArmR.xdot.pose, 0.0001,   0.01, 10);
-    [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.bimanualGrasp, [pandaArms.ArmL.J.bimanualGrasp zeros(6,7)], Qp, ydotbar, pandaArms.ArmL.xdot.bimanualGrasp, 0.0001,   0.01, 10);
+    % For the activation and xdot Left or right is the same
+    % [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.bimanualGrasp, [pandaArms.ArmL.J.bimanualGrasp, -pandaArms.ArmR.J.bimanualGrasp], Qp, ydotbar, pandaArms.ArmL.xdot.bimanualGrasp, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(eye(14), eye(14), Qp, ydotbar, zeros(14,1), 0.0001,   0.01, 10);    % this task should be the last one
 
     % get the two variables for integration
