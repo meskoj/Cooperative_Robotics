@@ -10,11 +10,17 @@ switch mission.phase
 
         pandaArms.ArmL.A.bimanualGrasp = zeros(6);
         pandaArms.ArmR.A.bimanualGrasp = zeros(6);
+
+        pandaArms.ArmL.A.bimanualPose = zeros(6);
+        pandaArms.ArmR.A.bimanualPose = zeros(6);
     case 2 % Move the object holding it firmly
         % Rigid Grasp Constraint
 
         pandaArms.ArmL.A.pose = zeros(6);
         pandaArms.ArmR.A.pose = zeros(6);
+
+        pandaArms.ArmL.A.bimanualPose = eye(6);
+        pandaArms.ArmR.A.bimanualPose = eye(6);
 
         pandaArms.ArmL.A.bimanualGrasp = eye(6);
         pandaArms.ArmR.A.bimanualGrasp = eye(6);

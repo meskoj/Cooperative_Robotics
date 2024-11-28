@@ -12,9 +12,32 @@ pandaArms.ArmR.xdot.minimumAltitude = 0.2 * (0.2 - pandaArms.ArmR.wTt(3,4));
 %pandaArms.ArmL.xdot.jl = ...;
 %pandaArms.ArmR.xdot.jl = ...;
 
+%% Jl left
+jl_min = deg2rad([-166 -101 -166 -176 -166 -1 -166]);
+jl_max = deg2rad([166 101 166 -4 166 215 166]);
+pandaArms.ArmL.xdot.jointLimits = zeros(7,1);
+pandaArms.ArmR.xdot.jointLimits = zeros(7,1);
+delta_perc = 0.1;
+index = 1;
+for jl = [jl_min; jl_max]
+    if pandaArms.ArmL.q(index) > jl(2) - delta_perc * (jl(2) - jl(1))
+        pandaArms.ArmL.xdot.jointLimits(index,1) = 0.2 * (pandaArms.ArmL.q(index) - (jl(2) - delta_perc * (jl(2) - jl(1))));
+    end
+    if pandaArms.ArmL.q(index) < jl(1) + delta_perc * (jl(2) - jl(1))
+        pandaArms.ArmL.xdot.jointLimits(index,1) = 0.2 * ((jl(1) + delta_perc * (jl(2) - jl(1))) - pandaArms.ArmL.q(index));
+    end
+
+    if pandaArms.ArmR.q(index) > jl(2) - delta_perc * (jl(2) - jl(1))
+        pandaArms.ArmR.xdot.jointLimits(index,1) = 0.2 * (pandaArms.ArmR.q(index) - (jl(2) - delta_perc * (jl(2) - jl(1))));
+    end
+    if pandaArms.ArmR.q(index) < jl(1) + delta_perc * (jl(2) - jl(1))
+        pandaArms.ArmR.xdot.jointLimits(index,1) = 0.2 * ((jl(1) + delta_perc * (jl(2) - jl(1))) - pandaArms.ArmR.q(index));
+    end
+    index = index + 1;
+end
 switch mission.phase
-    case {1, 2}
-        % LEFT ARM
+    case 1
+        %% LEFT ARM
         % -----------------------------------------------------------------
         % Tool position and orientation task reference
 % e.g. CartError(wTg, wTv) returns the error that makes <v> -> <g> 
@@ -25,7 +48,7 @@ switch mission.phase
         pandaArms.ArmL.xdot.pose(1:3) = Saturate(pandaArms.ArmL.xdot.pose(1:3), 0.7);
         pandaArms.ArmL.xdot.pose(4:6) = Saturate(pandaArms.ArmL.xdot.pose(4:6), 0.7);
 
-        % RIGHT ARM
+        %% RIGHT ARM
         % -----------------------------------------------------------------
         % Tool position and orientation task reference
         [ang, lin] = CartError(pandaArms.ArmR.wTg, pandaArms.ArmR.wTt);
@@ -35,30 +58,28 @@ switch mission.phase
         pandaArms.ArmR.xdot.pose(1:3) = Saturate(pandaArms.ArmR.xdot.pose(1:3), 1);
         pandaArms.ArmR.xdot.pose(4:6) = Saturate(pandaArms.ArmR.xdot.pose(4:6), 1);
 
-        jl_min = deg2rad([-166 -101 -166 -176 -166 -1 -166]);
-        jl_max = deg2rad([166 101 166 -4 166 215 166]);
-        pandaArms.ArmL.xdot.jointLimits = zeros(7,1);
-        pandaArms.ArmR.xdot.jointLimits = zeros(7,1);
-        delta_perc = 0.1;
+        pandaArms.ArmL.xdot.bimanualGrasp = zeros(6,1);
+        pandaArms.ArmR.xdot.bimanualGrasp = zeros(6,1);
 
-        %% Jl left
-        index = 1;
-        for jl = [jl_min; jl_max]
-            if pandaArms.ArmL.q(index) > jl(2) - delta_perc * (jl(2) - jl(1))
-                pandaArms.ArmL.xdot.jointLimits(index,1) = 0.2 * (pandaArms.ArmL.q(index) - (jl(2) - delta_perc * (jl(2) - jl(1))));
-            end
-            if pandaArms.ArmL.q(index) < jl(1) + delta_perc * (jl(2) - jl(1))
-                pandaArms.ArmL.xdot.jointLimits(index,1) = 0.2 * ((jl(1) + delta_perc * (jl(2) - jl(1))) - pandaArms.ArmL.q(index));
-            end
+        pandaArms.ArmL.xdot.bimanualPose = zeros(6,1);
+        pandaArms.ArmR.xdot.bimanualPose = zeros(6,1);
+    case 2
+        %% Arm Left
+        tTnt = [eye(3) pandaArms.ArmL.r_tg; 0 0 0 1];
+        pandaArms.ArmL.wTnt = pandaArms.ArmL.wTt * tTnt;
+        [ang, lin] = CartError(pandaArms.ArmL.wTog, pandaArms.ArmL.wTnt);
+        pandaArms.ArmL.xdot.bimanualPose = 0.2 * [ang; lin]; % limit the requested velocities...
+        pandaArms.ArmL.xdot.bimanualPose(1:3) = Saturate(pandaArms.ArmL.xdot.bimanualPose(1:3), 1);
+        pandaArms.ArmL.xdot.bimanualPose(4:6) = Saturate(pandaArms.ArmL.xdot.bimanualPose(4:6), 1);
 
-            if pandaArms.ArmR.q(index) > jl(2) - delta_perc * (jl(2) - jl(1))
-                pandaArms.ArmR.xdot.jointLimits(index,1) = 0.2 * (pandaArms.ArmR.q(index) - (jl(2) - delta_perc * (jl(2) - jl(1))));
-            end
-            if pandaArms.ArmR.q(index) < jl(1) + delta_perc * (jl(2) - jl(1))
-                pandaArms.ArmR.xdot.jointLimits(index,1) = 0.2 * ((jl(1) + delta_perc * (jl(2) - jl(1))) - pandaArms.ArmR.q(index));
-            end
-            index = index + 1;
-        end
+        %% ArmRight
+        tTnt = [eye(3) pandaArms.ArmL.r_tg; 0 0 0 1];
+        pandaArms.ArmR.wTnt = pandaArms.ArmR.wTt * tTnt;
+        [ang, lin] = CartError(pandaArms.ArmR.wTog, pandaArms.ArmR.wTnt);
+        pandaArms.ArmR.xdot.bimanualPose = 0.2 * [ang; lin]; % limit the requested velocities...
+        pandaArms.ArmR.xdot.bimanualPose(1:3) = Saturate(pandaArms.ArmR.xdot.bimanualPose(1:3), 1);
+        pandaArms.ArmR.xdot.bimanualPose(4:6) = Saturate(pandaArms.ArmR.xdot.bimanualPose(4:6), 1);
+
 
         pandaArms.ArmL.xdot.bimanualGrasp = zeros(6,1);
         pandaArms.ArmR.xdot.bimanualGrasp = zeros(6,1);
