@@ -46,13 +46,13 @@ delta_perc = 0.1;
 
 index = 1;
 for jl = [jl_min; jl_max]
-    pandaArms.ArmL.A.jointLimits(index,index) = DecreasingBellShapedFunction(jl(1), jl(1) + delta_perc * (jl(2) - jl(1)), 0, 1, pandaArms.ArmL.q(index)) + IncreasingBellShapedFunction(jl(2), jl(2) - delta_perc * (jl(2) - jl(1)), 0, 1, pandaArms.ArmL.q(index));
+    pandaArms.ArmL.A.jointLimits(index,index) = DecreasingBellShapedFunction(jl(1), jl(1) + delta_perc * (jl(2) - jl(1)), 0, 1, pandaArms.ArmL.q(index)) + IncreasingBellShapedFunction(jl(2) - delta_perc * (jl(2) - jl(1)), jl(2), 0, 1, pandaArms.ArmL.q(index));
     index = index + 1;
 end
 
 index = 1;
 for jl = [jl_min; jl_max]
-    pandaArms.ArmR.A.jointLimits(index,index) = DecreasingBellShapedFunction(jl(1), jl(1) + delta_perc * (jl(2) - jl(1)), 0, 1, pandaArms.ArmR.q(index)) + IncreasingBellShapedFunction(jl(2), jl(2) - delta_perc * (jl(2) - jl(1)), 0, 1, pandaArms.ArmR.q(index));
+    pandaArms.ArmR.A.jointLimits(index,index) = DecreasingBellShapedFunction(jl(1), jl(1) + delta_perc * (jl(2) - jl(1)), 0, 1, pandaArms.ArmR.q(index)) + IncreasingBellShapedFunction(jl(2) - delta_perc * (jl(2) - jl(1)), jl(2), 0, 1, pandaArms.ArmR.q(index));
     index = index + 1;
 end
 end

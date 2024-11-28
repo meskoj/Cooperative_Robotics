@@ -21,20 +21,21 @@ delta_perc = 0.1;
 index = 1;
 for jl = [jl_min; jl_max]
     if pandaArms.ArmL.q(index) > jl(2) - delta_perc * (jl(2) - jl(1))
-        pandaArms.ArmL.xdot.jointLimits(index,1) = 0.2 * (pandaArms.ArmL.q(index) - (jl(2) - delta_perc * (jl(2) - jl(1))));
+        pandaArms.ArmL.xdot.jointLimits(index,1) = -3 * (pandaArms.ArmL.q(index) - (jl(2) - delta_perc * (jl(2) - jl(1))));
     end
     if pandaArms.ArmL.q(index) < jl(1) + delta_perc * (jl(2) - jl(1))
-        pandaArms.ArmL.xdot.jointLimits(index,1) = 0.2 * ((jl(1) + delta_perc * (jl(2) - jl(1))) - pandaArms.ArmL.q(index));
+        pandaArms.ArmL.xdot.jointLimits(index,1) = 3 * ((jl(1) + delta_perc * (jl(2) - jl(1))) - pandaArms.ArmL.q(index));
     end
 
     if pandaArms.ArmR.q(index) > jl(2) - delta_perc * (jl(2) - jl(1))
-        pandaArms.ArmR.xdot.jointLimits(index,1) = 0.2 * (pandaArms.ArmR.q(index) - (jl(2) - delta_perc * (jl(2) - jl(1))));
+        pandaArms.ArmR.xdot.jointLimits(index,1) = -3 * (pandaArms.ArmR.q(index) - (jl(2) - delta_perc * (jl(2) - jl(1))));
     end
     if pandaArms.ArmR.q(index) < jl(1) + delta_perc * (jl(2) - jl(1))
-        pandaArms.ArmR.xdot.jointLimits(index,1) = 0.2 * ((jl(1) + delta_perc * (jl(2) - jl(1))) - pandaArms.ArmR.q(index));
+        pandaArms.ArmR.xdot.jointLimits(index,1) = 3 * ((jl(1) + delta_perc * (jl(2) - jl(1))) - pandaArms.ArmR.q(index));
     end
     index = index + 1;
 end
+
 switch mission.phase
     case 1
         %% LEFT ARM

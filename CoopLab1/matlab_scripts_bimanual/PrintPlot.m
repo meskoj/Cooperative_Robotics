@@ -21,9 +21,17 @@ title('RIGHT ARM');
 set(hplot, 'LineWidth', 1);
 legend('q_1','q_2','q_3','q_4','q_5','q_6','q_7');
 subplot(2,1,2);
+size(plt.q_dot2)
 hplot = plot(plt.t, plt.q_dot2);
 set(hplot, 'LineWidth', 1);
 legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7');
+
+fig = figure('Name', 'Relative Distance');
+subplot(1,1,1);
+hplot = plot(plt.t, plt.relativeDistance);
+title('RelDistance');
+set(hplot, 'LineWidth', 1);
+legend('relativeDist.x','relativeDist.y','relativeDist.z');
 
 % ... 
 

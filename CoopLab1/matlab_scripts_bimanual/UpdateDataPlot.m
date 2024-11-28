@@ -13,6 +13,7 @@ plt.q(:, loop) = pandaArms.ArmL.q;
 plt.q_dot(:, loop) = pandaArms.ArmL.q_dot;
 plt.q2(:, loop) = pandaArms.ArmR.q;
 plt.q_dot2(:, loop) = pandaArms.ArmR.q_dot;
+plt.relativeDistance(:, loop) = pandaArms.ArmL.wTt(1:3,4) - pandaArms.ArmR.wTt(1:3,4);
 
 % activation functions
 
