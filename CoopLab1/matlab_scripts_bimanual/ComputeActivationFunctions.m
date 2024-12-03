@@ -13,6 +13,9 @@ switch mission.phase
 
         pandaArms.ArmL.A.bimanualPose = zeros(6);
         pandaArms.ArmR.A.bimanualPose = zeros(6);
+
+        pandaArms.ArmL.A.stopMotors = zeros(7);
+        pandaArms.ArmR.A.stopMotors = zeros(7);
     case 2 % Move the object holding it firmly
         % Rigid Grasp Constraint
 
@@ -24,9 +27,19 @@ switch mission.phase
 
         pandaArms.ArmL.A.bimanualGrasp = eye(6);
         pandaArms.ArmR.A.bimanualGrasp = eye(6);
-        % Move-To
+
+        pandaArms.ArmL.A.stopMotors = zeros(7);
+        pandaArms.ArmR.A.stopMotors = zeros(7);
 
     case 3 % STOP any motion
+        pandaArms.ArmL.A.bimanualPose = zeros(6);
+        pandaArms.ArmR.A.bimanualPose = zeros(6);
+
+        pandaArms.ArmL.A.bimanualGrasp = zeros(6);
+        pandaArms.ArmR.A.bimanualGrasp = zeros(6);
+
+        pandaArms.ArmL.A.stopMotors = eye(7);
+        pandaArms.ArmR.A.stopMotors = eye(7);
 
 end
 % INEQUALITY TASK ACTIVATION

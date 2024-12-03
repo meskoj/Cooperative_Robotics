@@ -8,10 +8,12 @@ function [pandaArms, mission] = UpdateMissionPhase(pandaArms, mission)
                 end
                 
             case 2 % Cooperative Manipulation Start 
-                % computing the errors for the rigid move-to task
+                [ang, lin] = CartError(pandaArms.ArmL.wTog, pandaArms.ArmL.wTnt);
 
-                % max error: 1 cm and 3deg
-               
+                if norm(ang) < 0.01 && norm(lin) < 0.01
+                    mission.phase = 3;
+                end
+                
             case 3 % Finish motion
                 
         end

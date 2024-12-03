@@ -48,6 +48,10 @@ pandaArms.ArmR.J.minimumAltitude = pandaArms.ArmR.wJt(6, :);
 
 pandaArms.ArmL.J.pose = pandaArms.ArmL.wJt;
 pandaArms.ArmR.J.pose = pandaArms.ArmR.wJt;
+
+pandaArms.ArmL.J.stopMotors = zeros(7);
+pandaArms.ArmR.J.stopMotors = zeros(7);
+
 if mission.phase == 1
     pandaArms.ArmL.r_tg = pandaArms.ArmL.wTo(1:3,4) - pandaArms.ArmL.wTt(1:3,4);
     pandaArms.ArmR.r_tg = pandaArms.ArmR.wTo(1:3,4) - pandaArms.ArmR.wTt(1:3,4);
@@ -72,4 +76,9 @@ if (mission.phase == 2)
     pandaArms.ArmL.J.bimanualPose = pandaArms.ArmL.J.bimanualGrasp;
     pandaArms.ArmR.J.bimanualPose = pandaArms.ArmR.J.bimanualGrasp;
     % Common Jacobians
+end
+
+if (mission.phase == 3)
+    pandaArms.ArmL.J.stopMotors = eye(7);
+    pandaArms.ArmR.J.stopMotors = eye(7);
 end
