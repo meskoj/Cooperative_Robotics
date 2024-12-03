@@ -5,10 +5,10 @@ clear;
 close all
 real_robot = false;
 
-%% Initialization - DON'T CHANGE ANYTHING from HERE ... 
+%% Initialization - DON'T CHANGE ANYTHING from HERE ...
 % Simulation variables (integration and final time)
 dt = 0.005;
-Tf = 6; %simulation time
+Tf = 15; %simulation time
 loop = 1;
 maxloops = ceil(Tf/dt);
 mission.phase = 1;
@@ -41,10 +41,10 @@ obj_length = 0.12;
 w_obj_pos = [0.5 0 0.59]';
 % w_obj_pos = [0.0 0 0.0]';
 w_obj_ori = rotation(0,0,0);
-pandaArms.ArmL.wTo = [w_obj_ori w_obj_pos; 0 0 0 1]; %TODO
+pandaArms.ArmL.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];
 pandaArms.ArmR.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];
 
-theta = -44.9949;% FIXED ANGLE BETWEEN EE AND TOOL 
+theta = -44.9949;% FIXED ANGLE BETWEEN EE AND TOOL
 tool_length = 0.2124;% FIXED DISTANCE BETWEEN EE AND TOOL
 % Define trasnformation matrix from ee to tool.
 
@@ -58,15 +58,14 @@ pandaArms.ArmR.wTt = pandaArms.ArmR.wTe * pandaArms.ArmR.eTt;
 %% Defines the goal position for the end-effector/tool position task
 % First goal reach the grasping points.
 pandaArms.ArmL.wTg = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0, deg2rad(30), 0), [w_obj_pos - [obj_length; 0; 0] / 2]; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-pandaArms.ArmR.wTg = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0, deg2rad(30), 0), [w_obj_pos + [obj_length; 0; 0] / 2]; 0 0 0 1]; % TODO -30?
+pandaArms.ArmR.wTg = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0, deg2rad(30), 0), [w_obj_pos + [obj_length; 0; 0] / 2]; 0 0 0 1];
 
 % Second goal move the object
-% pandaArms.wTog = [eye(3) [0.65 -0.35 0.28]'; 0 0 0 1]; % TODO
-% QUESTO
-pandaArms.ArmL.wTog = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.65 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.65 -0.35 0.28]'; 0 0 0 1]; % TODO -30?
-% pandaArms.ArmL.wTog = [eye(3), [0.65 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-% pandaArms.ArmR.wTog = [eye(3), [0.65 -0.35 0.28]'; 0 0 0 1]; % TODO -30?
+% pandaArms.ArmL.wTog = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.65 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+% pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.65 -0.35 0.28]'; 0 0 0 1];
+%% DEBUGGING
+pandaArms.ArmL.wTog = [eye(3), [0.65 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+pandaArms.ArmR.wTog = [eye(3), [0.65 -0.35 0.28]'; 0 0 0 1];
 
 %% Mission configuration
 
@@ -93,22 +92,22 @@ for t = 0:dt:Tf
         dataLeft = step(hudprLeft);
         dataRight = step(hudprRight);
         % wait for data (to decide)
-         if t == 0
-             while(isempty(dataLeft))
-                 dataLeft = step(hudprLeft);
-                 pause(dt);
-             end
-             while(isempty(dataRight))
-                 dataRight = step(hudprRight);
-                 pause(dt);
-             end
-         end
+        if t == 0
+            while(isempty(dataLeft))
+                dataLeft = step(hudprLeft);
+                pause(dt);
+            end
+            while(isempty(dataRight))
+                dataRight = step(hudprRight);
+                pause(dt);
+            end
+        end
         qL = typecast(dataLeft, 'double');
         qR = typecast(dataRight, 'double');
         pandaArms.ArmL.q = qL;
         pandaArms.ArmR.q = qR;
     end
-    
+
     % update all the involved variables
     pandaArms = UpdateTransforms(pandaArms, mission);
     pandaArms = ComputeJacobians(pandaArms, mission);
@@ -119,7 +118,7 @@ for t = 0:dt:Tf
     % ydotbar order is [qdot_1, qdot_2, ..., qdot_7, xdot, ydot, zdot, omega_x, omega_y, omega_z]
     % the vector of the vehicle linear and angular velocities are assumed
     % projected on <v>
-    
+
     ydotbar = zeros(14,1);
     Qp = eye(14);
 
@@ -137,26 +136,24 @@ for t = 0:dt:Tf
         tool_jacobian_R = pandaArms.ArmR.wJo;
     end
 
-    % ADD minimum distance from table
-    % add all the other tasks here!
-    % the sequence of iCAT_task calls defines the priority
-    
-    % Bimanual system TPIK
-    % ...
-    % Task: Tool Move-To
 
     %% REMEMBER THAT XDOT IS VERTICAL
     [Qp, ydotbar] = iCAT_task([pandaArms.ArmL.A.stopMotors zeros(7); zeros(7) pandaArms.ArmR.A.stopMotors], [pandaArms.ArmL.J.stopMotors, zeros(7);zeros(7), pandaArms.ArmR.J.stopMotors], Qp, ydotbar, [pandaArms.ArmL.xdot.stopMotors;pandaArms.ArmR.xdot.stopMotors], 0.0001,   0.01, 10);
-    jointLimitsActivationFunction = [pandaArms.ArmL.A.jointLimits, zeros(7); zeros(7), pandaArms.ArmR.A.jointLimits];
-    [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.bimanualGrasp, [pandaArms.ArmL.J.bimanualGrasp, -pandaArms.ArmR.J.bimanualGrasp], Qp, ydotbar, pandaArms.ArmL.xdot.bimanualGrasp, 0.0001,   0.01, 10);
-    [Qp, ydotbar] = iCAT_task(jointLimitsActivationFunction, eye(14), Qp, ydotbar, [pandaArms.ArmL.xdot.jointLimits; pandaArms.ArmR.xdot.jointLimits], 0.0001,   0.01, 10);
+
+    % We are using ArmL just to not create another field in the structure. Because in this case the activation function would have been the same for both the arms (6x6)
+    [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.rigidConstraint, [pandaArms.ArmL.J.rigidConstraint, -pandaArms.ArmR.J.rigidConstraint], Qp, ydotbar, pandaArms.ArmL.xdot.rigidConstraint, 0.0001,   0.01, 10);
+
+    [Qp, ydotbar] = iCAT_task([pandaArms.ArmL.A.jointLimits, zeros(7); zeros(7), pandaArms.ArmR.A.jointLimits], eye(14), Qp, ydotbar, [pandaArms.ArmL.xdot.jointLimits; pandaArms.ArmR.xdot.jointLimits], 0.0001,   0.01, 10);
 
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.minimumAltitude, [pandaArms.ArmL.J.minimumAltitude zeros(1, 7)], Qp, ydotbar, pandaArms.ArmL.xdot.minimumAltitude, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmR.A.minimumAltitude, [zeros(1,7) pandaArms.ArmR.J.minimumAltitude], Qp, ydotbar, pandaArms.ArmR.xdot.minimumAltitude, 0.0001,   0.01, 10);
+
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.pose, [pandaArms.ArmL.J.pose zeros(6,7)], Qp, ydotbar, pandaArms.ArmL.xdot.pose, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmR.A.pose, [zeros(6,7) pandaArms.ArmR.J.pose], Qp, ydotbar, pandaArms.ArmR.xdot.pose, 0.0001,   0.01, 10);
+
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.bimanualPose, [pandaArms.ArmL.J.bimanualPose, zeros(6,7)], Qp, ydotbar, pandaArms.ArmL.xdot.bimanualPose, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmR.A.bimanualPose, [zeros(6,7), pandaArms.ArmR.J.bimanualPose], Qp, ydotbar, pandaArms.ArmR.xdot.bimanualPose, 0.0001,   0.01, 10);
+
     % For the activation and xdot Left or right is the same
     [Qp, ydotbar] = iCAT_task(eye(14), eye(14), Qp, ydotbar, zeros(14,1), 0.0001,   0.01, 10);    % this task should be the last one
 
@@ -167,21 +164,21 @@ for t = 0:dt:Tf
     pandaArms.ArmL.x = tool_jacobian_L * pandaArms.ArmL.q_dot;
     pandaArms.ArmR.x = tool_jacobian_R * pandaArms.ArmR.q_dot;
     % Integration
-	pandaArms.ArmL.q = pandaArms.ArmL.q(1:7) + pandaArms.ArmL.q_dot*dt;    
+    pandaArms.ArmL.q = pandaArms.ArmL.q(1:7) + pandaArms.ArmL.q_dot*dt;
     pandaArms.ArmR.q = pandaArms.ArmR.q(1:7) + pandaArms.ArmR.q_dot*dt;
     %Send udp packets [q_dot1, ..., q_dot7] DO NOT CHANGE
     if real_robot == false
-        pandaArms.ArmL.q = pandaArms.ArmL.q(1:7) + pandaArms.ArmL.q_dot*dt; 
-        pandaArms.ArmR.q = pandaArms.ArmR.q(1:7) + pandaArms.ArmR.q_dot*dt; 
+        pandaArms.ArmL.q = pandaArms.ArmL.q(1:7) + pandaArms.ArmL.q_dot*dt;
+        pandaArms.ArmR.q = pandaArms.ArmR.q(1:7) + pandaArms.ArmR.q_dot*dt;
     end
     %Send udp packets [q_dot1, ..., q_dot7]
     if real_robot == true
         step(hudpsLeft,[t;pandaArms.ArmL.q_dot]);
         step(hudpsRight,[t;pandaArms.ArmR.q_dot]);
-    else 
+    else
         step(hudps,[pandaArms.ArmL.q',pandaArms.ArmR.q'])
     end
-    
+
     % check if the mission phase should be changed
     mission.phase_time = mission.phase_time + dt;
     [pandaArms,mission] = UpdateMissionPhase(pandaArms, mission);
@@ -191,7 +188,7 @@ for t = 0:dt:Tf
     loop = loop + 1;
     % add debug prints here
     if (mod(t,0.1) == 0)
-        t 
+        t
         phase = mission.phase;
         if (mission.phase == 1)
             %add debug prints phase 1 here
@@ -199,12 +196,12 @@ for t = 0:dt:Tf
             %add debug prints phase 2 here
         end
     end
-    
+
     % enable this to have the simulation approximately evolving like real
     % time. Remove to go as fast as possible
     % WARNING: MUST BE ENABLED IF CONTROLLING REAL ROBOT !
     SlowdownToRealtime(dt);
-    
+
 end
 
 PrintPlot(plt, pandaArms);

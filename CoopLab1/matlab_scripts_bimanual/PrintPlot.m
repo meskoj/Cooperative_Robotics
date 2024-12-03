@@ -33,6 +33,13 @@ title('RelDistance');
 set(hplot, 'LineWidth', 1);
 legend('relativeDist.x','relativeDist.y','relativeDist.z');
 
+fig = figure('Name', 'Tool Error');
+subplot(1,1,1);
+hplot = plot(plt.t, plt.toolError);
+title('Tool Error');
+set(hplot, 'LineWidth', 1);
+legend('toolError.x','toolError.y','toolError.z');
+
 % ... 
 
 end
