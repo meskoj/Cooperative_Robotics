@@ -21,6 +21,7 @@ pandaArm.bJe = geometricJacobian(pandaArm.franka,[pandaArm.q',0,0],'panda_link7'
 % THE JACOBIAN bJe has dimension 6x9 (the matlab model include the joint
 % of the gripper). YOU MUST RESIZE THE MATRIX IN ORDER TO CONTROL ONLY THE
 % 7 JOINTS OF THE ROBOTIC ARM. 
+pandaArm.bJe = pandaArm.bJe(:, 1:7);
 
 %% MOVE TOOL
 eSt = [eye(3) zeros(3);
@@ -31,10 +32,15 @@ wRb_jacobian = [wRb zeros(3); zeros(3) wRb];
 pandaArm.wJt  = eSt * wRb_jacobian * pandaArm.bJe;
 pandaArm.J.moveTool = pandaArm.wJt;
 
+%% MINIMUM ALTITUDE
+pandaArm.J.minimumAltitude = pandaArm.wJt(6,:);
+
 %% JOINT LIMITS
+pandaArm.J.jointLimits = eye(7);
 
 if mission.phase == 2
-    % pandaArm.wJo = ...;
+        % DEBUG
+    pandaArm.J.rigidConstraint = pandaArm.J.moveTool;
 end
 
 % pandaArm.Jjl = ;

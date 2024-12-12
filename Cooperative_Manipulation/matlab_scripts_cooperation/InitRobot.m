@@ -14,8 +14,8 @@ pandaArm.wTb = wTb;
 pandaArm.wTe = pandaArm.wTb*pandaArm.bTe;
 
 % joint limits corresponding to the actual Panda by Franka arm configuration
-pandaArm.jlmin = [-2.8973;-1.7628;-2.8973;-3.0718;-2.8973;-0.0175;-2.8973];
-pandaArm.jlmax = [2.8973;1.7628;2.8973;-0.0698;2.8973;3.7525;2.8973];
+pandaArm.jlmin = [-2.8973;-1.7628;-2.8973;-3.0718;-2.8973;-0.0175;-2.8973]';
+pandaArm.jlmax = [2.8973;1.7628;2.8973;-0.0698;2.8973;3.7525;2.8973]';
 
 % Init relevance Jacobians
 pandaArm.bJe = eye(6,7);
@@ -23,6 +23,13 @@ pandaArm.Jjl = [];
 
 %% ... TO HERE
 % Init Task Reference vectors
+
+pandaArm.delta_perc = 0.1;
+pandaArm.A.jointLimits = zeros(7);
+pandaArm.xdot.jointLimits = zeros(7,1);
+pandaArm.A.rigidConstraint = zeros(6);
+pandaArm.J.rigidConstraint = zeros(6,7);
+pandaArm.xdot.rigidConstraint = zeros(6,1);
 
 % Init Activation function for activate or deactivate tasks
 
