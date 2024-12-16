@@ -35,7 +35,7 @@ switch mission.phase
 % e.g. CartError(wTg, wTv) returns the error that makes <v> -> <g> 
         [ang, lin] = CartError(pandaArms.ArmL.wTg, pandaArms.ArmL.wTt);
 
-        pandaArms.ArmL.xdot.pose = 0.3 * [ang; lin];
+        pandaArms.ArmL.xdot.pose = 0.5 * [ang; lin];
             % limit the requested velocities...
         pandaArms.ArmL.xdot.pose(1:3) = Saturate(pandaArms.ArmL.xdot.pose(1:3), 1);
         pandaArms.ArmL.xdot.pose(4:6) = Saturate(pandaArms.ArmL.xdot.pose(4:6), 1);
@@ -45,7 +45,7 @@ switch mission.phase
         % Tool position and orientation task reference
         [ang, lin] = CartError(pandaArms.ArmR.wTg, pandaArms.ArmR.wTt);
 
-        pandaArms.ArmR.xdot.pose = 0.3 * [ang; lin];
+        pandaArms.ArmR.xdot.pose = 0.5 * [ang; lin];
         % limit the requested velocities...
         pandaArms.ArmR.xdot.pose(1:3) = Saturate(pandaArms.ArmR.xdot.pose(1:3), 1);
 
@@ -59,7 +59,8 @@ switch mission.phase
         pandaArms.ArmL.wTnt = pandaArms.ArmL.wTt * tTnt_left;
         [ang, lin] = CartError(pandaArms.ArmL.wTog, pandaArms.ArmL.wTnt);
 
-        pandaArms.ArmL.xdot.bimanualPose = 0.3 * [ang; lin]; % limit the requested velocities...
+        pandaArms.ArmL.xdot.bimanualPose = 0.5 * [ang; lin]; % limit the requested velocities...
+        % pandaArms.ArmL.xdot.bimanualPose = 0.1 * [0.0;0.0;0.5;0.0;0.0;0]; % limit the requested velocities...
         pandaArms.ArmL.xdot.bimanualPose(1:3) = Saturate(pandaArms.ArmL.xdot.bimanualPose(1:3), 1);
         pandaArms.ArmL.xdot.bimanualPose(4:6) = Saturate(pandaArms.ArmL.xdot.bimanualPose(4:6), 1);
 
@@ -70,7 +71,8 @@ switch mission.phase
         pandaArms.ArmR.wTnt = pandaArms.ArmR.wTt * tTnt_right;
         [ang, lin] = CartError(pandaArms.ArmR.wTog, pandaArms.ArmR.wTnt);
 
-        pandaArms.ArmR.xdot.bimanualPose = 0.3 * [ang; lin]; % limit the requested velocities...
+        pandaArms.ArmR.xdot.bimanualPose = 0.5 * [ang; lin]; % limit the requested velocities...
+        % pandaArms.ArmR.xdot.bimanualPose = 0.1 * [0.0;0.0;0.5;0.0;0.0;0]; % limit the requested velocities...
         pandaArms.ArmR.xdot.bimanualPose(1:3) = Saturate(pandaArms.ArmR.xdot.bimanualPose(1:3), 1);
         pandaArms.ArmR.xdot.bimanualPose(4:6) = Saturate(pandaArms.ArmR.xdot.bimanualPose(4:6), 1);
 

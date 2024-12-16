@@ -8,7 +8,7 @@ real_robot = false;
 %% Initialization - DON'T CHANGE ANYTHING from HERE ...
 % Simulation variables (integration and final time)
 dt = 0.005;
-Tf = 15; %simulation time
+Tf = 10; %simulation time
 loop = 1;
 maxloops = ceil(Tf/dt);
 mission.phase = 1;
@@ -205,3 +205,7 @@ for t = 0:dt:Tf
 end
 
 PrintPlot(plt, pandaArms);
+
+% andrea.tiranti@edu.unige.it
+% - goal
+% - script del plot

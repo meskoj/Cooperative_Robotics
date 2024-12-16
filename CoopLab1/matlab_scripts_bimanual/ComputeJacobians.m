@@ -49,15 +49,15 @@ pandaArms.ArmR.J.pose = pandaArms.ArmR.wJt;
 if mission.phase == 1
     pandaArms.ArmL.r_to = pandaArms.ArmL.wTo(1:3,4) - pandaArms.ArmL.wTt(1:3,4);
     pandaArms.ArmR.r_to = pandaArms.ArmR.wTo(1:3,4) - pandaArms.ArmR.wTt(1:3,4);
+    disp([pandaArms.ArmL.r_to,pandaArms.ArmR.r_to]);
 
     pandaArms.ArmL.tSo = [eye(3) zeros(3);
-        skew(pandaArms.ArmL.r_to)', eye(3)];
+        skew(pandaArms.ArmL.wTt(1:3,1:3)' * pandaArms.ArmL.r_to)', eye(3)];
     pandaArms.ArmR.tSo = [eye(3) zeros(3);
-        skew(pandaArms.ArmR.r_to)', eye(3)];
+        skew(pandaArms.ArmR.wTt(1:3,1:3)' * pandaArms.ArmR.r_to)', eye(3)];
 end
 
 if (mission.phase == 2)
-    disp([pandaArms.ArmL.r_to, pandaArms.ArmR.r_to])
     pandaArms.ArmL.J.rigidConstraint = pandaArms.ArmL.tSo * pandaArms.ArmL.wJt;
     pandaArms.ArmR.J.rigidConstraint = pandaArms.ArmR.tSo * pandaArms.ArmR.wJt;
 
