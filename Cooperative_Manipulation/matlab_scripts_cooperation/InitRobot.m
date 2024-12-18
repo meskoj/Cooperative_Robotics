@@ -30,6 +30,16 @@ pandaArm.xdot.jointLimits = zeros(7,1);
 pandaArm.A.rigidConstraint = zeros(6);
 pandaArm.J.rigidConstraint = zeros(6,7);
 pandaArm.xdot.rigidConstraint = zeros(6,1);
+pandaArm.r_to = [];
+pandaArm.r_to = [];
+
+% Rigid body jacobians
+pandaArm.tSo = [];
+pandaArm.tSo = [];
+
+pandaArm.H = eye(6);
+pandaArm.H = eye(6);
+pandaArm.A.stopAll = zeros(7);
 
 % Init Activation function for activate or deactivate tasks
 

@@ -5,7 +5,10 @@ function [plt] = InitDataPlot( maxloops)
     plt.q_dot = zeros(7, maxloops);
     plt.q2 = zeros(7, maxloops);
     plt.q_dot2 = zeros(7, maxloops);
+    
+    plt.secondGoalErrorL = zeros(3, maxloops);
+    plt.secondGoalErrorR = zeros(3, maxloops);
 
-
+    plt.relativeDistance = zeros(3, maxloops);
 end
 

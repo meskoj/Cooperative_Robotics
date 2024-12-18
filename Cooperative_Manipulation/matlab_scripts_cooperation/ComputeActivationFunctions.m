@@ -23,12 +23,13 @@ switch mission.phase
         pandaArm.A.moveTool = eye(6) * ActionTransition("T", mission.actions.(mission.prev_action).tasks, mission.actions.(mission.current_action).tasks, mission.phase_time);
     case 2 % Move the object holding it firmly
         % Rigid Grasp Constraint
-        pandaArm.A.rigidConstraint = eye(6) * ActionTransition("RC", mission.actions.(mission.prev_action).tasks, mission.actions.(mission.current_action).tasks, mission.phase_time);
+        pandaArm.A.rigidConstraint = eye(6);% * ActionTransition("RC", mission.actions.(mission.prev_action).tasks, mission.actions.(mission.current_action).tasks, mission.phase_time);
 
         % Move-To
 
     case 3 % STOP any motion
-
+        pandaArm.A.rigidConstraint = zeros(6);
+        pandaArm.A.stopAll = eye(7);
 end
 
 end

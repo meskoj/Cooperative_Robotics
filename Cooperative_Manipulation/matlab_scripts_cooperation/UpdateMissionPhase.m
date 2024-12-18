@@ -11,6 +11,20 @@ function [pandaArmL, pandaArmR, mission] = UpdateMissionPhase(pandaArmL, pandaAr
                     mission.current_action = "coop_manip";
                     mission.phase_time = 0;
                     mission.phase = 2;
+
+                    % Distance between tools to object
+                    pandaArmL.r_to = pandaArmL.wTo(1:3, 4) - pandaArmL.wTt(1:3, 4);
+                    pandaArmR.r_to = pandaArmR.wTo(1:3, 4) - pandaArmR.wTt(1:3, 4);
+
+                    % Rigid body jacobians
+                    pandaArmL.tSo = [eye(3) zeros(3);
+                        skew(pandaArmL.wTt(1:3,1:3)' * pandaArmL.r_to)', eye(3)];
+
+                    pandaArmR.tSo = [eye(3) zeros(3);
+                        skew(pandaArmR.wTt(1:3,1:3)' * pandaArmR.r_to)', eye(3)];
+
+                    pandaArmL.tTnt = [eye(3), pandaArmL.wTt(1:3,1:3)' * pandaArmL.r_to; 0 0 0 1];
+                    pandaArmR.tTnt = [eye(3), pandaArmR.wTt(1:3,1:3)' * pandaArmR.r_to; 0 0 0 1];
                 end
                 
             case 2 % Cooperative Manipulation Start 
@@ -18,7 +32,12 @@ function [pandaArmL, pandaArmR, mission] = UpdateMissionPhase(pandaArmL, pandaAr
 
                 mission.prev_action = "coop_manip";
                 % max error: 1 cm and 3deg
-               
+                [angL,linL] = CartError(pandaArmL.wTog, pandaArmL.wTt);
+                [angR,linR] = CartError(pandaArmR.wTog, pandaArmR.wTt);
+                if norm(angL) < deg2rad(3) && norm(angR) < deg2rad(3) && norm(linL) < 0.01 && norm(linR) < 0.01
+                    mission.phase = 3;
+                    mission.phase_time = 0; 
+                end
             case 3 % Finish motion
                 
 end

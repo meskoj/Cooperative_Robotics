@@ -39,8 +39,10 @@ pandaArm.J.minimumAltitude = pandaArm.wJt(6,:);
 pandaArm.J.jointLimits = eye(7);
 
 if mission.phase == 2
-        % DEBUG
-    pandaArm.J.rigidConstraint = pandaArm.J.moveTool;
+    pandaArm.wJo = pandaArm.tSo * pandaArm.wJt;
+    pandaArm.J.moveTool = pandaArm.wJo;
+
+    pandaArm.H = pandaArm.wJo * pinv(pandaArm.wJo);
 end
 
 % pandaArm.Jjl = ;

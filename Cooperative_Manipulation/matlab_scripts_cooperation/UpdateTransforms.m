@@ -11,7 +11,7 @@ pandaArm.wTe = pandaArm.wTb * pandaArm.bTe;
 pandaArm.wTt = pandaArm.wTe * pandaArm.eTt;
 
 % <o> to <w> : ASSUME <t> = <g> during entire cooperation phase
-if (mission.phase == 2)
-    pandaArm.wTo = eye(4); % TODO
+if (mission.phase == 2 || mission.phase == 3)
+    pandaArm.wTt = pandaArm.wTt * pandaArm.tTnt; 
 end
 

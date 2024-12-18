@@ -25,6 +25,24 @@ hplot = plot(plt.t, plt.q_dot2);
 set(hplot, 'LineWidth', 1);
 legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7');
 
+fig = figure('Name', 'ArmsLinError');
+subplot(2,1,1);
+hplot = plot(plt.t, plt.secondGoalErrorL);
+title('l_arm');
+set(hplot, 'LineWidth', 1);
+legend('x','y','z');
+subplot(2,1,2);
+hplot = plot(plt.t, plt.secondGoalErrorR);
+set(hplot, 'LineWidth', 1);
+legend('x','y','z');
+
+
+fig = figure('Name', 'RelativeDistance');
+subplot(1,1,1);
+hplot = plot(plt.t, plt.relativeDistance);
+title('relativeDistance');
+set(hplot, 'LineWidth', 1);
+legend('x','y','z');
 % ... 
 end
 

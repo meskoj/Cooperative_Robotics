@@ -24,8 +24,16 @@ plt.q_dot2(:, loop) = pandaArm2.q_dot;
 
 
 %End effector velocities (Right Arm)
+if mission.phase ~= 2
+    plt.secondGoalErrorL(:,loop) = zeros(3,1);
+    plt.secondGoalErrorR(:,loop) = zeros(3,1);
+else
+    plt.secondGoalErrorL(:,loop) = pandaArm1.wTt(1:3, 4) - pandaArm1.wTog(1:3,4);
+    plt.secondGoalErrorR(:,loop) = pandaArm2.wTt(1:3, 4) - pandaArm2.wTog(1:3,4);
 
+end
 
 % Plot: manipulability task activation function
+plt.relativeDistance(:, loop) = pandaArm1.wTt(1:3, 4) - pandaArm2.wTt(1:3, 4);
 
 end
