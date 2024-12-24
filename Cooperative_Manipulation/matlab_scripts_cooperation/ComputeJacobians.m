@@ -23,27 +23,27 @@ pandaArm.bJe = geometricJacobian(pandaArm.franka,[pandaArm.q',0,0],'panda_link7'
 % 7 JOINTS OF THE ROBOTIC ARM. 
 pandaArm.bJe = pandaArm.bJe(:, 1:7);
 
-%% MOVE TOOL
 eSt = [eye(3) zeros(3);
-    skew(pandaArm.wTb(1:3,1:3) * pandaArm.bTe(1:3,1:3) * pandaArm.eTt(1:3,4))', eye(3)]; % Rotation tool world
-
+    skew(pandaArm.wTb(1:3,1:3) * pandaArm.bTe(1:3,1:3) * pandaArm.eTt(1:3,4))', eye(3)]; 
 wRb = pandaArm.wTb(1:3,1:3);
 wRb_jacobian = [wRb zeros(3); zeros(3) wRb];
 pandaArm.wJt  = eSt * wRb_jacobian * pandaArm.bJe;
-pandaArm.J.moveTool = pandaArm.wJt;
-
-%% MINIMUM ALTITUDE
-pandaArm.J.minimumAltitude = pandaArm.wJt(6,:);
 
 %% JOINT LIMITS
 pandaArm.J.jointLimits = eye(7);
 
-if mission.phase == 2
-    pandaArm.wJo = pandaArm.tSo * pandaArm.wJt;
-    pandaArm.J.moveTool = pandaArm.wJo;
+%% MINIMUM ALTITUDE
+pandaArm.J.minimumAltitude = pandaArm.wJt(6,:);
 
-    pandaArm.H = pandaArm.wJo * pinv(pandaArm.wJo);
+%% MOVE TOOL
+switch mission.phase
+    case 1 
+        pandaArm.J.moveTool = pandaArm.wJt;
+    
+    case 2
+        pandaArm.wJo = pandaArm.tSo * pandaArm.wJt;
+        pandaArm.J.moveTool = pandaArm.wJo;
+
+        pandaArm.H = pandaArm.wJo * pinv(pandaArm.wJo);
 end
-
-% pandaArm.Jjl = ;
 end
