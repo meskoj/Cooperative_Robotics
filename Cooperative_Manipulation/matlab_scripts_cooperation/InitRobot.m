@@ -20,32 +20,28 @@ pandaArm.jlmax = [2.8973;1.7628;2.8973;-0.0698;2.8973;3.7525;2.8973]';
 % Init relevance Jacobians
 pandaArm.bJe = eye(6,7);
 pandaArm.Jjl = [];
-pandaArm.J.jointLimits = zeros(7);
-pandaArm.J.minimumAltitude = zeros(1,7);
-pandaArm.J.rigidConstraint = zeros(6,7);
-pandaArm.J.moveTool = zeros(6,7);
-
-% Init useful information
-pandaArm.delta_perc = 0.1;
-pandaArm.r_to = [];
-pandaArm.H = eye(6);
-pandaArm.H = eye(6);
 
 %% ... TO HERE
 % Init Task Reference vectors
+
+pandaArm.delta_perc = 0.1;
+pandaArm.A.jointLimits = zeros(7);
 pandaArm.xdot.jointLimits = zeros(7,1);
-pandaArm.xdot.minimumAltitude = 0;
+pandaArm.A.rigidConstraint = zeros(6);
+pandaArm.J.rigidConstraint = zeros(6,7);
 pandaArm.xdot.rigidConstraint = zeros(6,1);
-pandaArm.xdot.moveTool = zeros(6,1);
+pandaArm.r_to = [];
+pandaArm.r_to = [];
 
 % Rigid body jacobians
 pandaArm.tSo = [];
+pandaArm.tSo = [];
+
+pandaArm.H = eye(6);
+pandaArm.H = eye(6);
+pandaArm.A.stopAll = zeros(7);
 
 % Init Activation function for activate or deactivate tasks
-pandaArm.A.jointLimits = zeros(7);
-pandaArm.A.minimumAltitude = 0;
-pandaArm.A.stopAll = zeros(7);
-pandaArm.A.rigidConstraint = zeros(6);
-pandaArm.A.moveTool = zeros(6);
+
 end
 

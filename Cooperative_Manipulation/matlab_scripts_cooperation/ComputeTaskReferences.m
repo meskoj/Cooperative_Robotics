@@ -1,5 +1,8 @@
 function [pandaArm] = ComputeTaskReferences(pandaArm,mission)
-%% JOINT LIMITS
+
+% Compute minimum altitude reference ALWAYS
+pandaArm.xdot.minimumAltitude = 0.5 * (0.2 - pandaArm.wTt(3,4));
+
 % Compute joint limits task reference ALWAYS
 % Create a velocity away from the limits => move to the middle between jlmax and jlmin
 index = 1;
@@ -13,15 +16,6 @@ for jl = [pandaArm.jlmin; pandaArm.jlmax]
     index = index + 1;
 end
 
-%% MINIMUM ALTITUDE
-
-% Compute minimum altitude reference ALWAYS
-pandaArm.xdot.minimumAltitude = 0.5 * (0.2 - pandaArm.wTt(3,4));
-
-% % take the smallest value, that is what matters most
-% pandaArm.min_alt = min(alt_L, alt_R);
-
-%% MOVE TOOL
 switch mission.phase
     case 1
         %% Tool position and orientation task reference
@@ -32,23 +26,21 @@ switch mission.phase
         pandaArm.xdot.moveTool(1:3) = Saturate(pandaArm.xdot.moveTool(1:3), 1);
         pandaArm.xdot.moveTool(4:6) = Saturate(pandaArm.xdot.moveTool(4:6), 1);    
     case 2
-        % DEBUG
         [ang, lin] = CartError(pandaArm.wTog, pandaArm.wTt);
 
         pandaArm.xdot.moveTool = 0.3 * [ang; lin];
         % Limits request velocities
         pandaArm.xdot.moveTool(1:3) = Saturate(pandaArm.xdot.moveTool(1:3), 1);
         pandaArm.xdot.moveTool(4:6) = Saturate(pandaArm.xdot.moveTool(4:6), 1);    
-
+        
         % Rigid Grasp Constraint
         pandaArm.xdot.rigidConstraint = zeros(6,1);
 
     case 3
         % Stop any motions
         % -----------------------------------------------------------------
-        % Tool position and orientation task reference
-        % pandaArm.xdot.tool(1:3) = ...;
-        % pandaArm.xdot.tool(4:6) = ...;
+        pandaArmL.xdot.stopAll = zeros(7,1);
+        pandaArmR.xdot.stopAll = zeros(7,1);
 end
 
 
