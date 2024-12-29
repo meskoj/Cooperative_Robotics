@@ -26,7 +26,6 @@ pipe_radius = 0.3;
 
 % rock position
 rock_center = [12.2025   37.3748  -39.8860]'; % in world frame coordinates
-
 % UDP Connection with Unity viewer v2
 uArm = udp('127.0.0.1',15000,'OutputDatagramPacketSize',28);
 uVehicle = udp('127.0.0.1',15001,'OutputDatagramPacketSize',24);
@@ -59,6 +58,8 @@ uvms.wTg = [uvms.wRg uvms.goalPosition; 0 0 0 1];
 
 uvms.bodyGoal = [10.5 37.5 -38 0 -0.06 0.5]';
 uvms.wTbodyGoal = [eye(3), [10.5 37.5 -38]'; 0 0 0 1];
+uvms.wTnodule = [eye(3), rock_center; 0 0 0 1];
+
 
 % defines the tool control point
 uvms.eTt = eye(4);
@@ -69,6 +70,7 @@ uvms.eTt = eye(4);
 % HA -> horizontal attitude
 % VP -> vehicle position
 % AM -> arm movement
+% NM -> no movement TODO
 
 mission.prev_action = "safe_navigation";
 mission.current_action = "safe_navigation";

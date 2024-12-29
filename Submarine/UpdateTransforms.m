@@ -10,6 +10,7 @@ uvms.vTt = uvms.vTe*uvms.eTt;
 uvms.wTt = uvms.wTv*uvms.vTt;
 
 uvms.vTbodyGoal = uvms.vTw * uvms.wTbodyGoal;
+uvms.vTnodule = uvms.vTw * uvms.wTnodule;
 
 w_Kw = [0 0 1]';
 v_Kw = uvms.vTw(1:3,1:3) * w_Kw;

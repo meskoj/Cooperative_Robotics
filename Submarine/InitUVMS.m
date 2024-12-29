@@ -35,6 +35,7 @@ uvms.djdq = zeros(6,7,7);
 uvms.mu  = 0;
 uvms.phi = zeros(3,1);
 uvms.sensorDistance = 0;
+uvms.wTnodule = zeros(4);
 
 uvms.Jjl = [];
 uvms.Jmu = [];
