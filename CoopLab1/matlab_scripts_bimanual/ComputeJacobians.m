@@ -30,9 +30,9 @@ pandaArms.ArmR.bJe = pandaArms.ArmR.bJe(:, 1:7);
 % Top three rows are angular velocities, bottom three linear velocities
 % Projected on the world frame
 eSt_left = [eye(3) zeros(3);
-    skew(pandaArms.ArmL.wTb(1:3,1:3) * pandaArms.ArmL.bTe(1:3,1:3) * pandaArms.ArmL.eTt(1:3,4))', eye(3)]; % Rotation tool world
+    skew(pandaArms.ArmL.wTe(1:3,1:3) * pandaArms.ArmL.eTt(1:3,4))', eye(3)]; % Rotation tool world
 eSt_right = [eye(3) zeros(3);
-    skew(pandaArms.ArmR.wTb(1:3,1:3) * pandaArms.ArmR.bTe(1:3,1:3) * pandaArms.ArmR.eTt(1:3,4))', eye(3)];
+    skew(pandaArms.ArmR.wTe(1:3,1:3) * pandaArms.ArmR.eTt(1:3,4))', eye(3)];
 
 wRb_right = pandaArms.ArmR.wTb(1:3,1:3);
 wRb_jacobian = [wRb_right zeros(3); zeros(3) wRb_right];
@@ -47,12 +47,14 @@ pandaArms.ArmL.J.pose = pandaArms.ArmL.wJt;
 pandaArms.ArmR.J.pose = pandaArms.ArmR.wJt;
 
 if mission.phase == 1
-    pandaArms.ArmL.r_to = pandaArms.ArmL.wTo(1:3,4) - pandaArms.ArmL.wTt(1:3,4);
+    t_r_to_left = pinv(pandaArms.ArmL.wTt) * [pandaArms.ArmL.wTo(1:3,4);1];
+    w_r_to_left = pandaArms.ArmL.wTt(1:3,1:3) * t_r_to_left(1:3);
+    pandaArms.ArmL.r_to = w_r_to_left;
     pandaArms.ArmR.r_to = pandaArms.ArmR.wTo(1:3,4) - pandaArms.ArmR.wTt(1:3,4);
-    disp([pandaArms.ArmL.r_to,pandaArms.ArmR.r_to]);
+    disp([pandaArms.ArmL.wTo(1:3,4) - pandaArms.ArmL.wTt(1:3,4), w_r_to_left]);
 
     pandaArms.ArmL.tSo = [eye(3) zeros(3);
-        skew(pandaArms.ArmL.wTt(1:3,1:3)' * pandaArms.ArmL.r_to)', eye(3)];
+        skew(pandaArms.ArmL.r_to)', eye(3)];
     pandaArms.ArmR.tSo = [eye(3) zeros(3);
         skew(pandaArms.ArmR.wTt(1:3,1:3)' * pandaArms.ArmR.r_to)', eye(3)];
 end
