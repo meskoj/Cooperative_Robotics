@@ -27,4 +27,10 @@ plt.a(9, loop) = uvms.A.ha(1,1);
 
 plt.toolx(:,loop) = uvms.wTt(1,4);
 plt.tooly(:,loop) = uvms.wTt(2,4);
+
+plt.activationFunctions(1, loop) = uvms.A.altitudeControl;
+plt.activationFunctions(2, loop) = uvms.A.horizontalAttitude(1);
+plt.activationFunctions(3, loop) = uvms.A.vehiclePosition(1);
+plt.activationFunctions(4, loop) = uvms.A.headingControl(1);
+plt.activationFunctions(5, loop) = uvms.A.armControl(1);
 end

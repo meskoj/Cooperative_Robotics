@@ -12,5 +12,6 @@ function [plt] = InitDataPlot( maxloops)
 
     plt.a = zeros(11, maxloops);
 
+    plt.activationFunctions = zeros(5, maxloops);
 end
 

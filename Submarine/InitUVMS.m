@@ -58,5 +58,10 @@ uvms.A.armControl = zeros(6);
 uvms.xdot.armControl = zeros(6,1);
 uvms.J.armControl = zeros(6,7);
 
+uvms.horizontalMisalignmentVector = zeros(2, 1);
+uvms.r_tn = zeros(3, 1);
+uvms.A.headingControl = 0;
+
+uvms.xdot.headingControl = 0;
 end
 
