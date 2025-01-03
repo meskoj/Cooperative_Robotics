@@ -49,7 +49,7 @@ uvms.q = [-0.0031 0 0.0128 -1.2460 0.0137 0.0853-pi/2 0.0137]';
 % [x y z r(rot_x) p(rot_y) y(rot_z)]
 % RPY angles are applied in the following sequence
 % R(rot_x, rot_y, rot_z) = Rz (rot_z) * Ry(rot_y) * Rx(rot_x)
-uvms.p = [8.5 38.5 -38   0 -0.06 0.5]';
+uvms.p = [8.5 38.5 -36   0 -0.06 0.5]';
 
 % defines the goal position for the end-effector/tool position task
 uvms.goalPosition = [12.2025   37.3748  -39.8860]';
@@ -60,21 +60,20 @@ uvms.bodyGoal = [10.5 37.5 -38 0 -0.06 0.5]';
 uvms.wTbodyGoal = [eye(3), [10.5 37.5 -38]'; 0 0 0 1];
 uvms.wTnodule = [eye(3), rock_center; 0 0 0 1];
 
-
 % defines the tool control point
 uvms.eTt = eye(4);
 
-%% task priority
+%% tasks priority
 % AC -> altitude control
-% HC -> heading control
 % HA -> horizontal attitude
+% HC -> heading control
 % VP -> vehicle position
 % AM -> arm movement
 % NM -> no movement TODO
 
 mission.prev_action = "safe_navigation";
 mission.current_action = "safe_navigation";
-mission.actions.safe_navigation = ["AC", "HC", "HA", "VP"];
+mission.actions.safe_navigation = ["AC", "HA", "HC", "VP"];
 mission.actions.landing = ["AC", "HA", "VP"];
 mission.actions.grasping = ["AC", "HA", "VP", "AM"];
 

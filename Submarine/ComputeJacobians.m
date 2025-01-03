@@ -36,8 +36,8 @@ uvms.Jt_v = [zeros(3) eye(3); eye(3) -skew(uvms.vTt(1:3,4))];
 uvms.Jt = [uvms.Jt_a uvms.Jt_v];
 
 uvms.J.altitudeControl = [zeros(1, 7), uvms.wTv(1:3,3)', zeros(1, 3)];
+uvms.J.horizontalAttitude = [zeros(2,7), zeros(2,3), eye(2), zeros(2,1)];
 uvms.J.vehiclePosition = [zeros(3,7), uvms.wTv(1:3,1:3), zeros(3,3)];
 uvms.J.headingControl = [zeros(1,7), zeros(1,3), zeros(1,2), 1];
-uvms.J.horizontalAttitude = [zeros(2,7), zeros(2,3), eye(2), zeros(2,1)];
 uvms.J.armControl = [[uvms.vTb(1:3,1:3) zeros(3,3); zeros(3,3) uvms.vTb(1:3,1:3)] * uvms.bJe, zeros(6,6)];
 end
