@@ -34,10 +34,11 @@ figure(4);
 hplot = plot(plt.t, plt.a(8:9,:));
 set(hplot, 'LineWidth', 2);
 legend('Amu', 'Aha');
-    
 
-
-    
-
+figure(5);
+subplot(1,1,1);
+hplot = plot(plt.t, plt.activationFunctions);
+set(hplot, 'LineWidth', 1);
+legend("altitudeControl", "horizontalAttitude", "vehiclePosition", "headingControl", "armControl");
 end
 
