@@ -1,4 +1,4 @@
-    function [uvms] = ComputeTaskReferences(uvms, mission)
+function [uvms] = ComputeTaskReferences(uvms, mission)
 % compute the task references here
 
 switch mission.phase
@@ -7,10 +7,9 @@ switch mission.phase
         uvms.xdot.altitudeControl = 0.2 * (2 - uvms.altitude);
 
         %% Computation of horizontal attitude
-        % TODO reducedVersorLemma
-        ang = VersorLemma(uvms.vTw(1:3,1:3), eye(3))*(-1);
-        ang = ang(1:2);
-        uvms.xdot.horizontalAttitude = 0.7 * ang;
+        ang = ReducedVersorLemma([0;0;1], uvms.vTw(1:3, 3));
+        uvms.horizontalMisalignmentVector = ang(1:2);
+        uvms.xdot.horizontalAttitude = 0.7 * uvms.horizontalMisalignmentVector;
         uvms.xdot.horizontalAttitude = Saturate(uvms.xdot.horizontalAttitude, 0.8);
 
         %% Computation of position error
@@ -19,7 +18,7 @@ switch mission.phase
         uvms.xdot.vehiclePosition = Saturate(uvms.xdot.vehiclePosition, 0.5);
 
         %% Computation of direction to goal
-        versorToGoal = uvms.vTnodule(1:3,4);
+        versorToGoal = uvms.vTnodule(1:3,4) / norm(uvms.vTnodule(1:3,4));
         rotVec = ReducedVersorLemma([1;0;0], versorToGoal);
         uvms.theta_z = rotVec(3);
         uvms.xdot.headingControl = 0.7 * uvms.theta_z;
@@ -31,9 +30,9 @@ switch mission.phase
         uvms.xdot.altitudeControl = Saturate(uvms.xdot.altitudeControl, 1);
 
         %% Computation of horizontal attitude
-        ang = VersorLemma(uvms.vTw(1:3,1:3), eye(3))*(-1);
-        ang = ang(1:2);
-        uvms.xdot.horizontalAttitude = 0.7 * ang;
+        ang = ReducedVersorLemma([0;0;1], uvms.vTw(1:3, 3));
+        uvms.horizontalMisalignmentVector = ang(1:2);
+        uvms.xdot.horizontalAttitude = 0.7 * uvms.horizontalMisalignmentVector;
         uvms.xdot.horizontalAttitude = Saturate(uvms.xdot.horizontalAttitude, 0.8);
 
     case 3
@@ -44,6 +43,9 @@ switch mission.phase
         ang = uvms.vTw(1:3,1:3) * ang;
         lin = uvms.vTw(1:3,1:3) * lin;
         uvms.xdot.armControl = 0.7 * [ang;lin];
-        
+
+        %% No movement
+        uvms.xdot.noMovement = zeros(6,1);
+
 end
 end

@@ -74,8 +74,8 @@ uvms.eTt = eye(4);
 mission.prev_action = "safe_navigation";
 mission.current_action = "safe_navigation";
 mission.actions.safe_navigation = ["AC", "HA", "HC", "VP"];
-mission.actions.landing = ["AC", "HA", "VP"];
-mission.actions.grasping = ["AC", "HA", "VP", "AM"];
+mission.actions.landing = ["AC", "HA", "VP", "HC"];
+mission.actions.grasping = ["AM", "NM"];
 
 tic
 for t = 0:deltat:end_time
@@ -87,6 +87,7 @@ for t = 0:deltat:end_time
 
     % receive altitude information from unity
     uvms = ReceiveUdpPackets(uvms, uAltitude);
+    uvms.t = t;
 
     % main kinematic algorithm initialization
     % ydotbar order is [qdot_1, qdot_2, ..., qdot_7, xdot, ydot, zdot, omega_x, omega_y, omega_z]
@@ -100,6 +101,7 @@ for t = 0:deltat:end_time
     %[Qp, ydotbar] = iCAT_task(uvms.A.t,    uvms.Jt,    Qp, ydotbar, uvms.xdot.t,  0.0001,   0.01, 10);
 
         %% Safety tasks
+        [Qp, ydotbar] = iCAT_task(uvms.A.noMovement,     uvms.J.noMovement,    Qp, ydotbar, uvms.xdot.noMovement,  0.0001,   0.01, 10);
         [Qp, ydotbar] = iCAT_task(uvms.A.altitudeControl,     uvms.J.altitudeControl,    Qp, ydotbar, uvms.xdot.altitudeControl,  0.0001,   0.01, 10);
         %% Movement
         [Qp, ydotbar] = iCAT_task(uvms.A.horizontalAttitude,     uvms.J.horizontalAttitude,    Qp, ydotbar, uvms.xdot.horizontalAttitude,  0.0001,   0.01, 10);

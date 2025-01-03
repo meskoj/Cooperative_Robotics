@@ -12,6 +12,11 @@ function [plt] = InitDataPlot( maxloops)
 
     plt.a = zeros(11, maxloops);
 
-    plt.activationFunctions = zeros(5, maxloops);
+    plt.activationFunctions = zeros(6, maxloops);
+
+    plt.altitudeError = zeros(1, maxloops);
+    plt.misalignmentToNodule = zeros(1, maxloops);
+
+    plt.distanceToNodule = zeros(3, maxloops);
 end
 

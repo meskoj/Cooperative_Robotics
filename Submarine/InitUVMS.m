@@ -37,31 +37,34 @@ uvms.phi = zeros(3,1);
 uvms.sensorDistance = 0;
 uvms.wTnodule = zeros(4);
 
-uvms.Jjl = [];
-uvms.Jmu = [];
-uvms.Jha = [];
 uvms.Jt_a = [];
 uvms.Jt_v = [];
 uvms.Jt = [];
 
-uvms.xdot.jl = [];
-uvms.xdot.mu = [];
-uvms.xdot.ha = [];
-uvms.xdot.t = [];
-
-uvms.A.jl = zeros(7,7);
-uvms.A.mu = 0;
-uvms.A.ha = zeros(1,1);
-uvms.A.t = zeros(6,6);
-
-uvms.A.armControl = zeros(6);
+uvms.xdot.altitudeControl = 0;
+uvms.xdot.horizontalAttitude = zeros(2);
+uvms.xdot.vehiclePosition = zeros(3);
+uvms.xdot.headingControl = 0;
 uvms.xdot.armControl = zeros(6,1);
-uvms.J.armControl = zeros(6,7);
+uvms.xdot.noMovement = zeros(6,1);
+
+uvms.A.altitudeControl = 0;
+uvms.A.horizontalAttitude = zeros(2);
+uvms.A.vehiclePosition = zeros(3);
+uvms.A.headingControl = 0;
+uvms.A.armControl = zeros(6);
+uvms.A.noMovement = zeros(6);
+
+uvms.J.altitudeControl = zeros(1,13);
+uvms.J.horizontalAttitude = zeros(2,13);
+uvms.J.vehiclePosition = zeros(3,13);
+uvms.J.headingControl = zeros(1,13);
+uvms.J.armControl = zeros(6,13);
+uvms.J.noMovement = zeros(6,13);
 
 uvms.horizontalMisalignmentVector = zeros(2, 1);
 uvms.r_tn = zeros(3, 1);
-uvms.A.headingControl = 0;
 
-uvms.xdot.headingControl = 0;
+uvms.transitionTimes = [];
 end
 
