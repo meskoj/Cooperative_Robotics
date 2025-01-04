@@ -66,5 +66,6 @@ uvms.horizontalMisalignmentVector = zeros(2, 1);
 uvms.r_tn = zeros(3, 1);
 
 uvms.transitionTimes = [];
+
 end
 
