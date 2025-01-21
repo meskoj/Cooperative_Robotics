@@ -3,6 +3,8 @@ function [ ] = PrintPlot( plt )
 % some predefined plots
 % you can add your own
 
+save("plots.mat", "plt")
+
 figure(1);
 subplot(2,1,1);
 hplot = plot(plt.t, plt.q);
@@ -56,8 +58,17 @@ subplot(1,1,1);
 % This was necessary because of the wrong initialization of the sensor distance
 plt.activationFunctions(1,1:100) = zeros(1, 100);
 hplot = plot(plt.t, plt.activationFunctions);
-xline(plt.transitionTimes, 'b--', 'LineWidth', 3, 'DisplayName', "Phase Transition");
-set(hplot, 'LineWidth', 1);
+xline(plt.transitionTimes, 'k--', 'LineWidth', 2, 'DisplayName', "Phase Transition");
+set(hplot, 'LineWidth', 4);
+nameArray = {'LineStyle'};
+valueArray = transpose({'-','-','--',':','--',':'});
+colorArray = {'Color'};
+colorNames = transpose({'#77AC30','#D95319','m','c','b','r'});
+lineArray = {'LineWidth'};
+lineVals = transpose({4,2.5,4,4,4,4});
+set(hplot, nameArray, valueArray)
+set(hplot, colorArray, colorNames)
+set(hplot, lineArray, lineVals)
 xlabel("s")
 legend("Altitude control", "Horizontal attitude", "Vehicle position", "Heading control", "Arm control", "No movement", "Phase transition");
 title("Activation Functions")
