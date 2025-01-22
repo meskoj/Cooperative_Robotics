@@ -1,7 +1,7 @@
 function [uvms, mission] = UpdateMissionPhase(uvms, mission)
 switch mission.phase
     case 1
-        if norm(uvms.vTbodyGoal(1:2,4)) < 0.01
+        if norm(uvms.vTbodyGoal(1:2,4)) < 0.01 && abs(rad2deg(uvms.theta_z)) < 1
             mission.phase = 2;
             mission.phase_time = 0;
             uvms.transitionTimes(1) = uvms.t;

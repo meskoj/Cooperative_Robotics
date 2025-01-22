@@ -53,7 +53,6 @@ subplot(1,1,1);
 % This was necessary because of the wrong initialization of the sensor distance
 plt.activationFunctions(1,1:100) = zeros(1, 100);
 hplot = plot(plt.t, plt.activationFunctions);
-xline(plt.transitionTimes, 'k--', 'LineWidth', 2, 'DisplayName', "Phase Transition");
 set(hplot, 'LineWidth', 4);
 nameArray = {'LineStyle'};
 valueArray = transpose({'-','-','--',':','--',':'});
@@ -64,6 +63,7 @@ lineVals = transpose({4,2.5,4,4,4,4});
 set(hplot, nameArray, valueArray)
 set(hplot, colorArray, colorNames)
 set(hplot, lineArray, lineVals)
+setLabels(gca, plt)
 xlabel("s")
 legend("Altitude control", "Horizontal attitude", "Vehicle position", "Heading control", "Arm control", "No movement", "Phase transition");
 title("Activation Functions")
@@ -92,3 +92,18 @@ xlabel("s")
 ylabel("m")
 legend('distance to nodule X', 'distance to nodule Y', 'distance to nodule Z');
 title("Distance to nodule")
+
+
+function setLabels(currentAxis, plt)
+    xline(plt.transitionTimes, 'k--', 'LineWidth', 2, 'DisplayName', "Phase Transition");
+    insert = @(a, x, n)cat(2,  x(1:n), a, x(n+1:end));
+    auxArr = sort([0:5:plt.t(end), plt.transitionTimes]);
+    strLabels=arrayfun(@(a)num2str(a),(0:5:plt.t(end)),'uni',0);
+    strLabels = insert('Phase 1', strLabels, max(1, find(auxArr == plt.transitionTimes(1))-1));
+    strLabels = insert('Phase 2', strLabels, max(1,find(auxArr == plt.transitionTimes(2))-1));
+    strLabels(find(auxArr == 20)) = {""};
+    auxLabels = strLabels';
+    set(currentAxis, 'xtick', auxArr, 'xticklabel', auxLabels)
+    set(currentAxis,'fontsize',20)
+    xtickangle(45)
+end

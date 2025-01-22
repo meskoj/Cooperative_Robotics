@@ -31,7 +31,7 @@ switch mission.phase
         versorToGoal = uvms.vTnodule(1:3,4) / norm(uvms.vTnodule(1:3,4));
         rotVec = ReducedVersorLemma([1;0;0], versorToGoal);
         uvms.theta_z = rotVec(3);
-        uvms.xdot.headingControl = 0.7 * uvms.theta_z;
+        uvms.xdot.headingControl = 0.1 * uvms.theta_z;
         uvms.xdot.headingControl = Saturate(uvms.xdot.headingControl, 0.8);
 
     case 2
@@ -39,7 +39,7 @@ switch mission.phase
         versorToGoal = uvms.vTnodule(1:3,4) / norm(uvms.vTnodule(1:3,4));
         rotVec = ReducedVersorLemma([1;0;0], versorToGoal);
         uvms.theta_z = rotVec(3);
-        uvms.xdot.headingControl = 0.7 * uvms.theta_z;
+        uvms.xdot.headingControl = 0.1 * uvms.theta_z;
         uvms.xdot.headingControl = Saturate(uvms.xdot.headingControl, 0.8);
 
         %% Computation of vehicle distance from seafloor on world's Z-axis
