@@ -9,11 +9,13 @@ uvms.vTe = uvms.vTb*uvms.bTe;
 uvms.vTt = uvms.vTe*uvms.eTt;
 uvms.wTt = uvms.wTv*uvms.vTt;
 
-uvms.vTbodyGoal = uvms.vTw * uvms.wTbodyGoal;
+uvms.w_r_gv =  uvms.wTbodyGoal(1:3,4) - uvms.wTv(1:3,4);
 uvms.vTnodule = uvms.vTw * uvms.wTnodule;
 
 w_Kw = [0 0 1]';
 v_Kw = uvms.vTw(1:3,1:3) * w_Kw;
-uvms.altitude = v_Kw' * [0 0 uvms.sensorDistance]';
+uvms.altitude = v_Kw * v_Kw' * [0 0 uvms.sensorDistance]';
+uvms.altitude = uvms.altitude(3);
+
 
 uvms.r_tn = uvms.wTnodule(1:3, 4) - uvms.wTt(1:3, 4);
