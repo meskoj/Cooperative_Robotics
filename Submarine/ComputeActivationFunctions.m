@@ -12,6 +12,7 @@ switch mission.phase
         uvms.A.vehiclePosition = eye(3) * ActionTransition("VP", mission.actions.(mission.prev_action), mission.actions.(mission.current_action), mission.phase_time);
         uvms.A.headingControl = ActionTransition("HC", mission.actions.(mission.prev_action), mission.actions.(mission.current_action), mission.phase_time);
     case 2
+        uvms.A.vehiclePosition = eye(3) * ActionTransition("VP", mission.actions.(mission.prev_action), mission.actions.(mission.current_action), mission.phase_time);
         uvms.A.altitudeControl = ActionTransition("AC", mission.actions.(mission.prev_action), mission.actions.(mission.current_action), mission.phase_time);
         uvms.A.horizontalAttitude = eye(2) * IncreasingBellShapedFunction(deg2rad(1), deg2rad(3), 0, 1, max(abs(uvms.horizontalMisalignmentVector))) * ActionTransition("HA", mission.actions.(mission.prev_action), mission.actions.(mission.current_action), mission.phase_time);
         uvms.A.headingControl = ActionTransition("HC", mission.actions.(mission.prev_action), mission.actions.(mission.current_action), mission.phase_time);

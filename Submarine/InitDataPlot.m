@@ -17,6 +17,6 @@ function [plt] = InitDataPlot( maxloops)
     plt.altitudeError = zeros(1, maxloops);
     plt.misalignmentToNodule = zeros(1, maxloops);
 
-    plt.distanceToNodule = zeros(3, maxloops);
+    plt.toolToNodule = zeros(6, maxloops);
 end
 

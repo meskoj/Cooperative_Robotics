@@ -41,5 +41,6 @@ plt.misalignmentToNodule(:, loop) = uvms.theta_z;
 plt.altitudeError(:, loop) = uvms.altitude;
 %uvms.wTv(3,4) - uvms.wTbodyGoal(3, 4)
 
-plt.distanceToNodule(:, loop) = uvms.r_tn;
+[ang, lin] = CartError(uvms.wTg, uvms.wTt);
+plt.toolToNodule(:, loop) = [ang;lin];
 end

@@ -71,11 +71,11 @@ uvms.eTt = eye(4);
 % AM -> arm movement
 % NM -> no movement TODO
 
-mission.prev_action = "safe_navigation";
-mission.current_action = "safe_navigation";
+mission.prev_action             = "safe_navigation";
+mission.current_action          = "safe_navigation";
 mission.actions.safe_navigation = ["AC", "HA", "HC", "VP"];
-mission.actions.landing = ["AC", "HA", "VP", "HC"];
-mission.actions.grasping = ["AM", "NM"];
+mission.actions.landing         = ["AC", "HA", "HC", "VP"];
+mission.actions.grasping        = ["AM", "NM"];
 
 tic
 for t = 0:deltat:end_time
@@ -86,7 +86,7 @@ for t = 0:deltat:end_time
     uvms = ComputeActivationFunctions(uvms, mission);
 
     % receive altitude information from unity
-    uvms = ReceiveUdpPackets(uvms, uAltitude);
+    uvms   = ReceiveUdpPackets(uvms, uAltitude);
     uvms.t = t;
 
     % main kinematic algorithm initialization

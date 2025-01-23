@@ -85,13 +85,24 @@ ylabel("m")
 title("Altitude error")
 
 figure(6)
-subplot(1,1,1);
-hplot = plot(plt.t, plt.distanceToNodule);
+subplot(2,1,1);
+hplot = plot(plt.t, plt.toolToNodule(1:3,:));
 set(hplot, 'LineWidth', 1);
 xlabel("s")
 ylabel("m")
-legend('distance to nodule X', 'distance to nodule Y', 'distance to nodule Z');
-title("Distance to nodule")
+title("Linear distance to nodule")
+setLabels(gca, plt)
+yline(0)
+legend('Linear distance to nodule X', 'Linear distance to nodule Y', 'Linear distance to nodule Z', 'Phase transition');
+subplot(2,1,2);
+hplot = plot(plt.t, plt.toolToNodule(4:6,:));
+set(hplot, 'LineWidth', 1);
+xlabel("s")
+ylabel("rad")
+title("Angular distance to nodule")
+setLabels(gca, plt)
+yline(0)
+legend('Angular distance to nodule X', 'Angular distance to nodule Y', 'Angular distance to nodule Z', 'Phase transition');
 
 
 function setLabels(currentAxis, plt)
