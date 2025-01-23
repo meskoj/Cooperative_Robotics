@@ -15,7 +15,7 @@ switch mission.phase
             uvms.transitionTimes(2) = uvms.t;
         end
     case 3
-        mission.current_action = "landing";
+        mission.prev_action = "landing";
         mission.current_action = "grasping";
 end
 end

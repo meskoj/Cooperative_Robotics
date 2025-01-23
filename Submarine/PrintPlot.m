@@ -95,7 +95,7 @@ legend("Misalignment z", "Phase transition");
 
 figure(6)
 subplot(2,1,1);
-hplot = plot(plt.t, plt.toolToNodule(1:3,:));
+hplot = plot(plt.t, plt.toolToNodule(4:6,:));
 set(hplot, 'LineWidth', 1);
 xlabel("s")
 ylabel("m")
@@ -104,7 +104,7 @@ setLabels(gca, plt)
 yline(0)
 legend('Linear distance to nodule X', 'Linear distance to nodule Y', 'Linear distance to nodule Z', 'Phase transition');
 subplot(2,1,2);
-hplot = plot(plt.t, plt.toolToNodule(4:6,:));
+hplot = plot(plt.t, plt.toolToNodule(1:3,:));
 set(hplot, 'LineWidth', 1);
 xlabel("s")
 ylabel("rad")
