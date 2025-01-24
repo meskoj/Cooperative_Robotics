@@ -4,7 +4,7 @@ function [uvms] = ComputeTaskReferences(uvms, mission)
 switch mission.phase
     case 1
         %% Computation of vehicle distance from seafloor on world's Z-axis
-        uvms.xdot.altitudeControl = 0.2 * (2 - uvms.altitude);
+        uvms.xdot.altitudeControl = 0.7 * (2 - uvms.altitude);
         uvms.xdot.altitudeControl = Saturate(uvms.xdot.altitudeControl, 0.8);
 
         %% Computation of horizontal attitude
@@ -36,21 +36,14 @@ switch mission.phase
         uvms.xdot.headingControl = Saturate(uvms.xdot.headingControl, 0.8);
         
     case 2
+        %% Computation of vehicle distance from seafloor on world's Z-axis
+        uvms.xdot.altitudeControl = 0.7 * -uvms.altitude;
+        uvms.xdot.altitudeControl = Saturate(uvms.xdot.altitudeControl, 0.8);
+
         %% Computation of position error
         [~, lin] = CartError(uvms.wTbodyGoal , uvms.wTv);
         uvms.xdot.vehiclePosition = 0.5 * [lin(1:2);0];
         uvms.xdot.vehiclePosition = Saturate(uvms.xdot.vehiclePosition, 0.5);
-
-        %% Computation of direction to goal
-        versorToGoal = uvms.vTnodule(1:3,4) / norm(uvms.vTnodule(1:3,4));
-        rotVec = ReducedVersorLemma([1;0;0], versorToGoal);
-        uvms.theta_z = rotVec(3);
-        uvms.xdot.headingControl = 0.7 * uvms.theta_z;
-        uvms.xdot.headingControl = Saturate(uvms.xdot.headingControl, 0.8);
-
-        %% Computation of vehicle distance from seafloor on world's Z-axis
-        uvms.xdot.altitudeControl = 0.8 * -uvms.altitude;
-        uvms.xdot.altitudeControl = Saturate(uvms.xdot.altitudeControl, 1);
 
         %% Computation of horizontal attitude
         ang = ReducedVersorLemma([0;0;1], uvms.vTw(1:3, 3));
@@ -68,6 +61,13 @@ switch mission.phase
         uvms.xdot.horizontalAttitude = 0.7 * [mis_x; mis_y];
         uvms.xdot.horizontalAttitude = Saturate(uvms.xdot.horizontalAttitude, 1);
 
+        %% Computation of direction to goal
+        versorToGoal = uvms.vTnodule(1:3,4) / norm(uvms.vTnodule(1:3,4));
+        rotVec = ReducedVersorLemma([1;0;0], versorToGoal);
+        uvms.theta_z = rotVec(3);
+        uvms.xdot.headingControl = 0.7 * uvms.theta_z;
+        uvms.xdot.headingControl = Saturate(uvms.xdot.headingControl, 0.8);
+
     case 3
         uvms.xdot.vehiclePosition = zeros(3,1);
 
@@ -80,5 +80,5 @@ switch mission.phase
         %% No movement
         uvms.xdot.noMovement = zeros(6,1);
 
-end
+    end
 end

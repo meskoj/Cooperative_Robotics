@@ -64,6 +64,7 @@ uvms.J.noMovement = zeros(6,13);
 
 uvms.horizontalMisalignmentVector = zeros(2, 1);
 uvms.r_tn = zeros(3, 1);
+uvms.altitude = 0;
 
 uvms.transitionTimes = [];
 

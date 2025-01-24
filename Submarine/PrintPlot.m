@@ -2,9 +2,6 @@ function [ ] = PrintPlot( plt )
 
 % some predefined plots
 % you can add your own
-
-save("plots.mat", "plt")
-
 figure(1);
 subplot(2,1,1);
 hplot = plot(plt.t, plt.q);

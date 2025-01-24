@@ -6,7 +6,7 @@ close all
 
 % Simulation variables (integration and final time)
 deltat = 0.005;
-end_time = 30;
+end_time = 35;
 loop = 1;
 maxloops = ceil(end_time/deltat);
 
@@ -132,7 +132,6 @@ for t = 0:deltat:end_time
         % add debug prints here
         if (mod(t,0.1) == 0)
             t
-            uvms.sensorDistance
         end
 
         % enable this to have the simulation approximately evolving like real
