@@ -4,7 +4,7 @@ function [uvms] = ComputeTaskReferences(uvms, mission)
 switch mission.phase
     case 1
         %% Computation of vehicle distance from seafloor on world's Z-axis
-        uvms.xdot.altitudeControl = 0.7 * (2 - uvms.altitude);
+        uvms.xdot.altitudeControl = 0.2 * (2 - uvms.altitude);
         uvms.xdot.altitudeControl = Saturate(uvms.xdot.altitudeControl, 0.8);
 
         %% Computation of horizontal attitude
@@ -37,8 +37,8 @@ switch mission.phase
         
     case 2
         %% Computation of vehicle distance from seafloor on world's Z-axis
-        uvms.xdot.altitudeControl = 0.7 * -uvms.altitude;
-        uvms.xdot.altitudeControl = Saturate(uvms.xdot.altitudeControl, 0.8);
+        uvms.xdot.altitudeControl = 0.8 * -uvms.altitude;
+        uvms.xdot.altitudeControl = Saturate(uvms.xdot.altitudeControl, 1);
 
         %% Computation of position error
         [~, lin] = CartError(uvms.wTbodyGoal , uvms.wTv);
