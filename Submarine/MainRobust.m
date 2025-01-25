@@ -56,8 +56,9 @@ uvms.goalPosition = [12.2025   37.3748  -39.8860]';
 uvms.wRg = rotation(0, pi, pi/2);
 uvms.wTg = [uvms.wRg uvms.goalPosition; 0 0 0 1];
 
-uvms.bodyGoal = [10.5 37.5 -38 0 -0.06 0.5]';
-uvms.wTbodyGoal = [eye(3), [10.5 37.5 -38]'; 0 0 0 1];
+uvms.bodyGoalPosition = [10.5 37.5 -38 ]';
+uvms.wRbodyGoal = rotation(0, -0.06, 0.5);
+uvms.wTbodyGoal = [uvms.wRbodyGoal, uvms.bodyGoalPosition; 0 0 0 1];
 uvms.wTnodule = [eye(3), rock_center; 0 0 0 1];
 
 % defines the tool control point
@@ -69,7 +70,7 @@ uvms.eTt = eye(4);
 % HC -> heading control
 % VP -> vehicle position
 % AM -> arm movement
-% NM -> no movement TODO
+% NM -> no movement
 
 mission.prev_action             = "safe_navigation";
 mission.current_action          = "safe_navigation";
@@ -103,10 +104,10 @@ for t = 0:deltat:end_time
         %% Safety tasks
         [Qp, ydotbar] = iCAT_task(uvms.A.noMovement,     uvms.J.noMovement,    Qp, ydotbar, uvms.xdot.noMovement,  0.0001,   0.01, 10);
         [Qp, ydotbar] = iCAT_task(uvms.A.altitudeControl,     uvms.J.altitudeControl,    Qp, ydotbar, uvms.xdot.altitudeControl,  0.0001,   0.01, 10);
-        %% Movement
         [Qp, ydotbar] = iCAT_task(uvms.A.horizontalAttitude,     uvms.J.horizontalAttitude,    Qp, ydotbar, uvms.xdot.horizontalAttitude,  0.0001,   0.01, 10);
-        [Qp, ydotbar] = iCAT_task(uvms.A.vehiclePosition,     uvms.J.vehiclePosition,    Qp, ydotbar, uvms.xdot.vehiclePosition,  0.0001,   0.01, 10);
+        %% Movement
         [Qp, ydotbar] = iCAT_task(uvms.A.headingControl,     uvms.J.headingControl,    Qp, ydotbar, uvms.xdot.headingControl,  0.0001,   0.01, 10);
+        [Qp, ydotbar] = iCAT_task(uvms.A.vehiclePosition,     uvms.J.vehiclePosition,    Qp, ydotbar, uvms.xdot.vehiclePosition,  0.0001,   0.01, 10);
         [Qp, ydotbar] = iCAT_task(uvms.A.armControl,     uvms.J.armControl,    Qp, ydotbar, uvms.xdot.armControl,  0.0001,   0.01, 10);
         [Qp, ydotbar] = iCAT_task(eye(13),     eye(13),    Qp, ydotbar, zeros(13,1),  0.0001,   0.01, 10);    % this task should be the last one
 
@@ -142,7 +143,7 @@ for t = 0:deltat:end_time
 
     fclose(uVehicle);
     fclose(uArm);
-
+    
     PrintPlot(plt);
 
 end

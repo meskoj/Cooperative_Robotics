@@ -17,5 +17,4 @@ v_Kw = uvms.vTw(1:3,1:3) * w_Kw;
 uvms.altitude = v_Kw * v_Kw' * [0 0 uvms.sensorDistance]';
 uvms.altitude = uvms.altitude(3);
 
-
 uvms.r_tn = uvms.wTnodule(1:3, 4) - uvms.wTt(1:3, 4);
