@@ -4,8 +4,8 @@ function [uvms] = ComputeTaskReferences(uvms, mission)
     switch mission.phase
         case 1
             %% Computation of vehicle distance from seafloor on Z-axis
-            uvms.xdot.altitudeControl = 0.2 * (2 - uvms.altitude);
-            uvms.xdot.altitudeControl = Saturate(uvms.xdot.altitudeControl, 0.8);
+            uvms.xdot.altitudeControlSafety = 0.2 * (2 - uvms.altitude);
+            uvms.xdot.altitudeControlSafety = Saturate(uvms.xdot.altitudeControlSafety, 0.8);
     
             %% Computation of horizontal attitude
             ang = ReducedVersorLemma([0;0;1], uvms.vTw(1:3, 3));
@@ -37,13 +37,13 @@ function [uvms] = ComputeTaskReferences(uvms, mission)
             
         case 2
             %% Computation of vehicle distance from seafloor on Z-axis
-            uvms.xdot.altitudeControl = 0.8 * -uvms.altitude;
-            uvms.xdot.altitudeControl = Saturate(uvms.xdot.altitudeControl, 1);
+            uvms.xdot.altitudeControlAD = 0.8 * -uvms.altitude;
+            uvms.xdot.altitudeControlAD = Saturate(uvms.xdot.altitudeControlAD, 1);
     
-            %% Computation of position error
+            %% Computation of position error on xy plane
             [~, lin] = CartError(uvms.wTbodyGoal , uvms.wTv);
-            uvms.xdot.vehiclePosition = 0.5 * [lin(1:2);0];
-            uvms.xdot.vehiclePosition = Saturate(uvms.xdot.vehiclePosition, 0.5);
+            uvms.xdot.vehiclePositionXY = 0.5 * lin(1:2,1);
+            uvms.xdot.vehiclePositionXY = Saturate(uvms.xdot.vehiclePositionXY, 0.5);
 
             %% Computation of direction to goal
             versorToGoal = uvms.vTnodule(1:3,4) / norm(uvms.vTnodule(1:3,4));

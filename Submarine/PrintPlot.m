@@ -59,17 +59,17 @@ plt.activationFunctions(1,1:100) = zeros(1, 100);
 hplot = plot(plt.t, plt.activationFunctions);
 set(hplot, 'LineWidth', 4);
 nameArray = {'LineStyle'};
-valueArray = transpose({'-','-','--',':','--',':'});
+valueArray = transpose({'-','-','-','--','--',':','--',':'});
 colorArray = {'Color'};
-colorNames = transpose({'#77AC30','#D95319','m','c','b','r'});
+colorNames = transpose({'#77AC30', '#EDB120','#D95319','m', '#7E2F8E','c','b','r'});
 lineArray = {'LineWidth'};
-lineVals = transpose({4,2.5,4,4,4,4});
+lineVals = transpose({4,4,2.5,4,4,4,4,4});
 set(hplot, nameArray, valueArray)
 set(hplot, colorArray, colorNames)
 set(hplot, lineArray, lineVals)
 setLabels(gca, plt)
 xlabel("s")
-legend("Altitude control", "Horizontal attitude", "Vehicle position", "Heading control", "Arm control", "No movement", "Phase transition");
+legend("Altitude control safety", "Altitude control action defined", "Horizontal attitude", "Vehicle position", "Vehicle position xy", "Heading control", "Arm control", "No movement", "Phase transition");
 title("Activation Functions")
 
 figure(5);

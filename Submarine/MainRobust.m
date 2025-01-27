@@ -65,17 +65,20 @@ uvms.wTnodule = [eye(3), rock_center; 0 0 0 1];
 uvms.eTt = eye(4);
 
 %% tasks priority
-% AC -> altitude control
-% HA -> horizontal attitude
-% HC -> heading control
-% VP -> vehicle position
-% AM -> arm movement
-% NM -> no movement
+% ACS  -> altitude control safety
+% ACAD -> altitude control action defined
+% AC   -> altitude control
+% HA   -> horizontal attitude
+% HC   -> heading control
+% VP   -> vehicle position
+% VPXY -> vehicle position on the x and y plane
+% AM   -> arm movement
+% NM   -> no movement
 
 mission.prev_action             = "safe_navigation";
 mission.current_action          = "safe_navigation";
-mission.actions.safe_navigation = ["AC", "HA", "HC", "VP"];
-mission.actions.landing         = ["AC", "HA", "HC", "VP"];
+mission.actions.safe_navigation = ["ACS", "HA", "HC", "VP"];
+mission.actions.landing         = ["ACAD", "HA", "HC", "VPXY"];
 mission.actions.grasping        = ["AM", "NM"];
 
 tic
@@ -101,49 +104,53 @@ for t = 0:deltat:end_time
     % the sequence of iCAT_task calls defines the priority
     %[Qp, ydotbar] = iCAT_task(uvms.A.t,    uvms.Jt,    Qp, ydotbar, uvms.xdot.t,  0.0001,   0.01, 10);
 
-        %% Safety tasks
-        [Qp, ydotbar] = iCAT_task(uvms.A.noMovement,     uvms.J.noMovement,    Qp, ydotbar, uvms.xdot.noMovement,  0.0001,   0.01, 10);
-        [Qp, ydotbar] = iCAT_task(uvms.A.altitudeControl,     uvms.J.altitudeControl,    Qp, ydotbar, uvms.xdot.altitudeControl,  0.0001,   0.01, 10);
-        [Qp, ydotbar] = iCAT_task(uvms.A.horizontalAttitude,     uvms.J.horizontalAttitude,    Qp, ydotbar, uvms.xdot.horizontalAttitude,  0.0001,   0.01, 10);
-        %% Movement
-        [Qp, ydotbar] = iCAT_task(uvms.A.headingControl,     uvms.J.headingControl,    Qp, ydotbar, uvms.xdot.headingControl,  0.0001,   0.01, 10);
-        [Qp, ydotbar] = iCAT_task(uvms.A.vehiclePosition,     uvms.J.vehiclePosition,    Qp, ydotbar, uvms.xdot.vehiclePosition,  0.0001,   0.01, 10);
-        [Qp, ydotbar] = iCAT_task(uvms.A.armControl,     uvms.J.armControl,    Qp, ydotbar, uvms.xdot.armControl,  0.0001,   0.01, 10);
-        [Qp, ydotbar] = iCAT_task(eye(13),     eye(13),    Qp, ydotbar, zeros(13,1),  0.0001,   0.01, 10);    % this task should be the last one
+    %% Safety tasks
+    [Qp, ydotbar] = iCAT_task(uvms.A.noMovement,     uvms.J.noMovement,    Qp, ydotbar, uvms.xdot.noMovement,  0.0001,   0.01, 10);
+    [Qp, ydotbar] = iCAT_task(uvms.A.altitudeControlSafety,     uvms.J.altitudeControlSafety,    Qp, ydotbar, uvms.xdot.altitudeControlSafety,  0.0001,   0.01, 10);
+    [Qp, ydotbar] = iCAT_task(uvms.A.horizontalAttitude,     uvms.J.horizontalAttitude,    Qp, ydotbar, uvms.xdot.horizontalAttitude,  0.0001,   0.01, 10);
+    %% Prerequisite
+    [Qp, ydotbar] = iCAT_task(uvms.A.headingControl,     uvms.J.headingControl,    Qp, ydotbar, uvms.xdot.headingControl,  0.0001,   0.01, 10);
+    [Qp, ydotbar] = iCAT_task(uvms.A.vehiclePosition,     uvms.J.vehiclePosition,    Qp, ydotbar, uvms.xdot.vehiclePosition,  0.0001,   0.01, 10);
+    [Qp, ydotbar] = iCAT_task(uvms.A.vehiclePositionXY,     uvms.J.vehiclePositionXY,    Qp, ydotbar, uvms.xdot.vehiclePositionXY,  0.0001,   0.01, 10);
+    %% Action defined
+    [Qp, ydotbar] = iCAT_task(uvms.A.altitudeControlAD,     uvms.J.altitudeControlAD,    Qp, ydotbar, uvms.xdot.altitudeControlAD,  0.0001,   0.01, 10);
+    [Qp, ydotbar] = iCAT_task(uvms.A.armControl,     uvms.J.armControl,    Qp, ydotbar, uvms.xdot.armControl,  0.0001,   0.01, 10);
 
-        % get the two variables for integration
-        uvms.q_dot = ydotbar(1:7);
-        uvms.p_dot = ydotbar(8:13);
+    [Qp, ydotbar] = iCAT_task(eye(13),     eye(13),    Qp, ydotbar, zeros(13,1),  0.0001,   0.01, 10);    % this task should be the last one
 
-        % Integration
-        uvms.q = uvms.q + uvms.q_dot*deltat;
-        % beware: p_dot should be projected on <v>
-        uvms.p = integrate_vehicle(uvms.p, uvms.p_dot, deltat);
+    % get the two variables for integration
+    uvms.q_dot = ydotbar(1:7);
+    uvms.p_dot = ydotbar(8:13);
 
-        % check if the mission phase should be changed
-        [uvms, mission] = UpdateMissionPhase(uvms, mission);
+    % Integration
+    uvms.q = uvms.q + uvms.q_dot*deltat;
+    % beware: p_dot should be projected on <v>
+    uvms.p = integrate_vehicle(uvms.p, uvms.p_dot, deltat);
 
-        % send packets to Unity viewer
-        SendUdpPackets(uvms,wuRw,vRvu,uArm,uVehicle);
+    % check if the mission phase should be changed
+    [uvms, mission] = UpdateMissionPhase(uvms, mission);
 
-        % collect data for plots
-        plt = UpdateDataPlot(plt,uvms,t,loop);
-        loop = loop + 1;
+    % send packets to Unity viewer
+    SendUdpPackets(uvms,wuRw,vRvu,uArm,uVehicle);
 
-        % add debug prints here
-        if (mod(t,0.1) == 0)
-            t
-        end
+    % collect data for plots
+    plt = UpdateDataPlot(plt,uvms,t,loop);
+    loop = loop + 1;
 
-        % enable this to have the simulation approximately evolving like real
-        % time. Remove to go as fast as possible
-        SlowdownToRealtime(deltat);
-        mission.phase_time = mission.phase_time + deltat;
+    % add debug prints here
+    if (mod(t,0.1) == 0)
+        t
     end
 
-    fclose(uVehicle);
-    fclose(uArm);
-    
-    PrintPlot(plt);
+    % enable this to have the simulation approximately evolving like real
+    % time. Remove to go as fast as possible
+    SlowdownToRealtime(deltat);
+    mission.phase_time = mission.phase_time + deltat;
+end
+
+fclose(uVehicle);
+fclose(uArm);
+
+PrintPlot(plt);
 
 end

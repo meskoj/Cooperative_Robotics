@@ -41,23 +41,29 @@ uvms.Jt_a = [];
 uvms.Jt_v = [];
 uvms.Jt = [];
 
-uvms.xdot.altitudeControl = 0;
-uvms.xdot.horizontalAttitude = zeros(2);
-uvms.xdot.vehiclePosition = zeros(3);
+uvms.xdot.altitudeControlSafety = 0;
+uvms.xdot.altitudeControlAD = 0;
+uvms.xdot.horizontalAttitude = zeros(2,1);
+uvms.xdot.vehiclePosition = zeros(3,1);
+uvms.xdot.vehiclePositionXY = zeros(2,1);
 uvms.xdot.headingControl = 0;
 uvms.xdot.armControl = zeros(6,1);
 uvms.xdot.noMovement = zeros(6,1);
 
-uvms.A.altitudeControl = 0;
+uvms.A.altitudeControlSafety = 0;
+uvms.A.altitudeControlAD = 0;
 uvms.A.horizontalAttitude = zeros(2);
 uvms.A.vehiclePosition = zeros(3);
+uvms.A.vehiclePositionXY = zeros(2);
 uvms.A.headingControl = 0;
 uvms.A.armControl = zeros(6);
 uvms.A.noMovement = zeros(6);
 
-uvms.J.altitudeControl = zeros(1,13);
+uvms.J.altitudeControlSafety = zeros(1,13);
+uvms.J.altitudeControlAD = zeros(1,13);
 uvms.J.horizontalAttitude = zeros(2,13);
 uvms.J.vehiclePosition = zeros(3,13);
+uvms.J.vehiclePositionXY = zeros(2,13);
 uvms.J.headingControl = zeros(1,13);
 uvms.J.armControl = zeros(6,13);
 uvms.J.noMovement = zeros(6,13);
@@ -67,6 +73,5 @@ uvms.r_tn = zeros(3, 1);
 uvms.altitude = 0;
 
 uvms.transitionTimes = [];
-
 end
 
