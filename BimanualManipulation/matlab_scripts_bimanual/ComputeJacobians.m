@@ -47,14 +47,12 @@ pandaArms.ArmL.J.pose = pandaArms.ArmL.wJt;
 pandaArms.ArmR.J.pose = pandaArms.ArmR.wJt;
 
 if mission.phase == 1
-    t_r_to_left = pinv(pandaArms.ArmL.wTt) * [pandaArms.ArmL.wTo(1:3,4);1];
-    w_r_to_left = pandaArms.ArmL.wTt(1:3,1:3) * t_r_to_left(1:3);
-    pandaArms.ArmL.r_to = w_r_to_left;
+    pandaArms.ArmL.r_to = pandaArms.ArmL.wTo(1:3,4) - pandaArms.ArmL.wTt(1:3,4);
     pandaArms.ArmR.r_to = pandaArms.ArmR.wTo(1:3,4) - pandaArms.ArmR.wTt(1:3,4);
-    disp([pandaArms.ArmL.wTo(1:3,4) - pandaArms.ArmL.wTt(1:3,4), w_r_to_left]);
+    disp([pandaArms.ArmL.r_to,pandaArms.ArmR.r_to]);
 
     pandaArms.ArmL.tSo = [eye(3) zeros(3);
-        skew(pandaArms.ArmL.r_to)', eye(3)];
+        skew(pandaArms.ArmL.wTt(1:3,1:3)' * pandaArms.ArmL.r_to)', eye(3)];
     pandaArms.ArmR.tSo = [eye(3) zeros(3);
         skew(pandaArms.ArmR.wTt(1:3,1:3)' * pandaArms.ArmR.r_to)', eye(3)];
 end
