@@ -34,6 +34,9 @@ pandaArms.ArmR.J.bimanualPose = zeros(6,7);
 pandaArms.ArmL.J.rigidConstraint = zeros(6,7); 
 pandaArms.ArmR.J.rigidConstraint = zeros(6,7);
 
+pandaArms.ArmL.wTnt = eye(4);
+pandaArms.ArmR.wTnt = eye(4);
+
 %% ... TO HERE
 % Init Task Reference vectors
 pandaArms.ArmL.xdot.stopMotors = zeros(7,1);
@@ -69,6 +72,9 @@ pandaArms.ArmR.A.minimumAltitude = 0;
 pandaArms.ArmL.A.jointLimits = zeros(7);
 pandaArms.ArmR.A.jointLimits = zeros(7);
 
-pandaArms.v_obj = zeros(3,1);
+pandaArms.v_objL = zeros(3,1);
+pandaArms.v_objR = zeros(3,1);
+
+pandaArms.transitionTimes = [];
 end
 

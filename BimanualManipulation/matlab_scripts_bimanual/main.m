@@ -13,6 +13,7 @@ loop = 1;
 maxloops = ceil(Tf/dt);
 mission.phase = 1;
 mission.phase_time = 0;
+mission.wall_time = 0;
 model = load("panda.mat");
 
 % UDP Connection with Franka Interface
@@ -64,10 +65,10 @@ pandaArms.ArmR.wTg = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0, deg2rad(30), 0),
 pandaArms.ArmL.wTog = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.65 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.65 -0.35 0.28]'; 0 0 0 1];
 %% DEBUGGING
-% pandaArms.ArmL.wTog = [eye(3), [0.65 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+% pandaArms.ArmL.wTog = [eye(3), [0.65 -0.35 0.28]'; 0 0 0 1];
 % pandaArms.ArmR.wTog = [eye(3), [0.65 -0.35 0.28]'; 0 0 0 1];
-pandaArms.ArmL.wTog = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 1.0), [0.65 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 1.0), [0.65 -0.35 0.28]'; 0 0 0 1];
+% pandaArms.ArmL.wTog = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [1.0 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+% pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [1.0 -0.35 0.28]'; 0 0 0 1];
 
 %% Mission configuration
 
@@ -85,11 +86,6 @@ mission.phase_time = 0;
 mission.actions.go_to.tasks = [];
 mission.actions.coop_manip.tasks = [];
 mission.actions.end_motion.tasks = [];
-
-%% Initialization for plotting of the object velocity
-oldwTnt = pandaArms.ArmL.wTo(1:3,4);
-pandaArms.ArmL.wTnt = pandaArms.ArmL.wTo;
-pandaArms.ArmR.wTnt = pandaArms.ArmR.wTo;
 
 %% CONTROL LOOP
 disp('STARTED THE SIMULATION');
@@ -167,14 +163,9 @@ for t = 0:dt:Tf
     % get the two variables for integration
     pandaArms.ArmL.q_dot = ydotbar(1:7);
     pandaArms.ArmR.q_dot = ydotbar(8:14);
-
+    
     pandaArms.ArmL.x = tool_jacobian_L * pandaArms.ArmL.q_dot;
     pandaArms.ArmR.x = tool_jacobian_R * pandaArms.ArmR.q_dot;
-
-    %% Derivation
-    diff = pandaArms.ArmL.wTnt(1:3,4) - oldwTnt;
-    pandaArms.v_obj = diff / dt;
-    oldwTnt = pandaArms.ArmL.wTnt(1:3,4);
 
     % Integration
     pandaArms.ArmL.q = pandaArms.ArmL.q(1:7) + pandaArms.ArmL.q_dot*dt;
@@ -194,6 +185,7 @@ for t = 0:dt:Tf
 
     % check if the mission phase should be changed
     mission.phase_time = mission.phase_time + dt;
+    mission.wall_time = mission.wall_time + dt;
     [pandaArms,mission] = UpdateMissionPhase(pandaArms, mission);
 
     % Update data plot

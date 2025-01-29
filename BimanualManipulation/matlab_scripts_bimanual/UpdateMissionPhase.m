@@ -5,12 +5,14 @@ function [pandaArms, mission] = UpdateMissionPhase(pandaArms, mission)
                 [ang1, lin1] = CartError(pandaArms.ArmR.wTg, pandaArms.ArmR.wTt);
                 if norm(ang) < 0.01 && norm(lin) < 0.01 && norm(ang1) < 0.01 && norm(lin1) < 0.01
                     mission.phase = 2;
+                    pandaArms.transitionTimes(1,1) = mission.wall_time;
                 end
                 
             case 2 % Cooperative Manipulation Start 
                 [ang, lin] = CartError(pandaArms.ArmL.wTog, pandaArms.ArmL.wTnt);
 
                 if norm(ang) < 0.01 && norm(lin) < 0.01
+                    pandaArms.transitionTimes(1,2) = mission.wall_time;
                     mission.phase = 3;
                 end
                 
