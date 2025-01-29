@@ -23,7 +23,7 @@ function [uvms] = ComputeJacobians(uvms)
 %
 % Ste is the rigid body transformation from vehicle-frame to end-effector
 % frame projected on <v>
-uvms.Ste = [eye(3) zeros(3);  -skew(uvms.vTe(1:3,1:3)*uvms.eTt(1:3,4)) eye(3)];
+uvms.Ste = [eye(3) zeros(3); -skew(uvms.vTe(1:3,1:3)*uvms.eTt(1:3,4)) eye(3)];
 % uvms.bJe contains the arm end-effector Jacobian (6x7) wrt arm base
 % top three rows are angular velocities, bottom three linear velocities
 uvms.Jt_a  = uvms.Ste * [uvms.vTb(1:3,1:3) zeros(3,3); zeros(3,3) uvms.vTb(1:3,1:3)] * uvms.bJe;
