@@ -43,7 +43,10 @@ legend('toolError.x','toolError.y','toolError.z');
 fig = figure('Name', 'Object Velocity');
 hplot = plot(plt.t, [plt.v_obj;plt.xl(1:3,:);plt.xr(1:3,:)]);
 title('Object velocity');
-set(hplot, 'LineWidth', 1);
+set(hplot, 'LineWidth', 4);
+nameArray = {'LineStyle'};
+valueArray = transpose({'-','-','-','--','--','--',':',':',':'});
+set(hplot, nameArray, valueArray)
 legend('objectVel.x','objectVel.y','objectVel.z','leftVel.x','leftVel.y','leftVel.z','rightVel.x','rightVel.y','rightVel.z');
 % ... 
 
