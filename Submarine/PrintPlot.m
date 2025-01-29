@@ -2,7 +2,9 @@ function [ ] = PrintPlot( plt )
 
 % some predefined plots
 % you can add your own
-figure(1);
+baseFolder = "~/Documents/RobotEngPersonal/Y2S1/COOP/Franka/Submarine/Images/";
+
+f1 = figure(1);
 subplot(2,1,1);
 hplot = plot(plt.t, plt.q);
 set(hplot, 'LineWidth', 1);
@@ -17,8 +19,10 @@ legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7');
 xlabel("s")
 ylabel("rad/s")
 title("Arm velocity");
+f1.Position = [0,0,1920,1080];
+%saveas(f1, baseFolder+"ArmPosVel.png")
 
-figure(2);
+f2 = figure(2);
 subplot(2,1,1);
 hplot = plot(plt.t, plt.p(1:3, :));
 set(hplot, 'LineWidth', 1);
@@ -33,8 +37,10 @@ legend('xdot', 'ydot','zdot');
 xlabel("s")
 ylabel("m/s")
 title("Body linear velocity");
+f2.Position = [0,0,1920,1080];
+%saveas(f2, baseFolder+"BodyLinPosVel.png")
 
-figure(3);
+f3 = figure(3);
 subplot(2,1,1);
 hplot = plot(plt.t, plt.p(4:6, :));
 set(hplot, 'LineWidth', 1);
@@ -50,9 +56,12 @@ xlabel("s")
 ylabel("rad/s")
 title("Body angular velocity");
 setLabels(gca, plt)
-legend('omega_x','omega_y','omega_z','Phase Transition');
+l = legend('omega_x','omega_y','omega_z','Phase Transition');
+l.Location = "southeast";
+f3.Position = [0,0,1920,1080];
+%saveas(f3, baseFolder+"BodyAngPosVel.png")
 
-figure(4);
+f4 = figure(4);
 subplot(1,1,1);
 % This was necessary because of the wrong initialization of the sensor distance
 plt.activationFunctions(1,1:100) = zeros(1, 100);
@@ -71,8 +80,10 @@ setLabels(gca, plt)
 xlabel("s")
 legend("Altitude control safety", "Altitude control action defined", "Horizontal attitude", "Vehicle position", "Vehicle position xy", "Heading control", "Arm control", "No movement", "Phase transition");
 title("Activation Functions")
+f4.Position = [0,0,1920,1080];
+%saveas(f4, baseFolder+"ActivationFunctions.png")
 
-figure(5);
+f5 = figure(5);
 subplot(2,1,1);
 hplot = plot(plt.t, plt.misalignmentToNodule);
 set(hplot, 'LineWidth', 1);
@@ -89,8 +100,10 @@ ylabel("m")
 title("Altitude error")
 setLabels(gca, plt)
 legend("Misalignment z", "Phase transition");
+f5.Position = [0,0,1920,1080];
+%saveas(f5, baseFolder+"Misalignment.png")
 
-figure(6)
+f6 = figure(6);
 subplot(2,1,1);
 hplot = plot(plt.t, plt.toolToNodule(4:6,:));
 set(hplot, 'LineWidth', 1);
@@ -109,8 +122,10 @@ title("Angular distance to nodule")
 setLabels(gca, plt)
 yline(0)
 legend('Angular distance to nodule X', 'Angular distance to nodule Y', 'Angular distance to nodule Z', 'Phase transition');
+f6.Position = [0,0,1920,1080];
+%saveas(f6, baseFolder+"BodyDistAngLin.png")
 
-figure(7)
+f7 = figure(7)
 hplot = plot(plt.t, plt.q_dot);
 set(hplot, 'LineWidth', 1);
 xlabel("s")
@@ -118,8 +133,10 @@ ylabel("rad/s")
 title("Arm velocity");
 setLabels(gca, plt)
 legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7',"Phase Transition");
+f7.Position = [0,0,1920,1080];
+%saveas(f7, baseFolder+"ArmVelocity.png")
 
-figure(8)
+f8 = figure(8)
 hplot = plot(plt.t, plt.p_dot(1:3, :));
 set(hplot, 'LineWidth', 1);
 xlabel("s")
@@ -127,6 +144,8 @@ ylabel("m/s")
 title("Body linear velocity");
 setLabels(gca, plt)
 legend('xdot', 'ydot','zdot', "Phase Transition");
+f8.Position = [0,0,1920,1080];
+%saveas(f8, baseFolder+"BodyLinearVelocity.png")
 end
 
 function setLabels(currentAxis, plt)
