@@ -16,7 +16,9 @@ plt.q_dot2(:, loop) = pandaArms.ArmR.q_dot;
 plt.relativeDistance(:, loop) = pandaArms.ArmL.wTt(1:3,4) - pandaArms.ArmR.wTt(1:3,4);
 plt.toolError(:, loop) = pandaArms.ArmL.wTnt(1:3,4) - pandaArms.ArmR.wTnt(1:3,4);
 % plt.toolError(:, loop) = pandaArms.ArmL.wTnt(1:3,4) - pandaArms.ArmL.wTo(1:3,4);
-
+plt.v_obj(:,loop) = pandaArms.v_obj;
+plt.xl(:,loop) = pandaArms.ArmL.x;
+plt.xr(:,loop) = pandaArms.ArmR.x;
 % activation functions
 
 

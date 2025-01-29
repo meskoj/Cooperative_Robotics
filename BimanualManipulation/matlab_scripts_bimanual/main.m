@@ -84,6 +84,11 @@ mission.actions.go_to.tasks = [];
 mission.actions.coop_manip.tasks = [];
 mission.actions.end_motion.tasks = [];
 
+%% Initialization for plotting of the object velocity
+oldwTnt = pandaArms.ArmL.wTo(1:3,4);
+pandaArms.ArmL.wTnt = pandaArms.ArmL.wTo;
+pandaArms.ArmR.wTnt = pandaArms.ArmR.wTo;
+
 %% CONTROL LOOP
 disp('STARTED THE SIMULATION');
 for t = 0:dt:Tf
@@ -163,6 +168,12 @@ for t = 0:dt:Tf
 
     pandaArms.ArmL.x = tool_jacobian_L * pandaArms.ArmL.q_dot;
     pandaArms.ArmR.x = tool_jacobian_R * pandaArms.ArmR.q_dot;
+
+    %% Derivation
+    diff = pandaArms.ArmL.wTnt(1:3,4) - oldwTnt;
+    pandaArms.v_obj = diff / dt;
+    oldwTnt = pandaArms.ArmL.wTnt(1:3,4);
+
     % Integration
     pandaArms.ArmL.q = pandaArms.ArmL.q(1:7) + pandaArms.ArmL.q_dot*dt;
     pandaArms.ArmR.q = pandaArms.ArmR.q(1:7) + pandaArms.ArmR.q_dot*dt;

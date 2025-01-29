@@ -17,9 +17,6 @@ pandaArms.ArmR.wTb = wTb_right;
 pandaArms.ArmL.wTe = pandaArms.ArmL.wTb*pandaArms.ArmL.bTe;
 pandaArms.ArmR.wTe = pandaArms.ArmR.wTb*pandaArms.ArmR.bTe;
 
-pandaArms.ArmL.wTnt = eye(4);
-pandaArms.ArmR.wTnt = eye(4);
-
 % joint limits corresponding to the actual Panda by Franka arm configuration
 pandaArms.jlmin = [-2.8973;-1.7628;-2.8973;-3.0718;-2.8973;-0.0175;-2.8973]';
 pandaArms.jlmax = [2.8973;1.7628;2.8973;-0.0698;2.8973;3.7525;2.8973]';
@@ -71,5 +68,7 @@ pandaArms.ArmR.A.minimumAltitude = 0;
 
 pandaArms.ArmL.A.jointLimits = zeros(7);
 pandaArms.ArmR.A.jointLimits = zeros(7);
+
+pandaArms.v_obj = zeros(3,1);
 end
 
