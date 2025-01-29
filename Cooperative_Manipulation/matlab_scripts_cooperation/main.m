@@ -3,7 +3,7 @@ clc;
 clear;
 close all
 real_robot = false;
-%% Initialization - DON'T CHANGE ANYTHING from HERE ... 
+%% Initialization - DON'T CHANGE ANYTHING from HERE ...
 % Simulation variables (integration and final time)
 deltat = 0.005;
 end_time = 15;
@@ -45,7 +45,7 @@ w_obj_ori = rotation(0,0,0);
 pandaArmL.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];
 pandaArmR.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];
 
-theta = -44.9949;% FIXED ANGLE BETWEEN EE AND TOOL 
+theta = -44.9949;% FIXED ANGLE BETWEEN EE AND TOOL
 tool_length = 0.2124;% FIXED DISTANCE BETWEEN EE AND TOOL
 % Define trasnformation matrix from ee to tool.
 pandaArmL.eTt = [rotation(0, 0, deg2rad(theta)), [0;0;tool_length]; 0 0 0 1];
@@ -57,15 +57,15 @@ pandaArmR.wTt = pandaArmR.wTe * pandaArmR.eTt;
 
 %% Defines the goal position for the end-effector/tool position task
 % First goal reach the grasping points.
-pandaArmL.wTg = [pandaArmL.wTt(1:3,1:3) * rotation(0, deg2rad(20), 0), [w_obj_pos - [obj_length; 0; 0] / 2]; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool 
-pandaArmR.wTg = [pandaArmR.wTt(1:3,1:3) * rotation(0, deg2rad(20), 0), [w_obj_pos + [obj_length; 0; 0] / 2]; 0 0 0 1];                                                          
+pandaArmL.wTg = [pandaArmL.wTt(1:3,1:3) * rotation(0, deg2rad(20), 0), [w_obj_pos - [obj_length; 0; 0] / 2]; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+pandaArmR.wTg = [pandaArmR.wTt(1:3,1:3) * rotation(0, deg2rad(20), 0), [w_obj_pos + [obj_length; 0; 0] / 2]; 0 0 0 1];
 %% Second goal move the object
-pandaArmL.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool 
-pandaArmR.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1];                                                        
-% pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool 
-% pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.60 0.40 0.48]'; 0 0 0 1];                                                          
-% pandaArmL.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool 
-% pandaArmR.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1];                                                          
+pandaArmL.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+pandaArmR.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1];
+% pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+% pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.60 0.40 0.48]'; 0 0 0 1];
+% pandaArmL.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+% pandaArmR.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1];
 
 %% Mission configuration
 
@@ -94,16 +94,16 @@ for t = 0:deltat:end_time
         dataLeft = step(hudprLeft);
         dataRight = step(hudprRight);
         % wait for data (to decide)
-         if t == 0
-             while(isempty(dataLeft))
-                 dataLeft = step(hudprLeft);
-                 pause(deltat);
-             end
-             while(isempty(dataRight))
-                 dataRight = step(hudprRight);
-                 pause(deltat);
-             end
-         end
+        if t == 0
+            while(isempty(dataLeft))
+                dataLeft = step(hudprLeft);
+                pause(deltat);
+            end
+            while(isempty(dataRight))
+                dataRight = step(hudprRight);
+                pause(deltat);
+            end
+        end
         qL = typecast(dataLeft, 'double');
         qR = typecast(dataRight, 'double');
         pandaArmL.q = qL;
@@ -125,7 +125,7 @@ for t = 0:deltat:end_time
     % ydotbarL order is [qdot_1, qdot_2, ..., qdot_7, xdot, ydot, zdot, omega_x, omega_y, omega_z]
     % the vector of the vehicle linear and angular velocities are assumed
     % projected on <v>
-    
+
     ydotbarL = zeros(7,1);
     QpL = eye(7);
     ydotbarR = zeros(7,1);
@@ -144,8 +144,8 @@ for t = 0:deltat:end_time
         tool_jacobian_L = pandaArmL.wJo;
         tool_jacobian_R = pandaArmR.wJo;
     end
-    
-    
+
+
     % ADD minimum distance from table
     % add all the other tasks here!
     % the sequence of iCAT_task calls defines the priority
@@ -163,11 +163,11 @@ for t = 0:deltat:end_time
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.jointLimits, pandaArmR.J.jointLimits, QpR, ydotbarR, pandaArmR.xdot.jointLimits, 0.0001,   0.01, 10);
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.minimumAltitude, pandaArmR.J.minimumAltitude, QpR, ydotbarR, pandaArmR.xdot.minimumAltitude, 0.0001,   0.01, 10);
     if mission.phase == 1
-    [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmR.xdot.moveTool, 0.0001,   0.01, 10);
+        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmR.xdot.moveTool, 0.0001,   0.01, 10);
     else
-    [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmL.xdot.moveTool, 0.0001,   0.01, 10);
+        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmL.xdot.moveTool, 0.0001,   0.01, 10);
     end
-    
+
     % COOPERATION hierarchy
     % SAVE THE NON COOPERATIVE VELOCITIES COMPUTED
     % disp([pandaArmL.xdot.moveTool, pandaArmR.xdot.moveTool]);
@@ -183,7 +183,7 @@ for t = 0:deltat:end_time
     C = [pandaArmL.H -pandaArmR.H];
 
     x_tab = [pandaArmL.H zeros(6);
-             zeros(6) pandaArmR.H] * (eye(12)  -pinv(C) * C) * [coop_vel; coop_vel];
+        zeros(6) pandaArmR.H] * (eye(12)  -pinv(C) * C) * [coop_vel; coop_vel];
 
 
     coopVelL = x_tab(1:6,1);
@@ -199,13 +199,13 @@ for t = 0:deltat:end_time
         [QpL, ydotbarL] = iCAT_task(pandaArmL.A.jointLimits, pandaArmL.J.jointLimits, QpL, ydotbarL, pandaArmL.xdot.jointLimits, 0.0001,   0.01, 10);
         [QpL, ydotbarL] = iCAT_task(pandaArmL.A.minimumAltitude, pandaArmL.J.minimumAltitude, QpL, ydotbarL, pandaArmL.xdot.minimumAltitude, 0.0001,   0.01, 10);
     end
-    
+
     % this task should be the last one
     [QpL, ydotbarL] = iCAT_task(eye(7),...
         eye(7),...
         QpL, ydotbarL,...
         zeros(7,1),...
-        0.0001,   0.01, 10);    
+        0.0001,   0.01, 10);
     % Task: Right Arm Cooperation
     % ...
 
@@ -221,7 +221,7 @@ for t = 0:deltat:end_time
         eye(7),....
         QpR, ydotbarR,...
         zeros(7,1),...
-        0.0001,   0.01, 10);    
+        0.0001,   0.01, 10);
     % get the two variables for integration
     pandaArmL.q_dot = ydotbarL(1:7);
     pandaArmR.q_dot = ydotbarR(1:7);
@@ -230,19 +230,19 @@ for t = 0:deltat:end_time
     pandaArmR.x = tool_jacobian_R * pandaArmR.q_dot;
 
     % Integration
-	pandaArmL.q = pandaArmL.q(1:7) + pandaArmL.q_dot*deltat;    
-    pandaArmR.q = pandaArmR.q(1:7) + pandaArmR.q_dot*deltat;  
+    pandaArmL.q = pandaArmL.q(1:7) + pandaArmL.q_dot*deltat;
+    pandaArmR.q = pandaArmR.q(1:7) + pandaArmR.q_dot*deltat;
 
     %Send udp packets [q_dot1, ..., q_dot7] DO NOT CHANGE
     if real_robot == false
-        pandaArmL.q = pandaArmL.q(1:7) + pandaArmL.q_dot*deltat; 
-        pandaArmR.q = pandaArmR.q(1:7) + pandaArmR.q_dot*deltat; 
+        pandaArmL.q = pandaArmL.q(1:7) + pandaArmL.q_dot*deltat;
+        pandaArmR.q = pandaArmR.q(1:7) + pandaArmR.q_dot*deltat;
     end
     %Send udp packets [q_dot1, ..., q_dot7]
     if real_robot == true
         step(hudpsLeft,[t;pandaArmL.q_dot]);
         step(hudpsRight,[t;pandaArmR.q_dot]);
-    else 
+    else
         step(hudps,[pandaArmL.q',pandaArmR.q'])
     end
 
@@ -259,14 +259,14 @@ for t = 0:deltat:end_time
     loop = loop + 1;
     % add debug prints here
     if (mod(t,0.1) == 0)
-        t 
+        t
         mission.phase
     end
-    
+
     % enable this to have the simulation approximately evolving like real
     % time. Remove to go as fast as possible
     % WARNING: MUST BE ENABLED IF CONTROLLING REAL ROBOT !
     SlowdownToRealtime(deltat);
-    
+
 end
 PrintPlot(plt);

@@ -80,12 +80,14 @@ mission.phase_time = 0;
 % Define the active tasks for each phase of the mission
 % Suggested Name for the task
 % T = move tool task
+% BT = bimanual move tool task
 % JL = joint limits task
 % MA = minimum altitude task
 % RC = rigid constraint task
-mission.actions.go_to.tasks = [];
-mission.actions.coop_manip.tasks = [];
-mission.actions.end_motion.tasks = [];
+% NM = No movement
+mission.actions.go_to = ["T", "JL", "MA"];
+mission.actions.coop_manip = ["BT", "JL", "MA", "RC"];
+mission.actions.end_motion = ["MA", "NM"];
 
 %% CONTROL LOOP
 disp('STARTED THE SIMULATION');

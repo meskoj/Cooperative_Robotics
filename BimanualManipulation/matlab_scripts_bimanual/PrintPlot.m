@@ -12,10 +12,12 @@ subplot(2,1,1);
 hplot = plot(plt.t, plt.q);
 title('LEFT ARM');
 set(hplot, 'LineWidth', 1);
+setLabels(gca, plt, pandaArms);
 legend('q_1','q_2','q_3','q_4','q_5','q_6','q_7','PhaseTransition');
 subplot(2,1,2);
 hplot = plot(plt.t, plt.q_dot);
 set(hplot, 'LineWidth', 1);
+setLabels(gca, plt, pandaArms);
 legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7',"PhaseTransition");
 if saving
     f1.Position = [0,0,1920,1080];

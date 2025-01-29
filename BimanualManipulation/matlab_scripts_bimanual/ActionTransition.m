@@ -4,7 +4,6 @@ function [A] = ActionTransition(taskname, previous, current, time)
 % Takes as input the current task name ("T","RC","JL","MA"), the previous
 % task, the current one and the mission time. If doubts, see the Matlab doc of
 % ismember()
-
 if (ismember(taskname, previous) && ismember(taskname, current))
     A = 1;
 elseif (ismember(taskname, previous) == 0 && ismember(taskname, current))
