@@ -36,4 +36,9 @@ end
 plt.relativeDistance(:, loop) = pandaArm1.wTt(1:3, 4) - pandaArm2.wTt(1:3, 4);
 plt.transitionTimes = mission.transitionTimes;
 
+plt.coopVelL(:,loop) = pandaArm1.coopVel;
+plt.nonCoopVelL(:,loop) = pandaArm1.nonCoopVel;
+
+plt.coopVelR(:,loop) = pandaArm2.coopVel;
+plt.nonCoopVelR(:,loop) = pandaArm2.nonCoopVel;
 end

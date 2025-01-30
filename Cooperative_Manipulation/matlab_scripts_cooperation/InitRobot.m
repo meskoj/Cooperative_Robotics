@@ -27,9 +27,9 @@ pandaArm.Jjl = [];
 pandaArm.delta_perc = 0.1;
 pandaArm.A.jointLimits = zeros(7);
 pandaArm.xdot.jointLimits = zeros(7,1);
-pandaArm.A.rigidConstraint = zeros(6);
-pandaArm.J.rigidConstraint = zeros(6,7);
-pandaArm.xdot.rigidConstraint = zeros(6,1);
+pandaArm.A.moveToolWithConstraint = zeros(6);
+pandaArm.J.moveToolWithConstraint = zeros(6,7);
+pandaArm.xdot.moveToolWithConstraint = zeros(6,1);
 pandaArm.r_to = [];
 pandaArm.r_to = [];
 

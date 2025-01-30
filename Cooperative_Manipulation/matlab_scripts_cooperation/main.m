@@ -63,11 +63,16 @@ pandaArmR.wTg = [pandaArmR.wTt(1:3,1:3) * rotation(0, deg2rad(20), 0), [w_obj_po
 %% DEBUG
 pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1];
+
 % pandaArmL.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 % pandaArmR.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1];
 
-% pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-% pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.60 0.40 0.48]'; 0 0 0 1];
+% pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.0 0.00 0.38]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+% pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.0 0.00 0.38]'; 0 0 0 1];
+
+%% G2
+% pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.4 0 0]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+% pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.4 0 0]'; 0 0 0 1];
 
 % pandaArmL.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 % pandaArmR.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1];
@@ -169,7 +174,11 @@ for t = 0:deltat:end_time
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.stopAll, eye(7), QpR, ydotbarR, pandaArmR.xdot.stopAll, 0.0001,   0.01, 10);
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.jointLimits, pandaArmR.J.jointLimits, QpR, ydotbarR, pandaArmR.xdot.jointLimits, 0.0001,   0.01, 10);
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.minimumAltitude, pandaArmR.J.minimumAltitude, QpR, ydotbarR, pandaArmR.xdot.minimumAltitude, 0.0001,   0.01, 10);
-    [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmR.xdot.moveTool, 0.0001,   0.01, 10);
+    % if mission.phase == 1
+        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmR.xdot.moveTool, 0.0001,   0.01, 10);
+    % else
+    %     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmL.xdot.moveTool, 0.0001,   0.01, 10);
+    % end
 
     % COOPERATION hierarchy
     % SAVE THE NON COOPERATIVE VELOCITIES COMPUTED
@@ -193,13 +202,19 @@ for t = 0:deltat:end_time
     coopVelL = x_tab(1:6);
     coopVelR = x_tab(7:12);
 
+    pandaArmL.coopVel = coopVelL;
+    pandaArmL.nonCoopVel = xtl;
+
+    pandaArmR.coopVel = coopVelR;
+    pandaArmR.nonCoopVel = xtr;
+
     % Task: Left Arm Cooperation
     % ...
 
     if mission.phase == 2
         ydotbarL = zeros(7,1);
         QpL = eye(7);
-        [QpL, ydotbarL] = iCAT_task(pandaArmL.A.rigidConstraint, pandaArmL.J.moveTool, QpL, ydotbarL, coopVelL, 0.0001,   0.01, 10);
+        [QpL, ydotbarL] = iCAT_task(pandaArmL.A.moveToolWithConstraint, pandaArmL.J.moveTool, QpL, ydotbarL, coopVelL, 0.0001,   0.01, 10);
         [QpL, ydotbarL] = iCAT_task(pandaArmL.A.jointLimits, pandaArmL.J.jointLimits, QpL, ydotbarL, pandaArmL.xdot.jointLimits, 0.0001,   0.01, 10);
         [QpL, ydotbarL] = iCAT_task(pandaArmL.A.minimumAltitude, pandaArmL.J.minimumAltitude, QpL, ydotbarL, pandaArmL.xdot.minimumAltitude, 0.0001,   0.01, 10);
     end
@@ -216,7 +231,7 @@ for t = 0:deltat:end_time
     if mission.phase == 2
         ydotbarR = zeros(7,1);
         QpR = eye(7);
-        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.rigidConstraint, pandaArmR.J.moveTool, QpR, ydotbarR, coopVelR, 0.0001,   0.01, 10);
+        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveToolWithConstraint, pandaArmR.J.moveTool, QpR, ydotbarR, coopVelR, 0.0001,   0.01, 10);
         [QpR, ydotbarR] = iCAT_task(pandaArmR.A.jointLimits, pandaArmR.J.jointLimits, QpR, ydotbarR, pandaArmR.xdot.jointLimits, 0.0001,   0.01, 10);
         [QpR, ydotbarR] = iCAT_task(pandaArmR.A.minimumAltitude, pandaArmR.J.minimumAltitude, QpR, ydotbarR, pandaArmR.xdot.minimumAltitude, 0.0001,   0.01, 10);
     end

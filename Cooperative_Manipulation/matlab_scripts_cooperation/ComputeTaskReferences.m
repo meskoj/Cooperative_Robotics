@@ -34,7 +34,7 @@ switch mission.phase
         pandaArm.xdot.moveTool(4:6) = Saturate(pandaArm.xdot.moveTool(4:6), 1);    
         
         % Rigid Grasp Constraint
-        pandaArm.xdot.rigidConstraint = zeros(6,1);
+        pandaArm.xdot.moveToolWithConstraint = zeros(6,1);
 
     case 3
         % Stop any motions
