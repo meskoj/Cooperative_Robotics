@@ -40,6 +40,7 @@ pandaArm.tSo = [];
 pandaArm.H = eye(6);
 pandaArm.H = eye(6);
 pandaArm.A.stopAll = zeros(7);
+pandaArm.xdot.stopAll = zeros(7,1);
 
 % Init Activation function for activate or deactivate tasks
 

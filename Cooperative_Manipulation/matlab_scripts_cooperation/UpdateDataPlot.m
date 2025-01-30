@@ -33,7 +33,7 @@ else
 
 end
 
-% Plot: manipulability task activation function
 plt.relativeDistance(:, loop) = pandaArm1.wTt(1:3, 4) - pandaArm2.wTt(1:3, 4);
+plt.transitionTimes = mission.transitionTimes;
 
 end

@@ -6,7 +6,7 @@ real_robot = false;
 %% Initialization - DON'T CHANGE ANYTHING from HERE ...
 % Simulation variables (integration and final time)
 deltat = 0.005;
-end_time = 15;
+end_time = 20;
 loop = 1;
 maxloops = ceil(end_time/deltat);
 mission.phase = 1;
@@ -60,10 +60,15 @@ pandaArmR.wTt = pandaArmR.wTe * pandaArmR.eTt;
 pandaArmL.wTg = [pandaArmL.wTt(1:3,1:3) * rotation(0, deg2rad(20), 0), [w_obj_pos - [obj_length; 0; 0] / 2]; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 pandaArmR.wTg = [pandaArmR.wTt(1:3,1:3) * rotation(0, deg2rad(20), 0), [w_obj_pos + [obj_length; 0; 0] / 2]; 0 0 0 1];
 %% Second goal move the object
-pandaArmL.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-pandaArmR.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1];
+%% DEBUG
+pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1];
+% pandaArmL.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+% pandaArmR.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1];
+
 % pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 % pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.60 0.40 0.48]'; 0 0 0 1];
+
 % pandaArmL.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 % pandaArmR.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1];
 
@@ -74,6 +79,8 @@ mission.current_action = "go_to";
 
 mission.phase = 1;
 mission.phase_time = 0;
+mission.wall_time = 0;
+mission.transitionTimes = [];
 % Define the active tasks for each phase of the mission
 % T = move tool task
 % JL = joint limits task
@@ -162,11 +169,7 @@ for t = 0:deltat:end_time
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.stopAll, eye(7), QpR, ydotbarR, pandaArmR.xdot.stopAll, 0.0001,   0.01, 10);
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.jointLimits, pandaArmR.J.jointLimits, QpR, ydotbarR, pandaArmR.xdot.jointLimits, 0.0001,   0.01, 10);
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.minimumAltitude, pandaArmR.J.minimumAltitude, QpR, ydotbarR, pandaArmR.xdot.minimumAltitude, 0.0001,   0.01, 10);
-    if mission.phase == 1
-        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmR.xdot.moveTool, 0.0001,   0.01, 10);
-    else
-        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmL.xdot.moveTool, 0.0001,   0.01, 10);
-    end
+    [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmR.xdot.moveTool, 0.0001,   0.01, 10);
 
     % COOPERATION hierarchy
     % SAVE THE NON COOPERATIVE VELOCITIES COMPUTED
@@ -174,9 +177,10 @@ for t = 0:deltat:end_time
     xtl = tool_jacobian_L * ydotbarL;
     xtr = tool_jacobian_R * ydotbarR;
 
-    mu_l = 0.00001 + norm(pandaArmL.xdot.moveTool - xtl);
-    mu_r = 0.00001 + norm(pandaArmL.xdot.moveTool - xtr);
-    disp([mu_l, mu_r]);
+    mu_0 = 0.001;
+    mu_l = mu_0 + norm(pandaArmL.xdot.moveTool - xtl);
+    mu_r = mu_0 + norm(pandaArmL.xdot.moveTool - xtr);
+    % disp([mu_l, mu_r]);
 
     coop_vel = (1 / (mu_l + mu_r)) * (mu_l * xtl + mu_r * xtr);
 
@@ -186,8 +190,8 @@ for t = 0:deltat:end_time
         zeros(6) pandaArmR.H] * (eye(12)  -pinv(C) * C) * [coop_vel; coop_vel];
 
 
-    coopVelL = x_tab(1:6,1);
-    coopVelR = x_tab(7:12,1);
+    coopVelL = x_tab(1:6);
+    coopVelR = x_tab(7:12);
 
     % Task: Left Arm Cooperation
     % ...
@@ -248,6 +252,7 @@ for t = 0:deltat:end_time
 
     % check if the mission phase should be changed
     mission.phase_time = mission.phase_time + deltat;
+    mission.wall_time = mission.wall_time + deltat;
     [pandaArmL,pandaArmR,mission] = UpdateMissionPhase(pandaArmL,pandaArmR,mission);
 
     % Compute distance between tools for plotting

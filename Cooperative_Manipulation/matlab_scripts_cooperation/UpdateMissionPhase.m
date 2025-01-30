@@ -32,8 +32,8 @@ switch mission.phase
 
             pandaArmL.tTnt = [eye(3), t_r_to_left; 0 0 0 1];
             pandaArmR.tTnt = [eye(3), t_r_to_right; 0 0 0 1];
+            mission.transitionTimes(1) = mission.wall_time;
         end
-
     case 2 % Cooperative Manipulation Start
         % computing the errors for the rigid move-to task
 
@@ -44,6 +44,7 @@ switch mission.phase
         if norm(angL) < deg2rad(3) && norm(angR) < deg2rad(3) && norm(linL) < 0.01 && norm(linR) < 0.01
             mission.phase = 3;
             mission.phase_time = 0;
+            mission.transitionTimes(2) = mission.wall_time;
         end
     case 3 % Finish motion
 
