@@ -93,8 +93,7 @@ mission.transitionTimes = [];
 % RC = rigid constraint task
 mission.actions.go_to.tasks = ["T", "MA", "JL"];
 mission.actions.coop_manip.tasks = ["T", "JL", "MA", "RC"];
-mission.actions.end_motion.tasks = ["MA"];
-
+mission.actions.end_motion.tasks = ["MA", "NM"];
 mu_l = 0.5;
 mu_r = 0.5;
 
@@ -161,7 +160,6 @@ for t = 0:deltat:end_time
     % ADD minimum distance from table
     % add all the other tasks here!
     % the sequence of iCAT_task calls defines the priority
-
     % First Manipulator TPIK (left)
     % Task: Tool Move-To
     [QpL, ydotbarL] = iCAT_task(pandaArmL.A.stopAll, eye(7), QpL, ydotbarL, pandaArmL.xdot.stopAll, 0.0001,   0.01, 10);
@@ -174,11 +172,11 @@ for t = 0:deltat:end_time
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.stopAll, eye(7), QpR, ydotbarR, pandaArmR.xdot.stopAll, 0.0001,   0.01, 10);
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.jointLimits, pandaArmR.J.jointLimits, QpR, ydotbarR, pandaArmR.xdot.jointLimits, 0.0001,   0.01, 10);
     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.minimumAltitude, pandaArmR.J.minimumAltitude, QpR, ydotbarR, pandaArmR.xdot.minimumAltitude, 0.0001,   0.01, 10);
-    % if mission.phase == 1
+    if mission.phase == 1
         [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmR.xdot.moveTool, 0.0001,   0.01, 10);
-    % else
-    %     [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmL.xdot.moveTool, 0.0001,   0.01, 10);
-    % end
+    else
+        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, pandaArmL.xdot.moveTool, 0.0001,   0.01, 10);
+    end
 
     % COOPERATION hierarchy
     % SAVE THE NON COOPERATIVE VELOCITIES COMPUTED
@@ -214,7 +212,7 @@ for t = 0:deltat:end_time
     if mission.phase == 2
         ydotbarL = zeros(7,1);
         QpL = eye(7);
-        [QpL, ydotbarL] = iCAT_task(pandaArmL.A.moveToolWithConstraint, pandaArmL.J.moveTool, QpL, ydotbarL, coopVelL, 0.0001,   0.01, 10);
+        [QpL, ydotbarL] = iCAT_task(pandaArmL.A.moveTool, pandaArmL.J.moveTool, QpL, ydotbarL, coopVelL, 0.0001,   0.01, 10);
         [QpL, ydotbarL] = iCAT_task(pandaArmL.A.jointLimits, pandaArmL.J.jointLimits, QpL, ydotbarL, pandaArmL.xdot.jointLimits, 0.0001,   0.01, 10);
         [QpL, ydotbarL] = iCAT_task(pandaArmL.A.minimumAltitude, pandaArmL.J.minimumAltitude, QpL, ydotbarL, pandaArmL.xdot.minimumAltitude, 0.0001,   0.01, 10);
     end
@@ -231,7 +229,7 @@ for t = 0:deltat:end_time
     if mission.phase == 2
         ydotbarR = zeros(7,1);
         QpR = eye(7);
-        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveToolWithConstraint, pandaArmR.J.moveTool, QpR, ydotbarR, coopVelR, 0.0001,   0.01, 10);
+        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, coopVelR, 0.0001,   0.01, 10);
         [QpR, ydotbarR] = iCAT_task(pandaArmR.A.jointLimits, pandaArmR.J.jointLimits, QpR, ydotbarR, pandaArmR.xdot.jointLimits, 0.0001,   0.01, 10);
         [QpR, ydotbarR] = iCAT_task(pandaArmR.A.minimumAltitude, pandaArmR.J.minimumAltitude, QpR, ydotbarR, pandaArmR.xdot.minimumAltitude, 0.0001,   0.01, 10);
     end

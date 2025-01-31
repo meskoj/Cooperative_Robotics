@@ -47,11 +47,9 @@ plt.rightJointLimitsActivation(:,loop) = diag(pandaArm2.A.jointLimits);
 
 plt.leftActivationFunctions(1, loop) = pandaArm1.A.minimumAltitude;
 plt.leftActivationFunctions(2, loop) = pandaArm1.A.moveTool(1);
-plt.leftActivationFunctions(3, loop) = pandaArm1.A.moveToolWithConstraint(1);
-plt.leftActivationFunctions(4, loop) = pandaArm1.A.stopAll(1);
+plt.leftActivationFunctions(3, loop) = pandaArm1.A.stopAll(1);
 
 plt.rightActivationFunctions(1, loop) = pandaArm2.A.minimumAltitude;
 plt.rightActivationFunctions(2, loop) = pandaArm2.A.moveTool(1);
-plt.rightActivationFunctions(3, loop) = pandaArm2.A.moveToolWithConstraint(1);
-plt.rightActivationFunctions(4, loop) = pandaArm2.A.stopAll(1);
+plt.rightActivationFunctions(3, loop) = pandaArm2.A.stopAll(1);
 end

@@ -9,6 +9,7 @@ switch mission.phase
         % disp([norm(angL) ,norm(angR), norm(linL), norm(linR)])
         if norm(angL) < deg2rad(1) && norm(angR) < deg2rad(1) && norm(linL) < 0.001 && norm(linR) < 0.001
             mission.current_action = "coop_manip";
+            mission.prev_action = "go_to";
             mission.phase_time = 0;
             mission.phase = 2;
 
@@ -37,11 +38,12 @@ switch mission.phase
     case 2 % Cooperative Manipulation Start
         % computing the errors for the rigid move-to task
 
-        mission.prev_action = "coop_manip";
         % max error: 1 cm and 3deg
         [angL,linL] = CartError(pandaArmL.wTog, pandaArmL.wTt);
         [angR,linR] = CartError(pandaArmR.wTog, pandaArmR.wTt);
         if norm(angL) < deg2rad(3) && norm(angR) < deg2rad(3) && norm(linL) < 0.01 && norm(linR) < 0.01
+            mission.prev_action = "coop_manip";
+            mission.current_action = "end_motion";
             mission.phase = 3;
             mission.phase_time = 0;
             mission.transitionTimes(2) = mission.wall_time;

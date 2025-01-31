@@ -12,12 +12,18 @@ hplot = plot(plt.t, plt.q);
 title('LEFT ARM');
 set(hplot, 'LineWidth', 4);
 setLabels(gca, plt);
-legend('q_1','q_2','q_3','q_4','q_5','q_6','q_7',"PhaseTransition");
+xlabel("s")
+ylabel("rad")
+l = legend('q_1','q_2','q_3','q_4','q_5','q_6','q_7',"PhaseTransition");
+l.Location = "northwest";
 subplot(2,1,2);
+xlabel("s")
+ylabel("rad/s")
 hplot = plot(plt.t, plt.q_dot);
 set(hplot, 'LineWidth', 4);
 setLabels(gca, plt);
-legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7',"PhaseTransition");
+l = legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7',"PhaseTransition");
+l.Location = "northwest";
 if saving
     f1.Position = [0,0,1920,1080];
     saveas(f1, basePath+"JointPosVelL.png");
@@ -28,13 +34,19 @@ subplot(2,1,1);
 hplot = plot(plt.t, plt.q2);
 title('RIGHT ARM');
 set(hplot, 'LineWidth', 4);
+xlabel("s")
+xlabel("rad")
 setLabels(gca, plt);
-legend('q_1','q_2','q_3','q_4','q_5','q_6','q_7', "PhaseTransition");
+l = legend('q_1','q_2','q_3','q_4','q_5','q_6','q_7', "PhaseTransition");
+l.Location = "northwest";
 subplot(2,1,2);
 hplot = plot(plt.t, plt.q_dot2);
 set(hplot, 'LineWidth', 4);
+xlabel("s")
+ylabel("rad/s")
 setLabels(gca, plt);
-legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7', "PhaseTransition");
+l = legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7', "PhaseTransition");
+l.Location = "northwest";
 if saving
     f2.Position = [0,0,1920,1080];
     saveas(f2, basePath+"JointPosVelR.png");
@@ -43,16 +55,20 @@ end
 f3 = figure('Name', 'ArmsLinError');
 subplot(2,1,1);
 hplot = plot(plt.t, plt.secondGoalErrorL);
-title('left arm');
+title('Linear error to goal left arm');
 set(hplot, 'LineWidth', 4);
 setLabels(gca, plt);
-legend('x','y','z', "PhaseTransition");
+l = legend('x','y','z', "PhaseTransition");
+l.Location = "southwest";
+xlabel("s")
+ylabel("m")
 subplot(2,1,2);
 hplot = plot(plt.t, plt.secondGoalErrorR);
-title('right arm');
+title('Linear error to goal right arm');
 set(hplot, 'LineWidth', 4);
 setLabels(gca, plt);
-legend('x','y','z', "PhaseTransition");
+l = legend('x','y','z', "PhaseTransition");
+l.Location = "southwest";
 if saving
     f3.Position = [0,0,1920,1080];
     saveas(f3, basePath+"LinearErrorArmGoal.png");
@@ -63,9 +79,12 @@ f4 = figure('Name', 'RelativeDistance');
 subplot(1,1,1);
 hplot = plot(plt.t, plt.relativeDistance);
 title('Relative Distance');
+xlabel("s");
+ylabel("m");
 set(hplot, 'LineWidth', 4);
 setLabels(gca, plt);
-legend('x','y','z', "PhaseTransition");
+l = legend('x','y','z', "PhaseTransition");
+l.Location = "southeast";
 if saving
     f4.Position = [0,0,1920,1080];
     saveas(f4, basePath+"RelDistanceG2.png");
@@ -77,14 +96,20 @@ hplot = plot(plt.t, [plt.coopVelL(4:6,:); plt.nonCoopVelL(4:6,:)]);
 title("Coop and not Coop Linear Vel Left");
 set(hplot, 'LineWidth', 4);
 setLabels(gca, plt);
-legend("x_c","y_c","z_c","x_nc","y_nc","z_nc", "PhaseTransition");
+xlabel("s");
+ylabel("m/s");
+l = legend("x_c","y_c","z_c","x_nc","y_nc","z_nc", "PhaseTransition");
+l.Location = "northwest";
 subplot(2,1,2)
 hplot = plot(plt.t, [plt.coopVelL(1:3,:); plt.nonCoopVelL(1:3,:)]);
 setLabels(gca, plt);
 set(hplot, 'LineWidth', 4);
 title("Coop and not Coop Angular Vel Left");
+xlabel("s");
+ylabel("rad/s");
 setLabels(gca, plt);
-legend("wx_c","wy_c","wz_c","wx_nc","wy_nc","wz_nc", "PhaseTransition");
+l = legend("wx_c","wy_c","wz_c","wx_nc","wy_nc","wz_nc", "PhaseTransition");
+l.Location = "northwest";
 if saving
     f5.Position = [0,0,1920,1080];
     saveas(f5, basePath+"CoopNotCoopLeftG2.png");
@@ -95,14 +120,20 @@ subplot(2,1,1)
 hplot = plot(plt.t, [plt.coopVelR(4:6,:); plt.nonCoopVelR(4:6,:)]);
 title("Coop and not Coop Linear Vel Right");
 set(hplot, 'LineWidth', 4);
+xlabel("s");
+ylabel("m/s");
 setLabels(gca, plt);
-legend("x_c","y_c","z_c","x_nc","y_nc","z_nc", "PhaseTransition");
+l = legend("x_c","y_c","z_c","x_nc","y_nc","z_nc", "PhaseTransition");
+l.Location = "northwest";
 subplot(2,1,2)
 hplot = plot(plt.t, [plt.coopVelR(1:3,:); plt.nonCoopVelR(1:3,:)]);
 set(hplot, 'LineWidth', 4);
 title("Coop and not Coop Angular Vel Right");
 setLabels(gca, plt);
-legend("wx_c","wy_c","wz_c","wx_nc","wy_nc","wz_nc", "PhaseTransition");
+xlabel("s");
+ylabel("rad/s");
+l = legend("wx_c","wy_c","wz_c","wx_nc","wy_nc","wz_nc", "PhaseTransition");
+l.Location = "northwest";
 if saving
     f6.Position = [0,0,1920,1080];
     saveas(f6, basePath+"CoopNotCoopRightG2.png");
@@ -115,14 +146,16 @@ hplot = plot(plt.t, plt.leftJointLimitsActivation);
 set(hplot, 'LineWidth', 4);
 setLabels(gca, plt)
 xlabel("s")
-legend("JL1", "JL2", "JL3", "JL4", "JL5", "JL6", "JL7", "Phase transition");
+l = legend("JL1", "JL2", "JL3", "JL4", "JL5", "JL6", "JL7", "Phase transition");
+l.Location = "northwest";
 title("Left joint limits activation functions")
 subplot(2,1,2);
 hplot = plot(plt.t, plt.rightJointLimitsActivation);
 set(hplot, 'LineWidth', 4);
 setLabels(gca, plt)
 xlabel("s")
-legend("JL1", "JL2", "JL3", "JL4", "JL5", "JL6", "JL7", "Phase transition");
+l = legend("JL1", "JL2", "JL3", "JL4", "JL5", "JL6", "JL7", "Phase transition");
+l.Location = "northwest";
 title("Right joint limits activation functions")
 if saving
     f7.Position = [0,0,1920,1080];
@@ -137,9 +170,10 @@ hplot = plot(plt.t, plt.leftActivationFunctions);
 set(hplot, 'LineWidth', 4);
 setLabels(gca, plt)
 xlabel("s")
-legend("Minimum Altitude", "Move Tool", "MT Constraint", "Stop All", "Phase transition");
+l = legend("Minimum Altitude", "Move Tool", "Stop All", "Phase transition");
+l.Location = "northwest";
 nameArray = {'LineStyle'};
-valueArray = transpose({'-','--',':','--'});
+valueArray = transpose({'-','--',':'});
 set(hplot, nameArray, valueArray)
 title("Left Robot Activation Functions")
 subplot(2,1,2);
@@ -147,9 +181,10 @@ hplot = plot(plt.t, plt.rightActivationFunctions);
 set(hplot, 'LineWidth', 4);
 setLabels(gca, plt)
 xlabel("s")
-legend("Minimum Altitude", "Move Tool", "MT Constraint", "Stop All", "Phase transition");
+l = legend("Minimum Altitude", "Move Tool", "Stop All", "Phase transition");
+l.Location = "northwest";
 nameArray = {'LineStyle'};
-valueArray = transpose({'-','--',':','--'});
+valueArray = transpose({'-','--',':'});
 set(hplot, nameArray, valueArray)
 title("Right Robot Activation Functions")
 if saving
@@ -167,7 +202,7 @@ strLabels = insert('Phase 1', strLabels, max(1, find(auxArr == plt.transitionTim
 if length(plt.transitionTimes) == 2
     strLabels = insert('Phase 2', strLabels, max(1,find(auxArr == plt.transitionTimes(2))-1));
 end
-strLabels(find(auxArr == 16)) = {""};
+strLabels(find(auxArr == 9)) = {""};
 auxLabels = strLabels';
 set(currentAxis, 'xtick', auxArr, 'xticklabel', auxLabels)
 xtickangle(45)

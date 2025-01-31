@@ -12,7 +12,7 @@ function [plt] = InitDataPlot( maxloops)
     plt.relativeDistance = zeros(3, maxloops);
 
     plt.leftJointLimitsActivation = zeros(7, maxloops);
-    plt.leftActivationFunctions = zeros(4, maxloops);
-    plt.rightActivationFunctions = zeros(4, maxloops);
+    plt.leftActivationFunctions = zeros(3, maxloops);
+    plt.rightActivationFunctions = zeros(3, maxloops);
 end
 
