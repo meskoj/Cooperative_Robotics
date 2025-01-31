@@ -89,6 +89,7 @@ if saving
     f5.Position = [0,0,1920,1080];
     saveas(f5, basePath+"CoopNotCoopLeftG2.png");
 end
+
 f6 = figure("Name", "Coop and not Coop Right");
 subplot(2,1,1)
 hplot = plot(plt.t, [plt.coopVelR(4:6,:); plt.nonCoopVelR(4:6,:)]);
@@ -106,19 +107,69 @@ if saving
     f6.Position = [0,0,1920,1080];
     saveas(f6, basePath+"CoopNotCoopRightG2.png");
 end
+
+f7 = figure(7);
+% This was necessary because of the wrong initialization of the sensor distance
+subplot(2,1,1);
+hplot = plot(plt.t, plt.leftJointLimitsActivation);
+set(hplot, 'LineWidth', 4);
+setLabels(gca, plt)
+xlabel("s")
+legend("JL1", "JL2", "JL3", "JL4", "JL5", "JL6", "JL7", "Phase transition");
+title("Left joint limits activation functions")
+subplot(2,1,2);
+hplot = plot(plt.t, plt.rightJointLimitsActivation);
+set(hplot, 'LineWidth', 4);
+setLabels(gca, plt)
+xlabel("s")
+legend("JL1", "JL2", "JL3", "JL4", "JL5", "JL6", "JL7", "Phase transition");
+title("Right joint limits activation functions")
+if saving
+    f7.Position = [0,0,1920,1080];
+    saveas(f7, baseFolder+"LeftJLActivationFunctions.png")
 end
+
+
+f8 = figure(8);
+% This was necessary because of the wrong initialization of the sensor distance
+subplot(2,1,1);
+hplot = plot(plt.t, plt.leftActivationFunctions);
+set(hplot, 'LineWidth', 4);
+setLabels(gca, plt)
+xlabel("s")
+legend("Minimum Altitude", "Move Tool", "MT Constraint", "Stop All", "Phase transition");
+nameArray = {'LineStyle'};
+valueArray = transpose({'-','--',':','--'});
+set(hplot, nameArray, valueArray)
+title("Left Robot Activation Functions")
+subplot(2,1,2);
+hplot = plot(plt.t, plt.rightActivationFunctions);
+set(hplot, 'LineWidth', 4);
+setLabels(gca, plt)
+xlabel("s")
+legend("Minimum Altitude", "Move Tool", "MT Constraint", "Stop All", "Phase transition");
+nameArray = {'LineStyle'};
+valueArray = transpose({'-','--',':','--'});
+set(hplot, nameArray, valueArray)
+title("Right Robot Activation Functions")
+if saving
+    f8.Position = [0,0,1920,1080];
+    saveas(f8, baseFolder+"ActivationFunctions.png")
+end
+end
+
 function setLabels(currentAxis, plt)
-    xline(plt.transitionTimes, 'k--', 'LineWidth', 2, 'DisplayName', "Phase Transition");
-    insert = @(a, x, n)cat(2,  x(1:n), a, x(n+1:end));
-    auxArr = sort([0:1:plt.t(end), plt.transitionTimes]);
-    strLabels=arrayfun(@(a)num2str(a),(0:1:plt.t(end)),'uni',0);
-    strLabels = insert('Phase 1', strLabels, max(1, find(auxArr == plt.transitionTimes(1))-1));
-    if length(plt.transitionTimes) == 2
-        strLabels = insert('Phase 2', strLabels, max(1,find(auxArr == plt.transitionTimes(2))-1));
-    end
-    strLabels(find(auxArr == 16)) = {""};
-    auxLabels = strLabels';
-    set(currentAxis, 'xtick', auxArr, 'xticklabel', auxLabels)
-    xtickangle(45)
-    set(currentAxis,'fontsize',20)
+xline(plt.transitionTimes, 'k--', 'LineWidth', 2, 'DisplayName', "Phase Transition");
+insert = @(a, x, n)cat(2,  x(1:n), a, x(n+1:end));
+auxArr = sort([0:1:plt.t(end), plt.transitionTimes]);
+strLabels=arrayfun(@(a)num2str(a),(0:1:plt.t(end)),'uni',0);
+strLabels = insert('Phase 1', strLabels, max(1, find(auxArr == plt.transitionTimes(1))-1));
+if length(plt.transitionTimes) == 2
+    strLabels = insert('Phase 2', strLabels, max(1,find(auxArr == plt.transitionTimes(2))-1));
+end
+strLabels(find(auxArr == 16)) = {""};
+auxLabels = strLabels';
+set(currentAxis, 'xtick', auxArr, 'xticklabel', auxLabels)
+xtickangle(45)
+set(currentAxis,'fontsize',20)
 end
