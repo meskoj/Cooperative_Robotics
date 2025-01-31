@@ -40,7 +40,7 @@ plt = InitDataPlot(maxloops);
 
 % Init object frame
 obj_length = 0.06;
-w_obj_pos = [0.5 0 0.30]';
+w_obj_pos = [0.5 0 0.59]';
 w_obj_ori = rotation(0,0,0);
 pandaArmL.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];
 pandaArmR.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];

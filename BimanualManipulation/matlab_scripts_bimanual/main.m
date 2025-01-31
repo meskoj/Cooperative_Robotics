@@ -40,7 +40,6 @@ pandaArms = InitRobot(model,wTb_left,wTb_right);
 % Init object and tools frames
 obj_length = 0.12;
 w_obj_pos = [0.5 0 0.59]';
-% w_obj_pos = [0.0 0 0.0]';
 w_obj_ori = rotation(0,0,0);
 pandaArms.ArmL.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];
 pandaArms.ArmR.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];
