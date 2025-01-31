@@ -70,12 +70,13 @@ pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.6
 % pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.0 0.00 0.38]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 % pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.0 0.00 0.38]'; 0 0 0 1];
 
-%% G2
-% pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.4 0 0]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-% pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.4 0 0]'; 0 0 0 1];
-
 % pandaArmL.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 % pandaArmR.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1];
+
+%% G2
+% pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.3 0 0]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+% pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.3 0 0]'; 0 0 0 1];
+
 
 %% Mission configuration
 
