@@ -3,7 +3,7 @@ function [ ] = PrintPlot( plt, pandaArms )
 % some predefined plots
 % you can add your own
 
-saving = true;
+saving = false;
 basePath = "~/Documents/RobotEngPersonal/Y2S1/COOP/Franka/BimanualManipulation/matlab_scripts_bimanual/Images/";
 
 f1 = figure('Name', 'Joint position and velocity Left Arm');
