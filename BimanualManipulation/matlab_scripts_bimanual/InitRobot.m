@@ -72,8 +72,8 @@ pandaArms.ArmR.A.minimumAltitude = 0;
 pandaArms.ArmL.A.jointLimits = zeros(7);
 pandaArms.ArmR.A.jointLimits = zeros(7);
 
-pandaArms.v_objL = zeros(3,1);
-pandaArms.v_objR = zeros(3,1);
+pandaArms.v_objL = zeros(6,1);
+pandaArms.v_objR = zeros(6,1);
 
 pandaArms.transitionTimes = [];
 end

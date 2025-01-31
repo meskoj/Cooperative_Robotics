@@ -70,6 +70,10 @@ pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 
 % pandaArms.ArmL.wTog = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [1.0 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 % pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [1.0 -0.35 0.28]'; 0 0 0 1];
 
+%% G2
+% pandaArms.ArmL.wTog = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.4 0.0 0.3]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+% pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.4 0.0 0.3]'; 0 0 0 1];
+
 %% Mission configuration
 
 mission.prev_action = "go_to";
