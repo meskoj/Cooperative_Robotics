@@ -92,9 +92,6 @@ title('Left Linear vel object and tool');
 set(hplot, 'LineWidth', 4);
 xlabel("s")
 ylabel("m/s")
-% nameArray = {'LineStyle'};
-% valueArray = transpose({'-','-','-','--','--','--',':',':',':'});
-% set(hplot, nameArray, valueArray)
 setLabels(gca, plt, pandaArms);
 l = legend('objectLinVel.x','objectLinVel.y','objectLinVel.z','leftLinVel.x','leftLinVel.y','leftLinVel.z','PhaseTransition');
 l.Location = "northeastoutside";
@@ -104,9 +101,6 @@ xlabel("s")
 ylabel("rad/s")
 title('Left Angular vel object and tool');
 set(hplot, 'LineWidth', 4);
-% nameArray = {'LineStyle'};
-% valueArray = transpose({'-','-','-','--','--','--',':',':',':'});
-% set(hplot, nameArray, valueArray)
 setLabels(gca, plt, pandaArms);
 l = legend('objectAngVel.x','objectAngVel.y','objectAngVel.z','leftAngVel.x','leftAngVel.y','leftAngVel.z','PhaseTransition');
 l.Location = "northeastoutside";

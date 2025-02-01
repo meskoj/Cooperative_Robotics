@@ -52,4 +52,7 @@ plt.leftActivationFunctions(3, loop) = pandaArm1.A.stopAll(1);
 plt.rightActivationFunctions(1, loop) = pandaArm2.A.minimumAltitude;
 plt.rightActivationFunctions(2, loop) = pandaArm2.A.moveTool(1);
 plt.rightActivationFunctions(3, loop) = pandaArm2.A.stopAll(1);
+
+plt.leftObjVel(:, loop) = pandaArm1.xdot.moveTool;
+plt.rightObjVel(:, loop) = pandaArm2.xdot.moveTool;
 end

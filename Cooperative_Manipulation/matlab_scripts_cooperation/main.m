@@ -91,9 +91,8 @@ mission.transitionTimes = [];
 % T = move tool task
 % JL = joint limits task
 % MA = minimum altitude task
-% RC = rigid constraint task
 mission.actions.go_to.tasks = ["T", "MA", "JL"];
-mission.actions.coop_manip.tasks = ["T", "JL", "MA", "RC"];
+mission.actions.coop_manip.tasks = ["T", "JL", "MA"];
 mission.actions.end_motion.tasks = ["MA", "NM"];
 mu_l = 0.5;
 mu_r = 0.5;
@@ -270,6 +269,5 @@ for t = 0:deltat:end_time
     % time. Remove to go as fast as possible
     % WARNING: MUST BE ENABLED IF CONTROLLING REAL ROBOT !
     SlowdownToRealtime(deltat);
-
 end
 PrintPlot(plt);

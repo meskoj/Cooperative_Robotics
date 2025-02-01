@@ -14,5 +14,8 @@ function [plt] = InitDataPlot( maxloops)
     plt.leftJointLimitsActivation = zeros(7, maxloops);
     plt.leftActivationFunctions = zeros(3, maxloops);
     plt.rightActivationFunctions = zeros(3, maxloops);
+
+    plt.leftObjVel = zeros(6, maxloops);
+    plt.rightObjVel = zeros(6, maxloops);
 end
 

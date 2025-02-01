@@ -153,7 +153,69 @@ if saving
     saveas(f6, basePath+"CoopNotCoopRight.png");
 end
 
-f7 = figure(7);
+f7 = figure("Name", "Obj and not Coop Left");
+subplot(2,1,1)
+hplot = plot(plt.t, [plt.leftObjVel(4:6,:); plt.nonCoopVelL(4:6,:)]);
+title("Obj and not Coop Linear Vel Left");
+set(hplot, 'LineWidth', 4);
+setLabels(gca, plt);
+xlabel("s");
+ylabel("m/s");
+l = legend("x_{obj}","y_{obj}","z_{obj}","x_{nc}","y_{nc}","z_{nc}", "PhaseTransition");
+l.Location = "northeastoutside";
+nameArray = {'LineStyle'};
+valueArray = transpose({'--','--','--',':',':',':'});
+set(hplot, nameArray, valueArray)
+subplot(2,1,2)
+hplot = plot(plt.t, [plt.leftObjVel(1:3,:); plt.nonCoopVelL(1:3,:)]);
+setLabels(gca, plt);
+set(hplot, 'LineWidth', 4);
+title("Obj and not Coop Angular Vel Left");
+nameArray = {'LineStyle'};
+valueArray = transpose({'--','--','--',':',':',':'});
+set(hplot, nameArray, valueArray)
+xlabel("s");
+ylabel("rad/s");
+setLabels(gca, plt);
+l = legend("wx_{obj}","wy_{obj}","wz_{obj}","wx_{nc}","wy_{nc}","wz_{nc}", "PhaseTransition");
+l.Location = "northeastoutside";
+if saving
+    f7.Position = [0,0,1920,1080];
+    saveas(f7, basePath+"ObjNotCoopLeft.png");
+end
+
+f8 = figure("Name", "Obj and not Coop Right");
+subplot(2,1,1)
+hplot = plot(plt.t, [plt.rightObjVel(4:6,:); plt.nonCoopVelR(4:6,:)]);
+title("Obj and not Coop Linear Vel Right");
+set(hplot, 'LineWidth', 4);
+setLabels(gca, plt);
+xlabel("s");
+ylabel("m/s");
+l = legend("x_{obj}","y_{obj}","z_{obj}","x_{nc}","y_{nc}","z_{nc}", "PhaseTransition");
+l.Location = "northeastoutside";
+nameArray = {'LineStyle'};
+valueArray = transpose({'--','--','--',':',':',':'});
+set(hplot, nameArray, valueArray)
+subplot(2,1,2)
+hplot = plot(plt.t, [plt.rightObjVel(1:3,:); plt.nonCoopVelR(1:3,:)]);
+setLabels(gca, plt);
+set(hplot, 'LineWidth', 4);
+title("Obj and not Coop Angular Vel Right");
+nameArray = {'LineStyle'};
+valueArray = transpose({'--','--','--',':',':',':'});
+set(hplot, nameArray, valueArray)
+xlabel("s");
+ylabel("rad/s");
+setLabels(gca, plt);
+l = legend("wx_{obj}","wy_{obj}","wz_{obj}","wx_{nc}","wy_{nc}","wz_{nc}", "PhaseTransition");
+l.Location = "northeastoutside";
+if saving
+    f8.Position = [0,0,1920,1080];
+    saveas(f8, basePath+"ObjNotCoopRight.png");
+end
+
+f9 = figure(9);
 % This was necessary because of the wrong initialization of the sensor distance
 subplot(2,1,1);
 hplot = plot(plt.t, plt.leftJointLimitsActivation);
@@ -172,12 +234,12 @@ l = legend("JL1", "JL2", "JL3", "JL4", "JL5", "JL6", "JL7", "Phase transition");
 l.Location = "northeastoutside";
 title("Right joint limits activation functions")
 if saving
-    f7.Position = [0,0,1920,1080];
-    saveas(f7, basePath+"LeftJLActivationFunctions.png")
+    f9.Position = [0,0,1920,1080];
+    saveas(f9, basePath+"LeftJLActivationFunctions.png")
 end
 
 
-f8 = figure(8);
+f10 = figure(10);
 % This was necessary because of the wrong initialization of the sensor distance
 subplot(2,1,1);
 hplot = plot(plt.t, plt.leftActivationFunctions);
@@ -202,8 +264,8 @@ valueArray = transpose({'-','--',':'});
 set(hplot, nameArray, valueArray)
 title("Right Robot Activation Functions")
 if saving
-    f8.Position = [0,0,1920,1080];
-    saveas(f8, basePath+"ActivationFunctions.png")
+    f10.Position = [0,0,1920,1080];
+    saveas(f10, basePath+"ActivationFunctions.png")
 end
 end
 

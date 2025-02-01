@@ -184,7 +184,7 @@ function setLabels(currentAxis, plt)
     strLabels=arrayfun(@(a)num2str(a),(0:5:plt.t(end)),'uni',0);
     strLabels = insert('Phase 1 End', strLabels, max(1, find(auxArr == plt.transitionTimes(1))-1));
     if length(plt.transitionTimes) == 2
-        strLabels = insert('Phase 2 End', strLabels, max(1,find(auxArr == plt.transitionTimes(2))-1));
+            strLabels = insert('Phase 2 End', strLabels, max(1,find(auxArr == plt.transitionTimes(2))-1));
     end
     strLabels(find(auxArr == 20)) = {""};
     auxLabels = strLabels';
