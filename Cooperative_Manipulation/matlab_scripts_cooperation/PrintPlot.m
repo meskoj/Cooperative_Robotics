@@ -3,8 +3,8 @@ function [ ] = PrintPlot( plt)
 % some predefined plots
 % you can add your own
 
-saving = true;
-basePath = "/home/tonello/Documents/RobotEngPersonal/Y2S1/COOP/Franka/Cooperative_Manipulation/matlab_scripts_cooperation/Images/";
+saving = false;
+%basePath = "/home/tonello/Documents/RobotEngPersonal/Y2S1/COOP/Franka/Cooperative_Manipulation/matlab_scripts_cooperation/Images/";
 
 f1 = figure('Name', 'Joint position and velocity Left Arm');
 subplot(2,1,1);

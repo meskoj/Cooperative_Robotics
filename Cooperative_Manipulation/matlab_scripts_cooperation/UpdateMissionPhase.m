@@ -2,17 +2,16 @@ function [pandaArmL, pandaArmR, mission] = UpdateMissionPhase(pandaArmL, pandaAr
 switch mission.phase
     case 1  %Go To Grasping Points
         % computing the errors for the go-to action defining tasks
-
         % max error: 1/10 cm and 1deg
         [angL,linL] = CartError(pandaArmL.wTg, pandaArmL.wTt);
         [angR,linR] = CartError(pandaArmR.wTg, pandaArmR.wTt);
-        % disp([norm(angL) ,norm(angR), norm(linL), norm(linR)])
         if norm(angL) < deg2rad(1) && norm(angR) < deg2rad(1) && norm(linL) < 0.001 && norm(linR) < 0.001
             mission.current_action = "coop_manip";
             mission.prev_action = "go_to";
             mission.phase_time = 0;
             mission.phase = 2;
 
+            % Adjust the tool before changing phase
             % Distance between tools to object
             pandaArmL.tTo = pinv(pandaArmL.wTt) * pandaArmL.wTo;
             t_r_to_left = pandaArmL.tTo(1:3,4);
@@ -20,7 +19,7 @@ switch mission.phase
             pandaArmL.r_to = w_r_to_left;
 
             pandaArmR.tTo = pinv(pandaArmR.wTt) * pandaArmR.wTo;
-            t_r_to_right = pandaArmL.tTo(1:3,4);
+            t_r_to_right = pandaArmR.tTo(1:3,4);
             w_r_to_right = pandaArmR.wTt(1:3,1:3) * t_r_to_right;
             pandaArmR.r_to = w_r_to_right;
 
@@ -37,7 +36,6 @@ switch mission.phase
         end
     case 2 % Cooperative Manipulation Start
         % computing the errors for the rigid move-to task
-
         % max error: 1 cm and 3deg
         [angL,linL] = CartError(pandaArmL.wTog, pandaArmL.wTt);
         [angR,linR] = CartError(pandaArmR.wTog, pandaArmR.wTt);

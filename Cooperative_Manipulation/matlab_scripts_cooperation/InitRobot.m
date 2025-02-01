@@ -21,25 +21,31 @@ pandaArm.jlmax = [2.8973;1.7628;2.8973;-0.0698;2.8973;3.7525;2.8973]';
 pandaArm.bJe = eye(6,7);
 pandaArm.Jjl = [];
 
-%% ... TO HERE
-% Init Task Reference vectors
+%% Initialize all the needed values
+% MINIMUM ALTITUDE
+pandaArm.A.minimumAltitude = 0;
+pandaArm.xdot.minimumAltitude = 0;
+pandaArm.J.minimumAltitude = zeros(1,7);
 
+% JOINT LIMITS
 pandaArm.delta_perc = 0.1;
 pandaArm.A.jointLimits = zeros(7);
 pandaArm.xdot.jointLimits = zeros(7,1);
-pandaArm.r_to = [];
-pandaArm.r_to = [];
+pandaArm.J.jointLimits = zeros(7);
 
-% Rigid body jacobians
-pandaArm.tSo = [];
-pandaArm.tSo = [];
+% MOVE TOOL
+pandaArm.A.moveTool = zeros(6);
+pandaArm.xdot.moveTool = zeros(6,1);
+pandaArm.J.moveTool = zeros(6,7);
 
-pandaArm.H = eye(6);
-pandaArm.H = eye(6);
+% STOP ALL
 pandaArm.A.stopAll = zeros(7);
 pandaArm.xdot.stopAll = zeros(7,1);
+pandaArm.J.stopAll = zeros(7);
 
-% Init Activation function for activate or deactivate tasks
 
+pandaArm.r_to = [];
+pandaArm.tSo = [];
+pandaArm.H = eye(6);
 end
 
