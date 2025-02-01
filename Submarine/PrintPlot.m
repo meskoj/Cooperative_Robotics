@@ -26,7 +26,7 @@ ylabel("rad/s")
 title("Arm velocity");
 f1.Position = [0,0,1920,1080];
 if saving
-    saveas(f1, baseFolder+"G2ArmPosVel.png")
+    saveas(f1, baseFolder+"ArmPosVel.png")
 end
 
 f2 = figure(2);
@@ -50,7 +50,7 @@ ylabel("m/s")
 title("Body linear velocity");
 f2.Position = [0,0,1920,1080];
 if saving
-    saveas(f2, baseFolder+"G2BodyLinPosVel.png")
+    saveas(f2, baseFolder+"BodyLinPosVel.png")
 end
 
 f3 = figure(3);
@@ -74,7 +74,7 @@ l = legend('omega_x','omega_y','omega_z','Phase Transition');
 l.Location = "northeastoutside";
 f3.Position = [0,0,1920,1080];
 if saving
-    saveas(f3, baseFolder+"G2BodyAngPosVel.png")
+    saveas(f3, baseFolder+"BodyAngPosVel.png")
 end
 
 f4 = figure(4);
@@ -99,7 +99,7 @@ l.Location = "northeastoutside";
 title("Activation Functions")
 f4.Position = [0,0,1920,1080];
 if saving
-    saveas(f4, baseFolder+"G2ActivationFunctions.png")
+    saveas(f4, baseFolder+"ActivationFunctions.png")
 end
 
 f5 = figure(5);
@@ -119,11 +119,11 @@ xlabel("s")
 ylabel("m")
 title("Altitude error")
 setLabels(gca, plt)
-l = legend("Misalignment z", "Phase transition");
+l = legend("Altitude error", "Phase transition");
 l.Location = "northeastoutside";
 f5.Position = [0,0,1920,1080];
 if saving
-    saveas(f5, baseFolder+"G2Misalignment.png")
+    saveas(f5, baseFolder+"Misalignment.png")
 end
 
 f6 = figure(6);
@@ -149,7 +149,7 @@ l = legend('Angular distance to nodule X', 'Angular distance to nodule Y', 'Angu
 l.Location = "northeastoutside";
 f6.Position = [0,0,1920,1080];
 if saving
-    saveas(f6, baseFolder+"G2BodyDistAngLin.png")
+    saveas(f6, baseFolder+"BodyDistAngLin.png")
 end
 
 f7 = figure(7);
@@ -163,7 +163,7 @@ l = legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7',"Phase
 l.Location = "northeastoutside";
 f7.Position = [0,0,1920,1080];
 if saving
-    saveas(f7, baseFolder+"G2ArmVelocity.png")
+    saveas(f7, baseFolder+"ArmVelocity.png")
 end
 
 f8 = figure(8);
@@ -177,7 +177,7 @@ l = legend('xdot', 'ydot','zdot', "Phase Transition");
 l.Location = "northeastoutside";
 f8.Position = [0,0,1920,1080];
 if saving
-    saveas(f8, baseFolder+"G2BodyLinearVelocity.png")
+    saveas(f8, baseFolder+"BodyLinearVelocity.png")
 end
 end
 
@@ -188,7 +188,7 @@ function setLabels(currentAxis, plt)
     strLabels=arrayfun(@(a)num2str(a),(0:5:plt.t(end)),'uni',0);
     strLabels = insert('Phase 1 End', strLabels, max(1, find(auxArr == plt.transitionTimes(1))-1));
     if length(plt.transitionTimes) == 2
-            strLabels = insert('Phase 2 End', strLabels, max(1,find(auxArr == plt.transitionTimes(2))-1));
+        strLabels = insert('Phase 2 End', strLabels, max(1,find(auxArr == plt.transitionTimes(2))-1));
     end
     strLabels(find(auxArr == 20)) = {""};
     auxLabels = strLabels';
