@@ -4,7 +4,7 @@ function [ ] = PrintPlot( plt)
 % you can add your own
 
 saving = false;
-%basePath = "/home/tonello/Documents/RobotEngPersonal/Y2S1/COOP/Franka/Cooperative_Manipulation/matlab_scripts_cooperation/Images/";
+basePath = "/home/tonello/Documents/RobotEngPersonal/Y2S1/COOP/Franka/Cooperative_Manipulation/matlab_scripts_cooperation/Images/";
 
 f1 = figure('Name', 'Joint position and velocity Left Arm');
 subplot(2,1,1);
