@@ -206,68 +206,68 @@ for t = 0:deltat:end_time
 
 
    % Recompute TPIK with the new cooperative velocity
-    if mission.phase == 2
-        ydotbarL = zeros(7,1);
-        QpL = eye(7);
-        [QpL, ydotbarL] = iCAT_task(pandaArmL.A.moveTool, pandaArmL.J.moveTool, QpL, ydotbarL, coopVelL, 0.0001, 0.01, 10);
-        [QpL, ydotbarL] = iCAT_task(pandaArmL.A.jointLimits, pandaArmL.J.jointLimits, QpL, ydotbarL, pandaArmL.xdot.jointLimits, 0.0001, 0.01, 10);
-        [QpL, ydotbarL] = iCAT_task(pandaArmL.A.minimumAltitude, pandaArmL.J.minimumAltitude, QpL, ydotbarL, pandaArmL.xdot.minimumAltitude, 0.0001, 0.01, 10);
-        % this task should be the last one
-        [QpL, ydotbarL] = iCAT_task(eye(7), eye(7), QpL, ydotbarL, zeros(7,1), 0.0001, 0.01, 10);
+   if mission.phase == 2
+       ydotbarL = zeros(7,1);
+       QpL = eye(7);
+       [QpL, ydotbarL] = iCAT_task(pandaArmL.A.moveTool, pandaArmL.J.moveTool, QpL, ydotbarL, coopVelL, 0.0001, 0.01, 10);
+       [QpL, ydotbarL] = iCAT_task(pandaArmL.A.jointLimits, pandaArmL.J.jointLimits, QpL, ydotbarL, pandaArmL.xdot.jointLimits, 0.0001, 0.01, 10);
+       [QpL, ydotbarL] = iCAT_task(pandaArmL.A.minimumAltitude, pandaArmL.J.minimumAltitude, QpL, ydotbarL, pandaArmL.xdot.minimumAltitude, 0.0001, 0.01, 10);
+       % this task should be the last one
+       [QpL, ydotbarL] = iCAT_task(eye(7), eye(7), QpL, ydotbarL, zeros(7,1), 0.0001, 0.01, 10);
 
-        ydotbarR = zeros(7,1);
-        QpR = eye(7);
-        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, coopVelR, 0.0001,   0.01, 10);
-        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.jointLimits, pandaArmR.J.jointLimits, QpR, ydotbarR, pandaArmR.xdot.jointLimits, 0.0001,   0.01, 10);
-        [QpR, ydotbarR] = iCAT_task(pandaArmR.A.minimumAltitude, pandaArmR.J.minimumAltitude, QpR, ydotbarR, pandaArmR.xdot.minimumAltitude, 0.0001, 0.01, 10);
-        % this task should be the last one
-        [QpR, ydotbarR] = iCAT_task(eye(7), eye(7), QpR, ydotbarR, zeros(7,1), 0.0001, 0.01, 10);
-    end
+       ydotbarR = zeros(7,1);
+       QpR = eye(7);
+       [QpR, ydotbarR] = iCAT_task(pandaArmR.A.moveTool, pandaArmR.J.moveTool, QpR, ydotbarR, coopVelR, 0.0001,   0.01, 10);
+       [QpR, ydotbarR] = iCAT_task(pandaArmR.A.jointLimits, pandaArmR.J.jointLimits, QpR, ydotbarR, pandaArmR.xdot.jointLimits, 0.0001,   0.01, 10);
+       [QpR, ydotbarR] = iCAT_task(pandaArmR.A.minimumAltitude, pandaArmR.J.minimumAltitude, QpR, ydotbarR, pandaArmR.xdot.minimumAltitude, 0.0001, 0.01, 10);
+       % this task should be the last one
+       [QpR, ydotbarR] = iCAT_task(eye(7), eye(7), QpR, ydotbarR, zeros(7,1), 0.0001, 0.01, 10);
+   end
 
-    pandaArmL.q_dot = ydotbarL(1:7);
-    pandaArmR.q_dot = ydotbarR(1:7);
+   pandaArmL.q_dot = ydotbarL(1:7);
+   pandaArmR.q_dot = ydotbarR(1:7);
 
-    pandaArmL.x = tool_jacobian_L * pandaArmL.q_dot;
-    pandaArmR.x = tool_jacobian_R * pandaArmR.q_dot;
+   pandaArmL.x = tool_jacobian_L * pandaArmL.q_dot;
+   pandaArmR.x = tool_jacobian_R * pandaArmR.q_dot;
 
-    % Integration
-    pandaArmL.q = pandaArmL.q(1:7) + pandaArmL.q_dot*deltat;
-    pandaArmR.q = pandaArmR.q(1:7) + pandaArmR.q_dot*deltat;
+   % Integration
+   pandaArmL.q = pandaArmL.q(1:7) + pandaArmL.q_dot*deltat;
+   pandaArmR.q = pandaArmR.q(1:7) + pandaArmR.q_dot*deltat;
 
-    %Send udp packets [q_dot1, ..., q_dot7] DO NOT CHANGE
-    if real_robot == false
-        pandaArmL.q = pandaArmL.q(1:7) + pandaArmL.q_dot*deltat;
-        pandaArmR.q = pandaArmR.q(1:7) + pandaArmR.q_dot*deltat;
-    end
-    %Send udp packets [q_dot1, ..., q_dot7]
-    if real_robot == true
-        step(hudpsLeft,[t;pandaArmL.q_dot]);
-        step(hudpsRight,[t;pandaArmR.q_dot]);
-    else
-        step(hudps,[pandaArmL.q',pandaArmR.q'])
-    end
+   %Send udp packets [q_dot1, ..., q_dot7] DO NOT CHANGE
+   if real_robot == false
+       pandaArmL.q = pandaArmL.q(1:7) + pandaArmL.q_dot*deltat;
+       pandaArmR.q = pandaArmR.q(1:7) + pandaArmR.q_dot*deltat;
+   end
+   %Send udp packets [q_dot1, ..., q_dot7]
+   if real_robot == true
+       step(hudpsLeft,[t;pandaArmL.q_dot]);
+       step(hudpsRight,[t;pandaArmR.q_dot]);
+   else
+       step(hudps,[pandaArmL.q',pandaArmR.q'])
+   end
 
-    % check if the mission phase should be changed
-    mission.phase_time = mission.phase_time + deltat;
-    mission.wall_time = mission.wall_time + deltat;
-    [pandaArmL,pandaArmR,mission] = UpdateMissionPhase(pandaArmL,pandaArmR,mission);
+   % check if the mission phase should be changed
+   mission.phase_time = mission.phase_time + deltat;
+   mission.wall_time = mission.wall_time + deltat;
+   [pandaArmL,pandaArmR,mission] = UpdateMissionPhase(pandaArmL,pandaArmR,mission);
 
-    % Compute distance between tools for plotting
-    pandaArmL.dist_tools = norm(pandaArmL.wTt(1:3, 4) - pandaArmR.wTt(1:3, 4));
+   % Compute distance between tools for plotting
+   pandaArmL.dist_tools = norm(pandaArmL.wTt(1:3, 4) - pandaArmR.wTt(1:3, 4));
 
-    % Update data for plots
-    plt = UpdateDataPlot(plt,pandaArmL,pandaArmR,t,loop, mission);
+   % Update data for plots
+   plt = UpdateDataPlot(plt,pandaArmL,pandaArmR,t,loop, mission);
 
-    loop = loop + 1;
-    % add debug prints here
-    if (mod(t,0.1) == 0)
-        t
-        mission.phase
-    end
+   loop = loop + 1;
+   % add debug prints here
+   if (mod(t,0.1) == 0)
+       t
+       mission.phase
+   end
 
-    % enable this to have the simulation approximately evolving like real
-    % time. Remove to go as fast as possible
-    % WARNING: MUST BE ENABLED IF CONTROLLING REAL ROBOT !
-    SlowdownToRealtime(deltat);
+   % enable this to have the simulation approximately evolving like real
+   % time. Remove to go as fast as possible
+   % WARNING: MUST BE ENABLED IF CONTROLLING REAL ROBOT !
+   SlowdownToRealtime(deltat);
 end
 PrintPlot(plt);

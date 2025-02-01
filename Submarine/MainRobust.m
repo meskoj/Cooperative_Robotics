@@ -78,7 +78,6 @@ uvms.eTt = eye(4);
 mission.prev_action             = "safe_navigation";
 mission.current_action          = "safe_navigation";
 mission.actions.safe_navigation = ["ACS", "HA", "HC", "VP"];
-mission.actions.aligning        = ["ACS", "HA", "HC", "VP"];
 mission.actions.landing         = ["ACAD", "HA", "HC", "VPXY"];
 mission.actions.grasping        = ["AM", "NM"];
 
