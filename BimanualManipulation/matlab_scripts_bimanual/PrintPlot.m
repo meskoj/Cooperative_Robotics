@@ -27,7 +27,7 @@ l = legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7',"Phase
 l.Location = "northeastoutside";
 if saving
     f1.Position = [0,0,1920,1080];
-    saveas(f1, basePath+"G2JointPosVelL.png");
+    saveas(f1, basePath+"JointPosVelL.png");
 end
 
 f2 = figure('Name', 'Joint position and velocity Right Arm');
@@ -51,7 +51,7 @@ l = legend('qdot_1','qdot_2','qdot_3','qdot_4','qdot_5','qdot_6','qdot_7','Phase
 l.Location = "northeastoutside";
 if saving
     f2.Position = [0,0,1920,1080];
-    saveas(f2, basePath+"G2JointPosVelR.png");
+    saveas(f2, basePath+"JointPosVelR.png");
 end
 
 f3 = figure('Name', 'Relative Distance');
@@ -66,7 +66,7 @@ l = legend('relativeDist.x','relativeDist.y','relativeDist.z','PhaseTransition')
 l.Location = "northeastoutside";
 if saving
     f3.Position = [0,0,1920,1080];
-    saveas(f3, basePath+"G2RelativeDistance.png");
+    saveas(f3, basePath+"RelativeDistance.png");
 end
 
 f4 = figure('Name', 'Tool Error');
@@ -81,7 +81,7 @@ l = legend('toolError.x','toolError.y','toolError.z','PhaseTransition');
 l.Location = "northeastoutside";
 if saving
     f4.Position = [0,0,1920,1080];
-    saveas(f4, basePath+"G2ToolError.png");
+    saveas(f4, basePath+"ToolError.png");
 end
 
 f5 = figure('Name', 'Object Velocity');
@@ -106,7 +106,7 @@ l = legend('objectAngVel.x','objectAngVel.y','objectAngVel.z','leftAngVel.x','le
 l.Location = "northeastoutside";
 if saving
     f5.Position = [0,0,1920,1080];
-    saveas(f5, basePath+"G2LeftObjAndToolVels.png");
+    saveas(f5, basePath+"LeftObjAndToolVels.png");
 end
 
 f6 = figure('Name', 'Object Velocity');
@@ -137,7 +137,7 @@ l = legend('objectAngVel.x','objectAngVel.y','objectAngVel.z','rightAngVel.x','r
 l.Location = "northeastoutside";
 if saving
     f6.Position = [0,0,1920,1080];
-    saveas(f6, basePath+"G2RightObjAndToolVels.png");
+    saveas(f6, basePath+"RightObjAndToolVels.png");
 end
 
 f7 = figure('Name', "Object vel diff");
@@ -151,7 +151,7 @@ l = legend('velDiff');
 l.Location = "northeastoutside";
 if saving
     f7.Position = [0,0,1920,1080];
-    saveas(f7, basePath+"G2ObjLRDiff.png");
+    saveas(f7, basePath+"ObjLRDiff.png");
 end
 
 f8 = figure(8);
@@ -174,7 +174,7 @@ l.Location = "northeastoutside";
 title("Right joint limits activation functions")
 if saving
     f8.Position = [0,0,1920,1080];
-    saveas(f8, basePath+"G2JLActivationFunctions.png")
+    saveas(f8, basePath+"JLActivationFunctions.png")
 end
 
 
@@ -204,7 +204,7 @@ set(hplot, nameArray, valueArray)
 title("Right Arm Activation Functions")
 if saving
     f9.Position = [0,0,1920,1080];
-    saveas(f9, basePath+"G2ActivationFunctions.png")
+    saveas(f9, basePath+"ActivationFunctions.png")
 end
 end
 function setLabels(currentAxis, plt, pandaArms)
