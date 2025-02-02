@@ -38,14 +38,14 @@ wTb_right = [wRb_right, wpb_right; 0 0 0 1]; % fixed transformation word -> base
 plt = InitDataPlot(maxloops);
 pandaArms = InitRobot(model,wTb_left,wTb_right);
 % Init object and tools frames
-obj_length = 0.12;
+obj_length = 0.1;
 w_obj_pos = [0.5 0 0.59]';
 w_obj_ori = rotation(0,0,0);
 pandaArms.ArmL.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];
 pandaArms.ArmR.wTo = [w_obj_ori w_obj_pos; 0 0 0 1];
 
 theta = -44.9949;% FIXED ANGLE BETWEEN EE AND TOOL
-tool_length = 0.2124;% FIXED DISTANCE BETWEEN EE AND TOOL
+tool_length = 0.2104;% FIXED DISTANCE BETWEEN EE AND TOOL
 % Define trasnformation matrix from ee to tool.
 
 pandaArms.ArmL.eTt = [rotation(0, 0, deg2rad(theta)), [0;0;tool_length]; 0 0 0 1];
