@@ -117,9 +117,6 @@ xlabel("s")
 ylabel("m/s")
 title('Right Linear vel object and tool');
 set(hplot, 'LineWidth', 4);
-% nameArray = {'LineStyle'};
-% valueArray = transpose({'-','-','-','--','--','--',':',':',':'});
-% set(hplot, nameArray, valueArray)
 setLabels(gca, plt, pandaArms);
 l = legend('objectLinVel.x','objectLinVel.y','objectLinVel.z','rightLinVel.x','rightLinVel.y','rightLinVel.z','PhaseTransition');
 l.Location = "northeastoutside";
@@ -129,9 +126,6 @@ title('Right Angular vel object and tool');
 set(hplot, 'LineWidth', 4);
 xlabel("s")
 ylabel("rad/s")
-% nameArray = {'LineStyle'};
-% valueArray = transpose({'-','-','-','--','--','--',':',':',':'});
-% set(hplot, nameArray, valueArray)
 setLabels(gca, plt, pandaArms);
 l = legend('objectAngVel.x','objectAngVel.y','objectAngVel.z','rightAngVel.x','rightAngVel.y','rightAngVel.z','PhaseTransition');
 l.Location = "northeastoutside";
@@ -155,7 +149,6 @@ if saving
 end
 
 f8 = figure(8);
-% This was necessary because of the wrong initialization of the sensor distance
 subplot(2,1,1);
 hplot = plot(plt.t, plt.leftJointLimitsActivation);
 set(hplot, 'LineWidth', 4);
@@ -179,7 +172,6 @@ end
 
 
 f9 = figure(9);
-% This was necessary because of the wrong initialization of the sensor distance
 subplot(2,1,1);
 hplot = plot(plt.t, plt.leftActivationFunctions);
 set(hplot, 'LineWidth', 4);

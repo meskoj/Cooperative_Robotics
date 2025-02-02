@@ -15,15 +15,7 @@ plt.q_dot(:, loop) = pandaArm1.q_dot;
 plt.q2(:, loop) = pandaArm2.q;
 plt.q_dot2(:, loop) = pandaArm2.q_dot;
 
-% activation functions
 
-
-% Plot: desired object velocity
-
-%End effector velocities (Left Arm)
-
-
-%End effector velocities (Right Arm)
 if mission.phase ~= 2
     plt.secondGoalErrorL(:,loop) = zeros(3,1);
     plt.secondGoalErrorR(:,loop) = zeros(3,1);

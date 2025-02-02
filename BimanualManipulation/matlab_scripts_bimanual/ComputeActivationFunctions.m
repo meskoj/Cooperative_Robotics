@@ -5,13 +5,7 @@ pandaArms.ArmL.A.minimumAltitude = DecreasingBellShapedFunction(0.15, 0.2, 0, 1,
 pandaArms.ArmR.A.minimumAltitude = DecreasingBellShapedFunction(0.15, 0.2, 0, 1, pandaArms.ArmR.wTt(3,4)) *...
     ActionTransition("MA", mission.actions.(mission.prev_action), mission.actions.(mission.current_action), mission.phase_time, false);
 
-%% Joint Limits Task
-% Activation function: two combined sigmoids, which are at their maximum at the joint limits and approach zero between them
-% Safety Task (inequality)
-% delta is 10% of max error
-
-%% LEFT ARM
-% -----------------------------------------------------------------
+% Joint Limits Task
 index = 1;
 for jl = [pandaArms.jlmin; pandaArms.jlmax]
     pandaArms.ArmL.A.jointLimits(index,index) = (DecreasingBellShapedFunction(jl(1), jl(1) + pandaArms.delta_perc * (jl(2) - jl(1)), 0, 1, pandaArms.ArmL.q(index)) + IncreasingBellShapedFunction(jl(2) - pandaArms.delta_perc * (jl(2) - jl(1)), jl(2), 0, 1, pandaArms.ArmL.q(index))) *...
@@ -19,8 +13,6 @@ for jl = [pandaArms.jlmin; pandaArms.jlmax]
     index = index + 1;
 end
 
-%% RIGHT ARM
-% -----------------------------------------------------------------
 index = 1;
 for jl = [pandaArms.jlmin; pandaArms.jlmax]
     pandaArms.ArmR.A.jointLimits(index,index) = (DecreasingBellShapedFunction(jl(1), jl(1) + pandaArms.delta_perc * (jl(2) - jl(1)), 0, 1, pandaArms.ArmR.q(index)) + IncreasingBellShapedFunction(jl(2) - pandaArms.delta_perc * (jl(2) - jl(1)), jl(2), 0, 1, pandaArms.ArmR.q(index)))*...

@@ -14,7 +14,6 @@ function [ plt ] = UpdateDataPlot( plt, pandaArms, t, loop, mission )
     plt.q_dot2(:, loop) = pandaArms.ArmR.q_dot;
     plt.relativeDistance(:, loop) = pandaArms.ArmL.wTt(1:3,4) - pandaArms.ArmR.wTt(1:3,4);
     plt.toolError(:, loop) = pandaArms.ArmL.wTnt(1:3,4) - pandaArms.ArmR.wTnt(1:3,4);
-    % plt.toolError(:, loop) = pandaArms.ArmL.wTnt(1:3,4) - pandaArms.ArmL.wTo(1:3,4);
     plt.v_objL(:,loop) = pandaArms.ArmL.xdot.bimanualPose;
     plt.v_objR(:,loop) = pandaArms.ArmL.xdot.bimanualPose;
     plt.xl(:,loop) = pandaArms.ArmL.x;

@@ -57,24 +57,14 @@ pandaArmR.wTt = pandaArmR.wTe * pandaArmR.eTt;
 
 %% Defines the goal position for the end-effector/tool position task
 % First goal reach the grasping points.
-pandaArmL.wTg = [pandaArmL.wTt(1:3,1:3) * rotation(0, deg2rad(20), 0), [w_obj_pos - [obj_length; 0; 0] / 2]; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+pandaArmL.wTg = [pandaArmL.wTt(1:3,1:3) * rotation(0, deg2rad(20), 0), [w_obj_pos - [obj_length; 0; 0] / 2]; 0 0 0 1];
 pandaArmR.wTg = [pandaArmR.wTt(1:3,1:3) * rotation(0, deg2rad(20), 0), [w_obj_pos + [obj_length; 0; 0] / 2]; 0 0 0 1];
 %% Second goal move the object
-%% DEBUG
-pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1];
 pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1];
 
-% pandaArmL.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-% pandaArmR.wTog = [rotation(1.0, 0.0, deg2rad(20)) * pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.60 0.40 0.48]'; 0 0 0 1];
-
-% pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.0 0.00 0.38]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-% pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [1.0 0.00 0.38]'; 0 0 0 1];
-
-% pandaArmL.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-% pandaArmR.wTog = [eye(3), [0.60 0.40 0.48]'; 0 0 0 1];
-
-%% G2
-% pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.3 0 0]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
+%% Goal 2
+% pandaArmL.wTog = [pandaArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.3 0 0]'; 0 0 0 1];
 % pandaArmR.wTog = [pandaArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(20), 0.0), [0.3 0 0]'; 0 0 0 1];
 
 

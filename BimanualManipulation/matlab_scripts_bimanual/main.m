@@ -63,13 +63,8 @@ pandaArms.ArmR.wTg = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0, deg2rad(30), 0),
 % Second goal move the object
 pandaArms.ArmL.wTog = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.65 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.65 -0.35 0.28]'; 0 0 0 1];
-%% DEBUGGING
-% pandaArms.ArmL.wTog = [eye(3), [0.65 -0.35 0.28]'; 0 0 0 1];
-% pandaArms.ArmR.wTog = [eye(3), [0.65 -0.35 0.28]'; 0 0 0 1];
-% pandaArms.ArmL.wTog = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [1.0 -0.35 0.28]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
-% pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [1.0 -0.35 0.28]'; 0 0 0 1];
 
-%% G2
+%% Goal 2
 % pandaArms.ArmL.wTog = [pandaArms.ArmL.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.4 0.0 0.0]'; 0 0 0 1]; % Rotation of 30 degrees around y axis from goal to tool
 % pandaArms.ArmR.wTog = [pandaArms.ArmR.wTt(1:3,1:3) * rotation(0.0, deg2rad(30), 0.0), [0.4 0.0 0.0]'; 0 0 0 1];
 
@@ -145,7 +140,6 @@ for t = 0:dt:Tf
     end
 
 
-    %% REMEMBER THAT XDOT IS VERTICAL
     [Qp, ydotbar] = iCAT_task([pandaArms.ArmL.A.stopMotors zeros(7); zeros(7) pandaArms.ArmR.A.stopMotors], [pandaArms.ArmL.J.stopMotors, zeros(7);zeros(7), pandaArms.ArmR.J.stopMotors], Qp, ydotbar, [pandaArms.ArmL.xdot.stopMotors;pandaArms.ArmR.xdot.stopMotors], 0.0001,   0.01, 10);
 
     % We are using ArmL just to not create another field in the structure. Because in this case the activation function would have been the same for both the arms (6x6)
@@ -162,7 +156,6 @@ for t = 0:dt:Tf
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmL.A.bimanualPose, [pandaArms.ArmL.J.bimanualPose, zeros(6,7)], Qp, ydotbar, pandaArms.ArmL.xdot.bimanualPose, 0.0001,   0.01, 10);
     [Qp, ydotbar] = iCAT_task(pandaArms.ArmR.A.bimanualPose, [zeros(6,7), pandaArms.ArmR.J.bimanualPose], Qp, ydotbar, pandaArms.ArmR.xdot.bimanualPose, 0.0001,   0.01, 10);
 
-    % For the activation and xdot Left or right is the same
     [Qp, ydotbar] = iCAT_task(eye(14), eye(14), Qp, ydotbar, zeros(14,1), 0.0001,   0.01, 10);    % this task should be the last one
 
     % get the two variables for integration

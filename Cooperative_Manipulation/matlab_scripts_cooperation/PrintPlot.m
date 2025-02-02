@@ -1,8 +1,5 @@
 function [ ] = PrintPlot( plt)
 
-% some predefined plots
-% you can add your own
-
 saving = false;
 basePath = "/home/tonello/Documents/RobotEngPersonal/Y2S1/COOP/Franka/Cooperative_Manipulation/matlab_scripts_cooperation/Images/";
 
@@ -216,7 +213,6 @@ if saving
 end
 
 f9 = figure(9);
-% This was necessary because of the wrong initialization of the sensor distance
 subplot(2,1,1);
 hplot = plot(plt.t, plt.leftJointLimitsActivation);
 set(hplot, 'LineWidth', 4);
@@ -240,7 +236,6 @@ end
 
 
 f10 = figure(10);
-% This was necessary because of the wrong initialization of the sensor distance
 subplot(2,1,1);
 hplot = plot(plt.t, plt.leftActivationFunctions);
 set(hplot, 'LineWidth', 4);

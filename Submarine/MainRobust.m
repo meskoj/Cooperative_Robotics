@@ -67,12 +67,11 @@ uvms.eTt = eye(4);
 %% tasks priority
 % ACS  -> altitude control safety
 % ACAD -> altitude control action defined
-% AC   -> altitude control
 % HA   -> horizontal attitude
 % HC   -> heading control
 % VP   -> vehicle position
 % VPXY -> vehicle position on the x and y plane
-% AM   -> arm movement
+% AM   -> arm movement control
 % NM   -> no movement
 
 mission.prev_action             = "safe_navigation";
@@ -102,7 +101,6 @@ for t = 0:deltat:end_time
     Qp = eye(13);
     % add all the other tasks here!
     % the sequence of iCAT_task calls defines the priority
-    %[Qp, ydotbar] = iCAT_task(uvms.A.t,    uvms.Jt,    Qp, ydotbar, uvms.xdot.t,  0.0001,   0.01, 10);
 
     %% Safety tasks
     [Qp, ydotbar] = iCAT_task(uvms.A.noMovement,     uvms.J.noMovement,    Qp, ydotbar, uvms.xdot.noMovement,  0.0001,   0.01, 10);

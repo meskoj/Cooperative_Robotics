@@ -77,6 +77,5 @@ function [uvms] = ComputeTaskReferences(uvms, mission)
     
             %% No movement
             uvms.xdot.noMovement = zeros(6,1);
-
-    end
+   end
 end
