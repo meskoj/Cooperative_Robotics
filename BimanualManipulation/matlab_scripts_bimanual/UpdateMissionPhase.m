@@ -3,7 +3,7 @@ switch mission.phase
     case 1  %Go To Grasping Points
         [ang, lin] = CartError(pandaArms.ArmL.wTg, pandaArms.ArmL.wTt);
         [ang1, lin1] = CartError(pandaArms.ArmR.wTg, pandaArms.ArmR.wTt);
-        if norm(ang) < 0.01 && norm(lin) < 0.01 && norm(ang1) < 0.01 && norm(lin1) < 0.01
+        if norm(ang) < 0.01 && norm(lin) < 0.001 && norm(ang1) < 0.01 && norm(lin1) < 0.001
             mission.phase = 2;
             mission.phase_time = 0;
             pandaArms.transitionTimes(1,1) = mission.wall_time;

@@ -216,7 +216,7 @@ strLabels = insert('Phase 1 End', strLabels, max(1, find(auxArr == pandaArms.tra
 if length(pandaArms.transitionTimes) == 2
     strLabels = insert('Phase 2 End', strLabels, max(1,find(auxArr == pandaArms.transitionTimes(2))-1));
 end
-strLabels(find(auxArr == 4)) = {""};
+strLabels(find(auxArr == 10)) = {""};
 auxLabels = strLabels';
 set(currentAxis, 'xtick', auxArr, 'xticklabel', auxLabels)
 xtickangle(45)
