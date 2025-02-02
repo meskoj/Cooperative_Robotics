@@ -82,12 +82,12 @@ mission.phase = 1;
 mission.phase_time = 0;
 % Define the active tasks for each phase of the mission
 % Suggested Name for the task
-% T = move tool task
-% BT = bimanual move tool task
-% JL = joint limits task
-% MA = minimum altitude task
-% RC = rigid constraint task
-% NM = No movement
+% T = pose Tool task
+% BT = Bimanual pose Tool task
+% JL = Joint Limits task
+% MA = Minimum Altitude task
+% RC = Rigid Constraint task
+% NM = No Movement
 mission.actions.go_to = ["T", "JL", "MA"];
 mission.actions.coop_manip = ["BT", "JL", "MA", "RC"];
 mission.actions.end_motion = ["MA", "NM"];
